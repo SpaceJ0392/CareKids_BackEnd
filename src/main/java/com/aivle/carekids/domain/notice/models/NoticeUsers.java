@@ -1,5 +1,6 @@
 package com.aivle.carekids.domain.notice.models;
 
+import com.aivle.carekids.domain.user.models.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -8,21 +9,18 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class NoticeImg {
+public class NoticeUsers {
+    @EmbeddedId
+    private NoticeUsersId noticeUsersId;
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long noticeImgId;
+    @MapsId("usersId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "users_id")
+    private Users users;
 
-    private String noticeImgUrl;
-
-    private boolean deleted = false;
-
+    @MapsId("noticeId")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "notice_id")
     private Notice notice;
 
-    // * 사용자 정의 메소드 * //
-    public void softDeleted(){
-        this.deleted = !this.deleted;
-    }
 }

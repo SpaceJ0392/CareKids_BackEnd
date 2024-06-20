@@ -1,6 +1,6 @@
 package com.aivle.carekids.domain.kidspolicy.models;
 
-import com.aivle.carekids.domain.common.models.Region;
+import com.aivle.carekids.domain.user.models.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -9,19 +9,18 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class KIdsPolicyRegion {
-    // 육아 정보 및 지역 중계 엔티티
-
+public class KidsPolicyUsers {
+    // 사용자, 욱아정보 중계 엔티티
     @EmbeddedId
-    private KidsPolicyRegionId kidsPolicyRegionId;
+    private KidsPolicyUsersId kidsPolicyUsersId;
 
     @MapsId("kidsPolicyId")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "kids_policy_id")
     private KidsPolicy kidsPolicy;
 
-    @MapsId("regionId")
+    @MapsId("usersId")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "region_id")
-    private Region region;
+    @JoinColumn(name = "users_id")
+    private Users users;
 }

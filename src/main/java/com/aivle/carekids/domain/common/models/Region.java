@@ -1,8 +1,17 @@
-package com.aivle.carekids.common.models;
+package com.aivle.carekids.domain.common.models;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Region {
-    //지역 이름 엔티티
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long regionId;
+
+    @Column(length=10, unique = true)
+    private String regionName;
 }

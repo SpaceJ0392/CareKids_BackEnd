@@ -1,4 +1,4 @@
-package com.aivle.carekids.domain.playInfo.models;
+package com.aivle.carekids.domain.user.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PlayInfoImg {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long PlayInfoImg;
+public class Users {
+    // 사용자 정보 엔티티
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long usersId;
 }
