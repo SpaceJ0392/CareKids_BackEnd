@@ -8,6 +8,8 @@ import com.aivle.carekids.domain.playInfo.models.PlayInfoUsers;
 import com.aivle.carekids.domain.question.models.QuestionUsers;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +22,8 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString(of = {"usersId", "usersEmail", "usersPassword", "usersNickname"})
+@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id=?")
+@SQLRestriction("deleted=false")
 public class Users extends BaseCreatedAt implements UserDetails {
     // 사용자 정보 엔티티
     @Id
@@ -37,8 +41,6 @@ public class Users extends BaseCreatedAt implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
-
-    private boolean deleted = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
@@ -71,10 +73,6 @@ public class Users extends BaseCreatedAt implements UserDetails {
     }
 
     // * 사용자 정의 메소드 * //
-    public void softDeleted() {
-        this.deleted = !this.deleted;
-    }
-
     public void setRegionInfo(Region region){
         this.region = region;
         region.getUsers().add(this);

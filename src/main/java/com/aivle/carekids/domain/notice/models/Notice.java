@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,8 @@ import java.util.List;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@SQLDelete(sql = "UPDATE notice SET deleted = true WHERE id=?")
+@SQLRestriction("deleted=false")
 public class Notice extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,8 +23,6 @@ public class Notice extends BaseEntity {
 
     @Column(nullable = false, length = 100)
     private String noticeTitle;
-
-    private boolean deleted = false;
 
     @Lob
     private String noticeText;
@@ -33,13 +35,6 @@ public class Notice extends BaseEntity {
 
     @OneToMany(mappedBy = "notice", fetch = FetchType.LAZY)
     private List<NoticeUsers> noticeUsers = new ArrayList<>();
-
-    // * 사용자 정의 메소드 * //
-    public void softDeleted(){
-        this.deleted = !this.deleted;
-        this.getNoticeFiles().forEach(NoticeFile::softDeleted);
-        this.getNoticeImgs().forEach(NoticeImg::softDeleted);
-    }
 
     // TODO - 입력에 대한 생성 메소드 필요
 
