@@ -1,9 +1,9 @@
-package com.aivle.carekids.domain.user.controller;
+package com.aivle.carekids.domain.user.general.controller;
 
 import com.aivle.carekids.domain.user.dto.SignInDto;
 import com.aivle.carekids.domain.user.dto.SignUpDto;
 import com.aivle.carekids.domain.user.dto.SignUpRequestDto;
-import com.aivle.carekids.domain.user.service.UserService;
+import com.aivle.carekids.domain.user.general.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URISyntaxException;
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -40,13 +39,4 @@ public class UserController {
         return userService.signIn();
     }
 
-    // 구글 로그인
-    @PostMapping("/signin/oauth2")
-    public ResponseEntity<Map<String, String>> singInOauth(){
-
-        Map<String ,String> message = new HashMap<>();
-        message.put("message", "ok");
-
-        return ResponseEntity.ok(message);
-    }
 }

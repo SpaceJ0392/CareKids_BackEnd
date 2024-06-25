@@ -1,4 +1,4 @@
-package com.aivle.carekids.domain.user.validation;
+package com.aivle.carekids.domain.user.general.validation;
 
 import com.aivle.carekids.domain.user.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
