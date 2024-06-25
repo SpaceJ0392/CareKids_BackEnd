@@ -1,7 +1,40 @@
-package com.aivle.carekids.question.models;
+package com.aivle.carekids.domain.question.models;
 
-import jakarta.persistence.Entity;
+import com.aivle.carekids.domain.common.models.BaseEntity;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-public class Question {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+public class Question extends BaseEntity {
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long questionId;
+
+    @Column(length = 100, nullable = false)
+    private String questionTitle;
+
+    @Lob
+    private String questionText;
+
+    private boolean deleted = false;
+
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
+    private List<QuestionFile> questionFiles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
+    private List<QuestionUsers> questionUsers = new ArrayList<>();
+
+    // * 사용자 정의 메소드 * //
+    public void softDeleted(){
+        this.deleted = !this.deleted;
+        this.questionFiles.forEach(QuestionFile::softDeleted);
+    }
+
+    // TODO - 입력에 대한 생성 메소드 필요
 }
