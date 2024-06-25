@@ -31,10 +31,18 @@ public class KidsPolicy extends BaseEntity {
     @OneToMany(mappedBy = "kidsPolicy", fetch = FetchType.LAZY)
     private List<KidsPolicyFile> kidsPolicyFiles = new ArrayList<>();
 
+    @OneToMany(mappedBy = "kidsPolicy", fetch = FetchType.LAZY)
+    private List<KidsPolicyUsers> kidsPolicyUsers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "kidsPolicy", fetch = FetchType.LAZY)
+    private List<KIdsPolicyRegion> kIdsPolicyRegions = new ArrayList<>();
+
     // * 사용자 정의 메소드 * //
     public void softDeleted(){
         this.deleted = !this.deleted;
         this.getKidsPolicyFiles().forEach(KidsPolicyFile::softDeleted);
         this.getKidsPolicyImgs().forEach(KidsPolicyImg::softDeleted);
     }
+
+    // TODO - 입력에 대한 생성 메소드 필요
 }

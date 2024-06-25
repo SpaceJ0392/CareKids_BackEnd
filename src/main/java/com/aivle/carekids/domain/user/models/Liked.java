@@ -1,6 +1,5 @@
-package com.aivle.carekids.domain.common.models;
+package com.aivle.carekids.domain.user.models;
 
-import com.aivle.carekids.domain.user.models.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -9,10 +8,10 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Likes {
+public class Liked {
     //관심 목록 관련 엔티티
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long likesId;
+    private Long likedId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "person_id")

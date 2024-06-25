@@ -1,9 +1,6 @@
 package com.aivle.carekids.domain.playInfo.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -13,5 +10,15 @@ public class PlayInfoImg {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long PlayInfoImg;
+    private Long PlayInfoImgId;
+
+    private String playInfoImgUrl;
+
+    private boolean deleted = false;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "play_info_id")
+    private PlayInfo playInfo;
+
+    public void softDeleted() { this.deleted = !this.deleted; }
 }

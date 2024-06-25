@@ -1,16 +1,98 @@
 package com.aivle.carekids.domain.user.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import com.aivle.carekids.domain.common.models.BaseCreatedAt;
+import com.aivle.carekids.domain.common.models.Region;
+import com.aivle.carekids.domain.kidspolicy.models.KidsPolicyUsers;
+import com.aivle.carekids.domain.notice.models.NoticeUsers;
+import com.aivle.carekids.domain.playInfo.models.PlayInfoUsers;
+import com.aivle.carekids.domain.question.models.QuestionUsers;
+import jakarta.persistence.*;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Users {
+@Getter
+@ToString(of = {"usersId", "usersEmail", "usersPassword", "usersNickname"})
+public class Users extends BaseCreatedAt implements UserDetails {
     // 사용자 정보 엔티티
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long usersId;
+
+    @Column(length = 30, nullable = false, unique = true)
+    private String usersEmail;
+
+    @Column(nullable = false)
+    private String usersPassword;
+
+    @Column(length = 20, nullable = false, unique = true)
+    private String usersNickname;
+
+    @Enumerated(EnumType.STRING)
+    private UserStatus userStatus;
+
+    private boolean deleted = false;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "region_id")
+    private Region region;
+
+    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    private List<Kids> kids = new ArrayList<>();
+
+    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    private List<Liked> liked = new ArrayList<>();
+
+    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    private List<PlayInfoUsers> playInfoUsers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    private List<QuestionUsers> questionUsers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    private List<NoticeUsers> noticeUsers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    private List<KidsPolicyUsers> kidsPolicyUsers = new ArrayList<>();
+
+    @Builder
+    public Users(String usersEmail, String usersPassword, String usersNickname, UserStatus status) {
+        this.usersEmail = usersEmail;
+        this.usersPassword = usersPassword;
+        this.usersNickname = usersNickname;
+        this.userStatus = status;
+    }
+
+    // * 사용자 정의 메소드 * //
+    public void softDeleted() {
+        this.deleted = !this.deleted;
+    }
+
+    public void setRegionInfo(Region region){
+        this.region = region;
+        region.getUsers().add(this);
+    }
+
+    // TODO - 중계 테이블 관련 데이터 추가 메소드
+
+    // * 오버라이딩 메소드 *//
+    @Override
+    public String getPassword() { return usersPassword; }
+
+    @Override
+    public String getUsername() { return usersEmail; }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> roles = new ArrayList<>();
+        roles.add(new SimpleGrantedAuthority(userStatus.getStatus()));
+        return roles;
+    }
 }

@@ -31,11 +31,16 @@ public class Notice extends BaseEntity {
     @OneToMany(mappedBy = "notice", fetch = FetchType.LAZY)
     private List<NoticeFile> noticeFiles = new ArrayList<>();
 
+    @OneToMany(mappedBy = "notice", fetch = FetchType.LAZY)
+    private List<NoticeUsers> noticeUsers = new ArrayList<>();
+
     // * 사용자 정의 메소드 * //
     public void softDeleted(){
         this.deleted = !this.deleted;
         this.getNoticeFiles().forEach(NoticeFile::softDeleted);
         this.getNoticeImgs().forEach(NoticeImg::softDeleted);
     }
+
+    // TODO - 입력에 대한 생성 메소드 필요
 
 }

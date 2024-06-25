@@ -1,9 +1,13 @@
 package com.aivle.carekids.domain.common.models;
 
+import com.aivle.carekids.domain.user.models.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -14,4 +18,7 @@ public class Region {
 
     @Column(length=10, unique = true)
     private String regionName;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "region")
+    private List<Users> users = new ArrayList<>();
 }
