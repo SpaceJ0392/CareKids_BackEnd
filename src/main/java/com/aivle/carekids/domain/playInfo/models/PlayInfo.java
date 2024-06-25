@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +15,8 @@ import java.util.List;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@SQLDelete(sql = "UPDATE play_info SET deleted = true WHERE id=?")
+@SQLRestriction("deleted=false")
 public class PlayInfo extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,8 +28,6 @@ public class PlayInfo extends BaseEntity {
     @Lob
     private String playInfoText;
 
-    private boolean deleted = false;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "age_tag_id")
     private AgeTag ageTag;
@@ -35,12 +37,6 @@ public class PlayInfo extends BaseEntity {
 
     @OneToMany(mappedBy = "playInfo", fetch = FetchType.LAZY)
     private List<PlayInfoUsers> playInfoUsers = new ArrayList<>();
-
-    // * 사용자 정의 메소드 * //
-    public void softDeleted(){
-        this.deleted = !this.deleted;
-        this.playInfoImgs.forEach(PlayInfoImg::softDeleted);
-    }
 
     // TODO - 입력에 대한 생성 메소드 필요
 }
