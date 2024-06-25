@@ -1,4 +1,4 @@
-package com.aivle.carekids.domain.user.service;
+package com.aivle.carekids.domain.user.general.service;
 
 import com.aivle.carekids.domain.common.dto.AgeTagDto;
 import com.aivle.carekids.domain.common.dto.RegionDto;
@@ -8,12 +8,12 @@ import com.aivle.carekids.domain.common.repository.AgeTagRepository;
 import com.aivle.carekids.domain.common.repository.RegionRepository;
 import com.aivle.carekids.domain.user.dto.SignUpDto;
 import com.aivle.carekids.domain.user.dto.SignUpRequestDto;
+import com.aivle.carekids.domain.user.general.validation.SignUpRequestValid;
 import com.aivle.carekids.domain.user.models.Kids;
 import com.aivle.carekids.domain.user.models.UserStatus;
 import com.aivle.carekids.domain.user.models.Users;
 import com.aivle.carekids.domain.user.repository.KidsRepository;
 import com.aivle.carekids.domain.user.repository.UsersRepository;
-import com.aivle.carekids.domain.user.validation.SignUpRequestValid;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
