@@ -28,6 +28,8 @@ public class PlayInfo extends BaseEntity {
     @Lob
     private String playInfoText;
 
+    private boolean deleted = false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "age_tag_id")
     private AgeTag ageTag;

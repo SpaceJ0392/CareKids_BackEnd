@@ -42,6 +42,8 @@ public class Users extends BaseCreatedAt implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
 
+    private boolean deleted = false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
     private Region region;

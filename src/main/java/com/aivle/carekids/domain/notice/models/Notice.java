@@ -27,6 +27,8 @@ public class Notice extends BaseEntity {
     @Lob
     private String noticeText;
 
+    private boolean deleted = false;
+
     @OneToMany(mappedBy = "notice", fetch = FetchType.LAZY)
     private List<NoticeImg> noticeImgs = new ArrayList<>();
 

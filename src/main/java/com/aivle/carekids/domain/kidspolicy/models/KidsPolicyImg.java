@@ -20,6 +20,8 @@ public class KidsPolicyImg {
 
     private String kidsPolicyImgUrl;
 
+    private boolean deleted = false;
+
     @ManyToOne(fetch = FetchType.LAZY) // TODO - cascade 고려
     @JoinColumn(name = "kids_policy_id")
     private KidsPolicy kidsPolicy;

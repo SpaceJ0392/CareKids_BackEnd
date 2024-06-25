@@ -19,6 +19,8 @@ public class NoticeImg {
 
     private String noticeImgUrl;
 
+    private boolean deleted = false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "notice_id")
     private Notice notice;

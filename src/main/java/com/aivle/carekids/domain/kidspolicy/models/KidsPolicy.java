@@ -27,6 +27,8 @@ public class KidsPolicy extends BaseEntity {
     @Lob
     private String kidsPolicyText;
 
+    private boolean deleted = false;
+
     @OneToMany(mappedBy = "kidsPolicy", fetch = FetchType.LAZY)
     private List<KidsPolicyImg> kidsPolicyImgs = new ArrayList<>();
 

@@ -18,6 +18,8 @@ public class QuestionFile {
 
     private String questionFilePath;
 
+    private boolean deleted = false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
     private Question question;

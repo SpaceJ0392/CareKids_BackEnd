@@ -20,7 +20,7 @@ public class KidsPolicyFile {
 
     private String kidsPolicyFilePath;
 
-
+    private boolean deleted = false;
 
     @ManyToOne(fetch = FetchType.LAZY) // TODO - cascade 고려
     @JoinColumn(name = "kids_policy_id")

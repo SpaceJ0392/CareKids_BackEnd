@@ -18,6 +18,8 @@ public class PlayInfoImg {
 
     private String playInfoImgUrl;
 
+    private boolean deleted = false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "play_info_id")
     private PlayInfo playInfo;
