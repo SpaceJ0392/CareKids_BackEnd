@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -29,10 +30,22 @@ public class SecurityConfig {
     /* 권한 부여 */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests(
-                requests -> requests.requestMatchers(antMatcher("/admin/**")).hasRole("ADMIN")
-                        .anyRequest().permitAll()
-        ).csrf(AbstractHttpConfigurer::disable).build();
+        http
+                .authorizeHttpRequests(
+                        requests -> requests.requestMatchers(antMatcher("/admin/**")).hasRole("ADMIN")
+                        .anyRequest().permitAll())
+                .csrf(AbstractHttpConfigurer::disable).build();
+
+        http
+                .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers("/login", "/", "/join").permitAll()
+                        .anyRequest().authenticated());
+
+        http
+                .sessionManagement((session)->session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        return http.build();
     }
 
     //* 비밀번호 암호화 bean */

@@ -2,7 +2,7 @@ package com.aivle.carekids.domain.user.dto;
 
 import com.aivle.carekids.domain.common.dto.AgeTagDto;
 import com.aivle.carekids.domain.common.dto.RegionDto;
-import com.aivle.carekids.domain.user.models.UserStatus;
+import com.aivle.carekids.domain.user.models.Role;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -32,7 +32,7 @@ public class SignUpRequestDto {
     @NotBlank(message = "닉네임을 입력해주세요.")
     private String usersNickname;
 
-    private UserStatus userStatus = UserStatus.USER; // 기본값 유저
+    private Role userStatus = Role.USER; // 기본값 유저
 
     @JsonProperty("region")
     @Valid

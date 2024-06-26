@@ -6,6 +6,7 @@ import com.aivle.carekids.domain.user.dto.SignUpRequestDto;
 import com.aivle.carekids.domain.user.general.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +38,7 @@ public class UserController {
     // 로그인 API (일반 로그인)
     @PostMapping("/signin")
     public ResponseEntity<Map<String, String>> singIn(@RequestBody SignInDto signInDto){
-        return userService.signIn();
+        return userService.signIn(signInDto);
     }
 
 }

@@ -24,23 +24,23 @@ import java.util.List;
 @ToString(of = {"usersId", "usersEmail", "usersPassword", "usersNickname"})
 @SQLDelete(sql = "UPDATE users SET deleted = true WHERE id=?")
 @SQLRestriction("deleted=false")
-public class Users extends BaseCreatedAt implements UserDetails {
+public class User extends BaseCreatedAt implements UserDetails {
     // 사용자 정보 엔티티
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long usersId;
+    private Long userId;
 
     @Column(length = 30, nullable = false, unique = true)
-    private String usersEmail;
+    private String userEmail;
 
     @Column(nullable = false)
-    private String usersPassword;
+    private String userPassword;
 
     @Column(length = 20, nullable = false, unique = true)
-    private String usersNickname;
+    private String userNickname;
 
     @Enumerated(EnumType.STRING)
-    private UserStatus userStatus;
+    private Role userRole;
 
     private boolean deleted = false;
 
@@ -67,11 +67,11 @@ public class Users extends BaseCreatedAt implements UserDetails {
     private List<KidsPolicyUsers> kidsPolicyUsers = new ArrayList<>();
 
     @Builder
-    public Users(String usersEmail, String usersPassword, String usersNickname, UserStatus status) {
-        this.usersEmail = usersEmail;
-        this.usersPassword = usersPassword;
-        this.usersNickname = usersNickname;
-        this.userStatus = status;
+    public User(String usersEmail, String usersPassword, String usersNickname, Role userRole) {
+        this.userEmail = usersEmail;
+        this.userPassword = usersPassword;
+        this.userNickname = usersNickname;
+        this.userRole = userRole;
     }
 
     // * 사용자 정의 메소드 * //
@@ -84,15 +84,15 @@ public class Users extends BaseCreatedAt implements UserDetails {
 
     // * 오버라이딩 메소드 *//
     @Override
-    public String getPassword() { return usersPassword; }
+    public String getPassword() { return userPassword; }
 
     @Override
-    public String getUsername() { return usersEmail; }
+    public String getUsername() { return userEmail; }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> roles = new ArrayList<>();
-        roles.add(new SimpleGrantedAuthority(userStatus.getStatus()));
+        roles.add(new SimpleGrantedAuthority(userRole.getRole()));
         return roles;
     }
 }

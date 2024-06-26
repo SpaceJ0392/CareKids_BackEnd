@@ -21,16 +21,16 @@ public class Kids {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
-    private Users users;
+    private User user;
 
     @Builder
-    public Kids(AgeTag ageTag, Users users) {
+    public Kids(AgeTag ageTag, User user) {
         this.ageTag = ageTag;
-        this.users = users;
+        this.user = user;
     }
 
     // * 사용자 정의 함수 * //
-    public static Kids setKidsInfo(Users user, AgeTag ageTag) {
+    public static Kids setKidsInfo(User user, AgeTag ageTag) {
 
         Kids kids = Kids.builder().ageTag(ageTag).users(user).build();
 

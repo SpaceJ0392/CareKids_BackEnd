@@ -6,14 +6,15 @@ import com.aivle.carekids.domain.common.models.AgeTag;
 import com.aivle.carekids.domain.common.models.Region;
 import com.aivle.carekids.domain.common.repository.AgeTagRepository;
 import com.aivle.carekids.domain.common.repository.RegionRepository;
+import com.aivle.carekids.domain.user.dto.SignInDto;
 import com.aivle.carekids.domain.user.dto.SignUpDto;
 import com.aivle.carekids.domain.user.dto.SignUpRequestDto;
 import com.aivle.carekids.domain.user.general.validation.SignUpRequestValid;
 import com.aivle.carekids.domain.user.models.Kids;
-import com.aivle.carekids.domain.user.models.UserStatus;
-import com.aivle.carekids.domain.user.models.Users;
+import com.aivle.carekids.domain.user.models.Role;
+import com.aivle.carekids.domain.user.models.User;
 import com.aivle.carekids.domain.user.repository.KidsRepository;
-import com.aivle.carekids.domain.user.repository.UsersRepository;
+import com.aivle.carekids.domain.user.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -24,17 +25,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UserService {
 
-    private final UsersRepository usersRepository;
+    private final UserRepository userRepository;
     private final KidsRepository kidsRepository;
     private final RegionRepository regionRepository;
     private final AgeTagRepository ageTagRepository;
@@ -46,6 +44,7 @@ public class UserService {
 
 
     private final PasswordEncoder passwordEncoder;
+
 
     public ResponseEntity<SignUpDto>  signUp() {
         List<RegionDto> regions = regionRepository.findAll().stream()
@@ -74,23 +73,23 @@ public class UserService {
         }
 
         // Users Entity에 저장
-        Users newUsers = Users.builder()
+        User newUser = User.builder()
                 .usersEmail(signUpData.getUsersEmail())
                 .usersNickname(signUpData.getUsersNickname())
                 .usersPassword(passwordEncoder.encode(signUpData.getUsersPassword()))
-                .status(UserStatus.USER) // default - USER
+                .userRole(Role.USER) // default - USER
                 .build();
 
         Region region = entityModelMapper.map(signUpData.getRegion(), Region.class);
-        newUsers.setRegionInfo(region);
-        usersRepository.save(newUsers);
+        newUser.setRegionInfo(region);
+        userRepository.save(newUser);
 
         // Kids Entity에 저장
         List<Kids> newKids = new ArrayList<>();
 
         signUpData.getAgeTags().forEach(ageTagDto -> {
             AgeTag ageTag = entityModelMapper.map(ageTagDto, AgeTag.class);
-            newKids.add(Kids.setKidsInfo(newUsers, ageTag));
+            newKids.add(Kids.setKidsInfo(newUser, ageTag));
         });
 
         kidsRepository.saveAll(newKids);
@@ -99,11 +98,32 @@ public class UserService {
         return ResponseEntity.created(new URI("http://localhost:8080/signin")).body(message);
     }
 
-    public ResponseEntity<Map<String, String>> signIn() {
+    public ResponseEntity<Map<String, String>> signIn(SignInDto signInDto) {
         Map<String, String> message = new HashMap<>();
+
         // TODO - 로그인 with Spring Security
+        Optional<User> optionalUser = userRepository.findByUserEmail(signInDto.getUserEmail());
+        if (!isNullUser(optionalUser)){
+            message.put("message", "사용자 이메일을 다시 확인해주세요.");
+            return ResponseEntity.badRequest().body(message);
+        }
+
+        User user = optionalUser.get();
+
+        if (!user.getUserPassword().equals(signInDto.getUserPassword())){
+            message.put("message", "비밀번호를 다시 확인해주세요.");
+            return ResponseEntity.badRequest().body(message);
+        }
+
 
         message.put("message", "로그인이 되었습니다");
         return ResponseEntity.ok(message);
+    }
+
+    public boolean isNullUser(Optional<User> e){
+        if (e.isEmpty()){
+            return true;
+        }
+        return false;
     }
 }
