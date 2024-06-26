@@ -10,7 +10,6 @@ import com.aivle.carekids.domain.user.dto.SignUpDto;
 import com.aivle.carekids.domain.user.dto.SignUpRequestDto;
 import com.aivle.carekids.domain.user.general.validation.SignUpRequestValid;
 import com.aivle.carekids.domain.user.models.Kids;
-import com.aivle.carekids.domain.user.models.UserStatus;
 import com.aivle.carekids.domain.user.models.Users;
 import com.aivle.carekids.domain.user.repository.KidsRepository;
 import com.aivle.carekids.domain.user.repository.UsersRepository;
@@ -74,12 +73,8 @@ public class UserService {
         }
 
         // Users Entity에 저장
-        Users newUsers = Users.builder()
-                .usersEmail(signUpData.getUsersEmail())
-                .usersNickname(signUpData.getUsersNickname())
-                .usersPassword(passwordEncoder.encode(signUpData.getUsersPassword()))
-                .status(UserStatus.USER) // default - USER
-                .build();
+        signUpData.setUsersPassword(passwordEncoder.encode(signUpData.getUsersPassword()));
+        Users newUsers = Users.createNewUser(signUpData);
 
         Region region = entityModelMapper.map(signUpData.getRegion(), Region.class);
         newUsers.setRegionInfo(region);

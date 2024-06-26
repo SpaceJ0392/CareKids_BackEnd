@@ -10,7 +10,7 @@ public class SignUpRequestValid {
 
     private final UsersRepository usersRepository;
 
-    public boolean EmailValidation(String usersEmail){
+    public boolean EmailValidation(String usersEmail) {
         return usersRepository.existsByUsersEmail(usersEmail);
     }
 

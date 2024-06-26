@@ -7,10 +7,7 @@ import com.aivle.carekids.domain.user.general.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URISyntaxException;
 import java.util.Map;
@@ -22,8 +19,11 @@ public class UserController {
     private final UserService userService;
 
     // 회원 가입 페이지 입장 API
+    //TODO - oauth2로 들어올 경우, url param으로 email 등이 넘어옴.
     @GetMapping("/signup")
-    public ResponseEntity<SignUpDto> signUp(){
+    public ResponseEntity<SignUpDto> signUp(@RequestParam(required = false) String email,
+                                            @RequestParam(required = false) String socialType){
+
         return userService.signUp();
     }
 
