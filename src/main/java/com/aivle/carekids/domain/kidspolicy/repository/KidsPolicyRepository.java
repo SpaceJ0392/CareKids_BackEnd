@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface KidsPolicyRepository extends JpaRepository<KidsPolicy, Long> {
-    List<KidsPolicy> findTop5ByOrderByUpdatedAt();
+    List<KidsPolicy> findTop5ByOrderByUpdatedAtDesc();
 }

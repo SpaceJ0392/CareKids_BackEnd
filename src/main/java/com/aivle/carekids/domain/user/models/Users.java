@@ -21,6 +21,7 @@ import java.util.List;
 @ToString(of = {"usersId", "usersEmail", "usersPassword", "usersNickname"})
 @SQLDelete(sql = "UPDATE users SET deleted = true WHERE id=?")
 @SQLRestriction("deleted=false")
+@Table(name = "users", indexes = {@Index(name = "idx_email", columnList = "users_email")})
 public class Users extends BaseCreatedAt {
     // 사용자 정보 엔티티
     @Id
