@@ -27,13 +27,13 @@ public class HomeService {
     public HomeDto displayHome() {
         // TODO - 로그인 상태일 때는, 지역 및 연령대 고려, 리스트 필요
 
-        List<PlayInfoDto> playInfoList = playInfoRepository.findTop5ByOrderByUpdatedAt().stream()
+        List<PlayInfoDto> playInfoList = playInfoRepository.findTop5ByOrderByUpdatedAtDesc().stream()
                 .map(p -> dtoModelMapper.map(p, PlayInfoDto.class)).toList();
 
-        List<NoticeDto> noticeList = noticeRepository.findTop5ByOrderByUpdatedAt().stream()
+        List<NoticeDto> noticeList = noticeRepository.findTop5ByOrderByUpdatedAtDesc().stream()
                 .map(n -> dtoModelMapper.map(n, NoticeDto.class)).toList();
 
-        List<KidsPolicyDto> kidsPolicyList = kidsPolicyRepository.findTop5ByOrderByUpdatedAt().stream()
+        List<KidsPolicyDto> kidsPolicyList = kidsPolicyRepository.findTop5ByOrderByUpdatedAtDesc().stream()
                 .map(k -> dtoModelMapper.map(k, KidsPolicyDto.class)).toList();
 
         return new HomeDto(kidsPolicyList, noticeList ,playInfoList);

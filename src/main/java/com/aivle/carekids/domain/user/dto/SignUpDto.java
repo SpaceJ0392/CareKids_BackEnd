@@ -14,5 +14,8 @@ import java.util.List;
 public class SignUpDto {
     @JsonProperty("age-tag")
     private List<AgeTagDto> ageTag;
+
     private List<RegionDto> region;
+
+    //TODO - private SocialType socialType;
 }

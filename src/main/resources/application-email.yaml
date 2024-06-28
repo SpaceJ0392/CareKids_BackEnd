@@ -1,0 +1,21 @@
+spring:
+  config:
+    activate:
+      on-profile: email
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${GMAIL_EMAIL}
+    password: ${GMAIL_WEB_PW}
+    properties:
+      mail:
+        debug: true
+        smtp:
+          auth: true
+          connectiontimeout: 5000 # SMTP 서버에 연결할 때의 타임아웃
+          timeout: 5000 # SMTP 서버에 연결을 시도하고 응답을 기다리는 최대 시간이 50,000ms
+          writetimeout: 5000 # SMTP 서버에 데이터를 쓸 때의 타임아웃
+          starttls:
+            enable: true # 메일 서버와 클라이언트 간의 통신을 암호화
+            required: true

@@ -6,16 +6,13 @@ import com.aivle.carekids.domain.kidspolicy.models.KidsPolicyUsers;
 import com.aivle.carekids.domain.notice.models.NoticeUsers;
 import com.aivle.carekids.domain.playInfo.models.PlayInfoUsers;
 import com.aivle.carekids.domain.question.models.QuestionUsers;
+import com.aivle.carekids.domain.user.dto.SignUpRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -24,7 +21,8 @@ import java.util.List;
 @ToString(of = {"usersId", "usersEmail", "usersPassword", "usersNickname"})
 @SQLDelete(sql = "UPDATE users SET deleted = true WHERE id=?")
 @SQLRestriction("deleted=false")
-public class Users extends BaseCreatedAt implements UserDetails {
+@Table(name = "users", indexes = {@Index(name = "idx_email", columnList = "users_email")})
+public class Users extends BaseCreatedAt {
     // 사용자 정보 엔티티
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,7 +38,10 @@ public class Users extends BaseCreatedAt implements UserDetails {
     private String usersNickname;
 
     @Enumerated(EnumType.STRING)
-    private UserStatus userStatus;
+    private Role role;
+
+    @Enumerated(EnumType.STRING)
+    private SocialType usersSocialType;
 
     private boolean deleted = false;
 
@@ -67,11 +68,12 @@ public class Users extends BaseCreatedAt implements UserDetails {
     private List<KidsPolicyUsers> kidsPolicyUsers = new ArrayList<>();
 
     @Builder
-    public Users(String usersEmail, String usersPassword, String usersNickname, UserStatus status) {
+    public Users(String usersEmail, String usersPassword, String usersNickname, Role role, SocialType usersSocialType) {
         this.usersEmail = usersEmail;
         this.usersPassword = usersPassword;
         this.usersNickname = usersNickname;
-        this.userStatus = status;
+        this.role = role;
+        this.usersSocialType = usersSocialType;
     }
 
     // * 사용자 정의 메소드 * //
@@ -80,19 +82,16 @@ public class Users extends BaseCreatedAt implements UserDetails {
         region.getUsers().add(this);
     }
 
+    public static Users createNewUser(SignUpRequestDto signUpData){
+
+        return Users.builder()
+                .usersEmail(signUpData.getUsersEmail())
+                .usersNickname(signUpData.getUsersNickname())
+                .usersPassword(signUpData.getUsersPassword())
+                .role(Role.USER) // default - USER
+                .usersSocialType(SocialType.valueOf(signUpData.getUsersSocialType()))
+                .build();
+    }
     // TODO - 중계 테이블 관련 데이터 추가 메소드
 
-    // * 오버라이딩 메소드 *//
-    @Override
-    public String getPassword() { return usersPassword; }
-
-    @Override
-    public String getUsername() { return usersEmail; }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> roles = new ArrayList<>();
-        roles.add(new SimpleGrantedAuthority(userStatus.getStatus()));
-        return roles;
-    }
 }
