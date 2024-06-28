@@ -21,16 +21,16 @@ public class SignUpRequestDto {
     @JsonProperty("email")
     @NotBlank(message = "이메일 주소를 입력해주세요.")
     @Email(message = "올바른 이메일 주소를 입력해주세요.")
-    private String usersEmail;
+    private String userEmail;
 
     @JsonProperty("password")
     @NotBlank(message = "비밀번호를 입력해주세요.")
     @Size(min = 10, max = 25, message = "비밀번호는 최소 {min}자에서 {max}자여야 합니다.")
-    private String usersPassword;
+    private String userPassword;
 
     @JsonProperty("nickname")
     @NotBlank(message = "닉네임을 입력해주세요.")
-    private String usersNickname;
+    private String userNickname;
 
     private Role userStatus = Role.USER; // 기본값 유저
 

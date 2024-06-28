@@ -62,21 +62,21 @@ public class UserService {
         if (signUpData == null) { return ResponseEntity.badRequest().body(new HashMap<>()); }
 
         Map<String, String> message = new HashMap<>();
-        if (requestValid.EmailValidation(signUpData.getUsersEmail())) { // 중복 검사 (이메일)
+        if (requestValid.EmailValidation(signUpData.getUserEmail())) { // 중복 검사 (이메일)
             message.put("message", "이미 사용 중인 계정입니다.");
             return ResponseEntity.badRequest().body(message);
         }
 
-        if (requestValid.NickNameValidation(signUpData.getUsersNickname())){
+        if (requestValid.NickNameValidation(signUpData.getUserNickname())){
             message.put("message", "이미 사용 중인 닉네임입니다.");
             return ResponseEntity.badRequest().body(message);
         }
 
         // Users Entity에 저장
         User newUser = User.builder()
-                .usersEmail(signUpData.getUsersEmail())
-                .usersNickname(signUpData.getUsersNickname())
-                .usersPassword(passwordEncoder.encode(signUpData.getUsersPassword()))
+                .userEmail(signUpData.getUserEmail())
+                .userNickname(signUpData.getUserNickname())
+                .userPassword(passwordEncoder.encode(signUpData.getUserPassword()))
                 .userRole(Role.USER) // default - USER
                 .build();
 
@@ -95,35 +95,7 @@ public class UserService {
         kidsRepository.saveAll(newKids);
 
         message.put("message", "회원 가입이 완료되었습니다.");
-        return ResponseEntity.created(new URI("http://localhost:8080/signin")).body(message);
+        return ResponseEntity.created(new URI("http://localhost:8080/login")).body(message);
     }
 
-    public ResponseEntity<Map<String, String>> signIn(SignInDto signInDto) {
-        Map<String, String> message = new HashMap<>();
-
-        // TODO - 로그인 with Spring Security
-        Optional<User> optionalUser = userRepository.findByUserEmail(signInDto.getUserEmail());
-        if (!isNullUser(optionalUser)){
-            message.put("message", "사용자 이메일을 다시 확인해주세요.");
-            return ResponseEntity.badRequest().body(message);
-        }
-
-        User user = optionalUser.get();
-
-        if (!user.getUserPassword().equals(signInDto.getUserPassword())){
-            message.put("message", "비밀번호를 다시 확인해주세요.");
-            return ResponseEntity.badRequest().body(message);
-        }
-
-
-        message.put("message", "로그인이 되었습니다");
-        return ResponseEntity.ok(message);
-    }
-
-    public boolean isNullUser(Optional<User> e){
-        if (e.isEmpty()){
-            return true;
-        }
-        return false;
-    }
 }

@@ -6,6 +6,6 @@ import java.io.Serializable;
 
 @Embeddable
 public class PlayInfoUsersId implements Serializable {
-    private Long usersId;
+    private Long userId;
     private Long playInfoId;
 }

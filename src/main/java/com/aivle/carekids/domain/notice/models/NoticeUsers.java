@@ -13,9 +13,9 @@ public class NoticeUsers {
     @EmbeddedId
     private NoticeUsersId noticeUsersId;
 
-    @MapsId("usersId")
+    @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @MapsId("noticeId")

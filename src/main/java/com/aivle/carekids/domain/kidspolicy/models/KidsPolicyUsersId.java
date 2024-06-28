@@ -7,5 +7,5 @@ import java.io.Serializable;
 @Embeddable
 public class KidsPolicyUsersId implements Serializable {
     private Long kidsPolicyId;
-    private Long usersId;
+    private Long userId;
 }

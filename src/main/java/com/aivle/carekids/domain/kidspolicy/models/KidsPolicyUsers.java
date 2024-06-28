@@ -19,8 +19,8 @@ public class KidsPolicyUsers {
     @JoinColumn(name = "kids_policy_id")
     private KidsPolicy kidsPolicy;
 
-    @MapsId("usersId")
+    @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users_id")
+    @JoinColumn(name = "user_id")
     private User user;
 }

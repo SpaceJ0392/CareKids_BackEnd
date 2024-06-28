@@ -20,7 +20,7 @@ public class Kids {
     private AgeTag ageTag;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Builder
@@ -32,7 +32,7 @@ public class Kids {
     // * 사용자 정의 함수 * //
     public static Kids setKidsInfo(User user, AgeTag ageTag) {
 
-        Kids kids = Kids.builder().ageTag(ageTag).users(user).build();
+        Kids kids = Kids.builder().ageTag(ageTag).user(user).build();
 
         user.getKids().add(kids);
         ageTag.getKids().add(kids);

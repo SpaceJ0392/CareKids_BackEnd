@@ -14,9 +14,9 @@ public class PlayInfoUsers {
     @EmbeddedId
     private PlayInfoUsersId playInfoUsersId;
 
-    @MapsId("usersId")
+    @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @MapsId("playInfoId")

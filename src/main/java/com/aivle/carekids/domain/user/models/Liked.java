@@ -14,7 +14,7 @@ public class Liked {
     private Long likedId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "person_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     // TODO - 장소 테이블 추가시, 추가.

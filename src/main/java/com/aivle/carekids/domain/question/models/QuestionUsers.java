@@ -18,8 +18,8 @@ public class QuestionUsers {
     @JoinColumn(name = "question_id")
     private Question question;
 
-    @MapsId("usersId")
+    @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users_id")
+    @JoinColumn(name = "user_id")
     private User user;
 }

@@ -35,10 +35,10 @@ public class UserController {
         return userService.signUpRequest(signUpData);
     }
 
-    // 로그인 API (일반 로그인)
-    @PostMapping("/signin")
-    public ResponseEntity<Map<String, String>> singIn(@RequestBody SignInDto signInDto){
-        return userService.signIn(signInDto);
-    }
+//    // 로그인 API (일반 로그인)
+//    @PostMapping("/signin")
+//    public ResponseEntity<Map<String, String>> singIn(@RequestBody SignInDto signInDto){
+//        return userService.signIn(signInDto);
+//    }
 
 }

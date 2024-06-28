@@ -19,10 +19,10 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
-@ToString(of = {"usersId", "usersEmail", "usersPassword", "usersNickname"})
-@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id=?")
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@Getter @Setter
+@ToString(of = {"userId", "userEmail", "userPassword", "userNickname"})
+@SQLDelete(sql = "UPDATE user SET deleted = true WHERE id=?")
 @SQLRestriction("deleted=false")
 public class User extends BaseCreatedAt implements UserDetails {
     // 사용자 정보 엔티티
@@ -48,29 +48,29 @@ public class User extends BaseCreatedAt implements UserDetails {
     @JoinColumn(name = "region_id")
     private Region region;
 
-    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Kids> kids = new ArrayList<>();
 
-    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Liked> liked = new ArrayList<>();
 
-    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<PlayInfoUsers> playInfoUsers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<QuestionUsers> questionUsers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<NoticeUsers> noticeUsers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<KidsPolicyUsers> kidsPolicyUsers = new ArrayList<>();
 
     @Builder
-    public User(String usersEmail, String usersPassword, String usersNickname, Role userRole) {
-        this.userEmail = usersEmail;
-        this.userPassword = usersPassword;
-        this.userNickname = usersNickname;
+    public User(String userEmail, String userPassword, String userNickname, Role userRole) {
+        this.userEmail = userEmail;
+        this.userPassword = userPassword;
+        this.userNickname = userNickname;
         this.userRole = userRole;
     }
 
@@ -95,4 +95,5 @@ public class User extends BaseCreatedAt implements UserDetails {
         roles.add(new SimpleGrantedAuthority(userRole.getRole()));
         return roles;
     }
+
 }
