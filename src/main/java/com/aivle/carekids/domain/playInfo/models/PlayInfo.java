@@ -35,7 +35,10 @@ public class PlayInfo extends BaseEntity {
     private AgeTag ageTag;
 
     @OneToMany(mappedBy = "playInfo", fetch = FetchType.LAZY)
-    private List<PlayInfoImg> playInfoImgs = new ArrayList<>();
+    private List<PlayInfoTools> playInfoTools = new ArrayList<>();
+
+    @OneToMany(mappedBy = "playInfo", fetch = FetchType.LAZY)
+    private List<PlayInfoDomain> playInfoDomains = new ArrayList<>();
 
     @OneToMany(mappedBy = "playInfo", fetch = FetchType.LAZY)
     private List<PlayInfoUsers> playInfoUsers = new ArrayList<>();

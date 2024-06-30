@@ -14,6 +14,7 @@ import org.hibernate.annotations.SQLRestriction;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -31,7 +32,6 @@ public class Users extends BaseCreatedAt {
     @Column(length = 30, nullable = false, unique = true)
     private String usersEmail;
 
-    @Column(nullable = false)
     private String usersPassword;
 
     @Column(length = 20, nullable = false, unique = true)
@@ -84,12 +84,15 @@ public class Users extends BaseCreatedAt {
 
     public static Users createNewUser(SignUpRequestDto signUpData){
 
+        SocialType socialType = Optional.ofNullable(signUpData.getUsersSocialType())
+                .filter(s -> !s.isBlank()).map(SocialType::valueOf).orElse(null);
+
         return Users.builder()
                 .usersEmail(signUpData.getUsersEmail())
                 .usersNickname(signUpData.getUsersNickname())
                 .usersPassword(signUpData.getUsersPassword())
-                .role(Role.USER) // default - USER
-                .usersSocialType(SocialType.valueOf(signUpData.getUsersSocialType()))
+                .role(signUpData.getRole()) // default - USER
+                .usersSocialType(socialType)
                 .build();
     }
     // TODO - 중계 테이블 관련 데이터 추가 메소드

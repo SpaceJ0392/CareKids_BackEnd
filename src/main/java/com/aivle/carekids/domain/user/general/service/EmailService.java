@@ -1,11 +1,12 @@
 package com.aivle.carekids.domain.user.general.service;
 
 import com.aivle.carekids.domain.user.configuration.EmailConfig;
-import com.aivle.carekids.domain.user.general.validation.SignUpRequestValid;
+import com.aivle.carekids.domain.user.general.validation.SignUpValid;
 import com.aivle.carekids.domain.user.utils.RedisUtils;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +25,7 @@ import java.util.Map;
 @Transactional(readOnly = true)
 public class EmailService {
 
-    private final SignUpRequestValid signUpRequestValid;
+    private final SignUpValid signUpValid;
     private final EmailConfig emailConfig;
     private final RedisUtils redisUtils;
     private final TemplateEngine templateEngine;
@@ -79,10 +80,9 @@ public class EmailService {
     @Transactional
     public ResponseEntity<Map<String, String>> sendEmail(String requestEmail) throws MessagingException, NoSuchAlgorithmException {
 
-        Map<String, String> message = new HashMap<>();
-        if (signUpRequestValid.EmailValidation(requestEmail)){
-            message.put("message", "이미 존재하는 계정입니다.");
-            return ResponseEntity.badRequest().body(message);
+        Map<String, String> message = signUpValid.emailValidation(requestEmail);
+        if (!message.isEmpty()){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(message);
         }
 
         if (redisUtils.existData(requestEmail)) { redisUtils.deleteData(requestEmail); }
@@ -97,10 +97,16 @@ public class EmailService {
     public ResponseEntity<Map<String, String>> verifyEmailCode(String email, String code) {
         Map<String, String> message = new HashMap<>();
         String codeFoundByEmail = redisUtils.getData(email);
+        String dataExpire = redisUtils.getDataExpire(email);
 
         if (codeFoundByEmail == null || !(codeFoundByEmail.equals(code))) {
             message.put("message", "잘못된 인증 번호입니다.");
             return ResponseEntity.badRequest().body(message);
+        }
+
+        if (dataExpire == null){
+            message.put("message", "인증 기간이 만료되었습니다.");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(message);
         }
 
         message.put("message", "이메일 검증이 완료되었습니다.");

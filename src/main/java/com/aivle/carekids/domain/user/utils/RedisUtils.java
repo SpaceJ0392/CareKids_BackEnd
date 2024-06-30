@@ -6,6 +6,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 @Component
 @RequiredArgsConstructor
@@ -26,6 +27,16 @@ public class RedisUtils {
         ValueOperations<String, String> valueOperations = template.opsForValue();
         Duration expireDuration = Duration.ofSeconds(duration);
         valueOperations.set(key, value, expireDuration);
+    }
+
+    public String getDataExpire(String key){
+        if (Boolean.FALSE.equals(template.hasKey(key))) {return null;}
+
+        Long expirationSeconds = template.getExpire(key, TimeUnit.SECONDS);
+
+        long minutes = TimeUnit.SECONDS.toMinutes(expirationSeconds);
+        Long seconds = expirationSeconds - TimeUnit.MINUTES.toSeconds(minutes);
+        return String.format("%d분 %d초", minutes, seconds);
     }
 
     public void deleteData(String key) {

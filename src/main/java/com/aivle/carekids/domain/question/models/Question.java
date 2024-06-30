@@ -26,7 +26,11 @@ public class Question extends BaseEntity {
     @Lob
     private String questionText;
 
+    private boolean questionCheck = false;
+
     private boolean deleted = false;
+
+    private boolean secret = false;
 
     @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
     private List<QuestionFile> questionFiles = new ArrayList<>();

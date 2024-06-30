@@ -2,7 +2,6 @@ package com.aivle.carekids.domain.user.general.controller;
 
 import com.aivle.carekids.domain.user.dto.EmailDto;
 import com.aivle.carekids.domain.user.dto.SignInDto;
-import com.aivle.carekids.domain.user.dto.SignUpDto;
 import com.aivle.carekids.domain.user.dto.SignUpRequestDto;
 import com.aivle.carekids.domain.user.general.service.EmailService;
 import com.aivle.carekids.domain.user.general.service.UserService;
@@ -26,20 +25,20 @@ public class UserController {
 
     // 회원 가입 페이지 입장 API
     @GetMapping("/signup")
-    public ResponseEntity<SignUpDto> signUp(@RequestParam(required = false) String email,
-                                            @RequestParam(required = false) String socialType){
+    public ResponseEntity<Object> signUp(@RequestParam(required = false) String email,
+                                            @RequestParam(value = "social-type", required = false) String socialType){
 
-        return userService.signUp();
+        return userService.signUp(email, socialType);
     }
 
     // 회원 가입 시 이메일 인증 API
-    @PostMapping("/signup/send-email")
-    public ResponseEntity<Map<String, String>> sendEmail(@RequestBody EmailDto emailDto) throws MessagingException, NoSuchAlgorithmException {
+    @PostMapping("/send-email")
+    public ResponseEntity<Map<String, String>> sendEmail(@RequestBody @Valid EmailDto emailDto) throws MessagingException, NoSuchAlgorithmException {
         return emailService.sendEmail(emailDto.getEmail());
     }
 
     // 이메일 인증 번호 검증 API
-    @PostMapping("/signup/auth-email")
+    @PostMapping("/auth-email")
     public  ResponseEntity<Map<String, String>> authEmail (@RequestBody EmailDto emailDto) throws MessagingException, NoSuchAlgorithmException {
         return emailService.verifyEmailCode(emailDto.getEmail(), emailDto.getCode());
     }

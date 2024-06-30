@@ -30,11 +30,11 @@ public class HomeService {
         List<PlayInfoDto> playInfoList = playInfoRepository.findTop5ByOrderByUpdatedAtDesc().stream()
                 .map(p -> dtoModelMapper.map(p, PlayInfoDto.class)).toList();
 
-        List<NoticeDto> noticeList = noticeRepository.findTop5ByOrderByUpdatedAtDesc().stream()
-                .map(n -> dtoModelMapper.map(n, NoticeDto.class)).toList();
-
         List<KidsPolicyDto> kidsPolicyList = kidsPolicyRepository.findTop5ByOrderByUpdatedAtDesc().stream()
                 .map(k -> dtoModelMapper.map(k, KidsPolicyDto.class)).toList();
+
+        List<NoticeDto> noticeList = noticeRepository.findTop5ByOrderByUpdatedAtDesc().stream()
+                .map(n -> dtoModelMapper.map(n, NoticeDto.class)).toList();
 
         return new HomeDto(kidsPolicyList, noticeList ,playInfoList);
     }

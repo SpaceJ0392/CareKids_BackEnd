@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,13 +28,12 @@ public class KidsPolicy extends BaseEntity {
     @Lob
     private String kidsPolicyText;
 
+    private String kidsPolicyUrl;
+
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+
     private boolean deleted = false;
-
-    @OneToMany(mappedBy = "kidsPolicy", fetch = FetchType.LAZY)
-    private List<KidsPolicyImg> kidsPolicyImgs = new ArrayList<>();
-
-    @OneToMany(mappedBy = "kidsPolicy", fetch = FetchType.LAZY)
-    private List<KidsPolicyFile> kidsPolicyFiles = new ArrayList<>();
 
     @OneToMany(mappedBy = "kidsPolicy", fetch = FetchType.LAZY)
     private List<KidsPolicyUsers> kidsPolicyUsers = new ArrayList<>();
