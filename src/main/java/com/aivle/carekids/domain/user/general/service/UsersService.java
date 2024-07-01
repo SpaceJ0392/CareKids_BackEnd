@@ -10,7 +10,6 @@ import com.aivle.carekids.domain.user.dto.SignUpDto;
 import com.aivle.carekids.domain.user.dto.SignUpRequestDto;
 import com.aivle.carekids.domain.user.general.validation.SignUpValid;
 import com.aivle.carekids.domain.user.models.Kids;
-import com.aivle.carekids.domain.user.models.Role;
 import com.aivle.carekids.domain.user.models.Users;
 import com.aivle.carekids.domain.user.repository.KidsRepository;
 import com.aivle.carekids.domain.user.repository.UsersRepository;
@@ -23,7 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +38,6 @@ public class UsersService {
     private final AgeTagRepository ageTagRepository;
     private final SignUpValid signUpValid;
 
-    private final ObjectMapper objectMapper;
     private final ModelMapper dtoModelMapper;
     private final ModelMapper entityModelMapper;
 

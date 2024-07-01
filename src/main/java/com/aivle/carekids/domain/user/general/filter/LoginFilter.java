@@ -44,10 +44,11 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        System.out.println("success");
-        System.out.println("this is request : "+request);
-        System.out.println("this is chain : "+chain);
-        System.out.println("this is authResult : "+authResult);
+
+//        System.out.println("success");
+//        System.out.println("this is request : "+request);
+//        System.out.println("this is chain : "+chain);
+//        System.out.println("this is authResult : "+authResult);
 
         Users users = ((CustomUserDetail) authResult.getPrincipal()).getUsers();
 

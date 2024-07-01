@@ -2,20 +2,19 @@ package com.aivle.carekids.domain.user.general.jwt;
 
 
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtConstants;
+import com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.PatternMatchUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils;
-import jakarta.servlet.FilterChain;
 
 import java.io.IOException;
 
@@ -28,8 +27,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private static final String[] whitelist = {"/", "/login", "/loginHome", "/signup", "/renew", "/loginSuccess",
-            "/login/oauth2/code/**", "/oauth2/signUp", "/error", "/js/**"};
+    private static final String[] whitelist = {"/**", "/login", "/loginHome", "/api/signup", "/renew", "/loginSuccess",
+            "/login/oauth2/code/**", "/oauth2/signUp", "/error", "/js/**, /h2-console"};
 
     // 필터를 거치지 않을 URL 을 설정하고, true 를 return 하면 바로 다음 필터를 진행하게 됨
     @Override

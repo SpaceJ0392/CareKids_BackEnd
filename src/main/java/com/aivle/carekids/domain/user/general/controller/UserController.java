@@ -1,11 +1,10 @@
 package com.aivle.carekids.domain.user.general.controller;
 
 import com.aivle.carekids.domain.user.dto.EmailDto;
-import com.aivle.carekids.domain.user.dto.SignInDto;
 import com.aivle.carekids.domain.user.dto.SignUpRequestDto;
 import com.aivle.carekids.domain.user.general.service.EmailService;
-import jakarta.mail.MessagingException;
 import com.aivle.carekids.domain.user.general.service.UsersService;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -47,12 +46,6 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<Map<String, String>> signUpRequest(@RequestBody @Valid SignUpRequestDto signUpData) throws URISyntaxException {
         return userService.signUpRequest(signUpData);
-    }
-
-    // 로그인 API (일반 로그인)
-    @PostMapping("/signin")
-    public ResponseEntity<Map<String, String>> singIn(@RequestBody SignInDto signInDto){
-        return userService.signIn();
     }
 
 }

@@ -33,9 +33,7 @@ public class AccessPermissionCheckInterceptor implements HandlerInterceptor {
                 return true;
             }
         }
-        response.setStatus(SC_FORBIDDEN);
-        response.setCharacterEncoding("utf-8");
-        new ObjectMapper().writeValue(response.getWriter(), "접근 권한이 없습니다.");
+q
         return false;
     }
 }
