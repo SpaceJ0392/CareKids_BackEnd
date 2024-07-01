@@ -3,17 +3,31 @@ package com.aivle.carekids.global.configuration;
 import com.aivle.carekids.domain.user.oauth2.handler.OAuth2SuccessHandler;
 import com.aivle.carekids.domain.user.oauth2.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
+import com.aivle.carekids.domain.user.general.filter.JsonToHttpRequestFilter;
+import com.aivle.carekids.domain.user.general.jwt.JwtRepository;
+import com.aivle.carekids.domain.user.general.jwt.JwtService;
+import com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils;
+import com.aivle.carekids.domain.user.general.filter.LoginFilter;
+import com.aivle.carekids.domain.user.repository.UsersRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -26,8 +40,19 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    private final JwtRepository jwtRepository;
+    private final UsersRepository usersRepository;
+
     private final CustomOAuth2UserService oAuth2UserService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
+
+    private final AuthenticationConfiguration authenticationConfiguration;
+    @Value("${spring.jwt.secret}") private String secret;
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception{
+        return configuration.getAuthenticationManager();
+    }
 
     /* H2 console 무시 */
     @Bean
@@ -41,6 +66,8 @@ public class SecurityConfig {
     /* 권한 부여 */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        LoginFilter lf = new LoginFilter(authenticationManager(authenticationConfiguration), new JwtService(jwtRepository, usersRepository));
+
         http
         //REST API 설정
         .csrf(AbstractHttpConfigurer::disable)
@@ -54,6 +81,8 @@ public class SecurityConfig {
                 requests -> requests.requestMatchers(antMatcher("/admin/**")).hasRole("ADMIN")
                         .anyRequest().permitAll()
         )
+        .addFilterAt(new JsonToHttpRequestFilter(new ObjectMapper()), lf.getClass())
+        .addFilterAt(lf, UsernamePasswordAuthenticationFilter.class)
         //oauth2 설정
         .oauth2Login(oauth2 -> oauth2.userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService))
                                 .successHandler(oAuth2SuccessHandler))
@@ -61,7 +90,6 @@ public class SecurityConfig {
 
         return http.build();
     }
-
 
     //* 비밀번호 암호화 bean */
     @Bean

@@ -29,4 +29,5 @@ public class Region {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "region")
     private List<Hospital> hospitals = new ArrayList<>();
+
 }

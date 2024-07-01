@@ -8,6 +8,7 @@ import com.aivle.carekids.domain.playInfo.models.PlayInfo;
 import com.aivle.carekids.domain.question.models.Question;
 import com.aivle.carekids.domain.user.dto.SignUpRequestDto;
 import jakarta.persistence.*;
+
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
 @ToString(of = {"usersId", "usersEmail", "usersPassword", "usersNickname"})
 @SQLDelete(sql = "UPDATE users SET deleted = true WHERE id=?")
@@ -32,13 +33,14 @@ public class Users extends BaseCreatedAt {
     @Column(length = 30, nullable = false, unique = true)
     private String usersEmail;
 
+    @Column(nullable = false)
     private String usersPassword;
 
     @Column(length = 20, nullable = false, unique = true)
     private String usersNickname;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role usersRole;
 
     @Enumerated(EnumType.STRING)
     private SocialType usersSocialType;
@@ -65,11 +67,11 @@ public class Users extends BaseCreatedAt {
     private List<KidsPolicy> kidsPolicys = new ArrayList<>();
 
     @Builder
-    public Users(String usersEmail, String usersPassword, String usersNickname, Role role, SocialType usersSocialType) {
+    public Users(String usersEmail, String usersPassword, String usersNickname, Role usersRole, SocialType usersSocialType) {
         this.usersEmail = usersEmail;
         this.usersPassword = usersPassword;
         this.usersNickname = usersNickname;
-        this.role = role;
+        this.usersRole = usersRole;
         this.usersSocialType = usersSocialType;
     }
 
@@ -88,7 +90,7 @@ public class Users extends BaseCreatedAt {
                 .usersEmail(signUpData.getUsersEmail())
                 .usersNickname(signUpData.getUsersNickname())
                 .usersPassword(signUpData.getUsersPassword())
-                .role(signUpData.getRole()) // default - USER
+                .usersRole(signUpData.getRole()) // default - USER
                 .usersSocialType(socialType)
                 .build();
     }

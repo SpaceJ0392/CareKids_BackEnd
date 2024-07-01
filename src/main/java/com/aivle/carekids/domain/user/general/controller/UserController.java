@@ -4,8 +4,8 @@ import com.aivle.carekids.domain.user.dto.EmailDto;
 import com.aivle.carekids.domain.user.dto.SignInDto;
 import com.aivle.carekids.domain.user.dto.SignUpRequestDto;
 import com.aivle.carekids.domain.user.general.service.EmailService;
-import com.aivle.carekids.domain.user.general.service.UserService;
 import jakarta.mail.MessagingException;
+import com.aivle.carekids.domain.user.general.service.UsersService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ import java.util.Map;
 @RequestMapping("/api")
 public class UserController {
 
-    private final UserService userService;
+    private final UsersService userService;
     private final EmailService emailService;
 
     // 회원 가입 페이지 입장 API
