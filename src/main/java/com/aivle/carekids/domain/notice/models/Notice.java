@@ -1,15 +1,13 @@
 package com.aivle.carekids.domain.notice.models;
 
 import com.aivle.carekids.domain.common.models.BaseEntity;
+import com.aivle.carekids.domain.user.models.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -31,8 +29,9 @@ public class Notice extends BaseEntity {
 
     private boolean deleted = false;
 
-    @OneToMany(mappedBy = "notice", fetch = FetchType.LAZY)
-    private List<NoticeUsers> noticeUsers = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "users_id")
+    private Users users;
 
     // TODO - 입력에 대한 생성 메소드 필요
 

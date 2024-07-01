@@ -1,6 +1,7 @@
 package com.aivle.carekids.domain.kidspolicy.models;
 
 import com.aivle.carekids.domain.common.models.BaseEntity;
+import com.aivle.carekids.domain.user.models.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -35,8 +36,9 @@ public class KidsPolicy extends BaseEntity {
 
     private boolean deleted = false;
 
-    @OneToMany(mappedBy = "kidsPolicy", fetch = FetchType.LAZY)
-    private List<KidsPolicyUsers> kidsPolicyUsers = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "users_id")
+    private Users users;
 
     @OneToMany(mappedBy = "kidsPolicy", fetch = FetchType.LAZY)
     private List<KIdsPolicyRegion> kIdsPolicyRegions = new ArrayList<>();

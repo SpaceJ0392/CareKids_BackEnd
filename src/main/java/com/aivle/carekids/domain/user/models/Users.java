@@ -2,10 +2,10 @@ package com.aivle.carekids.domain.user.models;
 
 import com.aivle.carekids.domain.common.models.BaseCreatedAt;
 import com.aivle.carekids.domain.common.models.Region;
-import com.aivle.carekids.domain.kidspolicy.models.KidsPolicyUsers;
-import com.aivle.carekids.domain.notice.models.NoticeUsers;
-import com.aivle.carekids.domain.playInfo.models.PlayInfoUsers;
-import com.aivle.carekids.domain.question.models.QuestionUsers;
+import com.aivle.carekids.domain.kidspolicy.models.KidsPolicy;
+import com.aivle.carekids.domain.notice.models.Notice;
+import com.aivle.carekids.domain.playInfo.models.PlayInfo;
+import com.aivle.carekids.domain.question.models.Question;
 import com.aivle.carekids.domain.user.dto.SignUpRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -56,16 +56,16 @@ public class Users extends BaseCreatedAt {
     private List<Liked> liked = new ArrayList<>();
 
     @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
-    private List<PlayInfoUsers> playInfoUsers = new ArrayList<>();
+    private List<PlayInfo> playInfoUsers = new ArrayList<>();
 
     @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
-    private List<QuestionUsers> questionUsers = new ArrayList<>();
+    private List<Question> questionUsers = new ArrayList<>();
 
     @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
-    private List<NoticeUsers> noticeUsers = new ArrayList<>();
+    private List<Notice> notices = new ArrayList<>();
 
     @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
-    private List<KidsPolicyUsers> kidsPolicyUsers = new ArrayList<>();
+    private List<KidsPolicy> kidsPolicys = new ArrayList<>();
 
     @Builder
     public Users(String usersEmail, String usersPassword, String usersNickname, Role role, SocialType usersSocialType) {

@@ -2,6 +2,7 @@ package com.aivle.carekids.domain.playInfo.models;
 
 import com.aivle.carekids.domain.common.models.AgeTag;
 import com.aivle.carekids.domain.common.models.BaseEntity;
+import com.aivle.carekids.domain.user.models.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -40,8 +41,9 @@ public class PlayInfo extends BaseEntity {
     @OneToMany(mappedBy = "playInfo", fetch = FetchType.LAZY)
     private List<PlayInfoDomain> playInfoDomains = new ArrayList<>();
 
-    @OneToMany(mappedBy = "playInfo", fetch = FetchType.LAZY)
-    private List<PlayInfoUsers> playInfoUsers = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "users_id")
+    private Users users;
 
     // TODO - 입력에 대한 생성 메소드 필요
 }
