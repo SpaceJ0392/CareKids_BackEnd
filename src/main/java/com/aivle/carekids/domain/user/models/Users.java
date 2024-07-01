@@ -7,6 +7,7 @@ import com.aivle.carekids.domain.notice.models.NoticeUsers;
 import com.aivle.carekids.domain.playInfo.models.PlayInfoUsers;
 import com.aivle.carekids.domain.question.models.QuestionUsers;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -20,27 +21,27 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-@Getter @Setter
-@ToString(of = {"userId", "userEmail", "userPassword", "userNickname"})
-@SQLDelete(sql = "UPDATE user SET deleted = true WHERE id=?")
+@Getter
+@ToString(of = {"usersId", "usersEmail", "usersPassword", "usersNickname"})
+@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id=?")
 @SQLRestriction("deleted=false")
-public class User extends BaseCreatedAt implements UserDetails {
+public class Users extends BaseCreatedAt {
     // 사용자 정보 엔티티
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long userId;
+    private Long usersId;
 
     @Column(length = 30, nullable = false, unique = true)
-    private String userEmail;
+    private String usersEmail;
 
     @Column(nullable = false)
-    private String userPassword;
+    private String usersPassword;
 
     @Column(length = 20, nullable = false, unique = true)
-    private String userNickname;
+    private String usersNickname;
 
     @Enumerated(EnumType.STRING)
-    private Role userRole;
+    private Role usersRole;
 
     private boolean deleted = false;
 
@@ -48,30 +49,30 @@ public class User extends BaseCreatedAt implements UserDetails {
     @JoinColumn(name = "region_id")
     private Region region;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private List<Kids> kids = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private List<Liked> liked = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private List<PlayInfoUsers> playInfoUsers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private List<QuestionUsers> questionUsers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private List<NoticeUsers> noticeUsers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private List<KidsPolicyUsers> kidsPolicyUsers = new ArrayList<>();
 
     @Builder
-    public User(String userEmail, String userPassword, String userNickname, Role userRole) {
-        this.userEmail = userEmail;
-        this.userPassword = userPassword;
-        this.userNickname = userNickname;
-        this.userRole = userRole;
+    public Users(String usersEmail, String usersPassword, String usersNickname, Role usersRole) {
+        this.usersEmail = usersEmail;
+        this.usersPassword = usersPassword;
+        this.usersNickname = usersNickname;
+        this.usersRole = usersRole;
     }
 
     // * 사용자 정의 메소드 * //
@@ -80,20 +81,24 @@ public class User extends BaseCreatedAt implements UserDetails {
         region.getUsers().add(this);
     }
 
+    public Region getRegion() {
+        return region;
+    }
+
     // TODO - 중계 테이블 관련 데이터 추가 메소드
 
-    // * 오버라이딩 메소드 *//
-    @Override
-    public String getPassword() { return userPassword; }
-
-    @Override
-    public String getUsername() { return userEmail; }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> roles = new ArrayList<>();
-        roles.add(new SimpleGrantedAuthority(userRole.getRole()));
-        return roles;
-    }
+//    // * 오버라이딩 메소드 *//
+//    @Override
+//    public String getPassword() { return userPassword; }
+//
+//    @Override
+//    public String getUsername() { return userEmail; }
+//
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        List<GrantedAuthority> roles = new ArrayList<>();
+//        roles.add(new SimpleGrantedAuthority(userRole.getRole()));
+//        return roles;
+//    }
 
 }

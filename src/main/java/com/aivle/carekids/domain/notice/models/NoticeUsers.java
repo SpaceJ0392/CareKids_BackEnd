@@ -1,6 +1,6 @@
 package com.aivle.carekids.domain.notice.models;
 
-import com.aivle.carekids.domain.user.models.User;
+import com.aivle.carekids.domain.user.models.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -13,10 +13,10 @@ public class NoticeUsers {
     @EmbeddedId
     private NoticeUsersId noticeUsersId;
 
-    @MapsId("userId")
+    @MapsId("usersId")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "users_id")
+    private Users users;
 
     @MapsId("noticeId")
     @ManyToOne(fetch = FetchType.LAZY)

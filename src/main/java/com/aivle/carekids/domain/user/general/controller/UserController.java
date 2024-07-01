@@ -1,12 +1,10 @@
 package com.aivle.carekids.domain.user.general.controller;
 
-import com.aivle.carekids.domain.user.dto.SignInDto;
 import com.aivle.carekids.domain.user.dto.SignUpDto;
 import com.aivle.carekids.domain.user.dto.SignUpRequestDto;
-import com.aivle.carekids.domain.user.general.service.UserService;
+import com.aivle.carekids.domain.user.general.service.UsersService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,19 +18,19 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+    private final UsersService usersService;
 
 
     // 회원 가입 페이지 입장 API
     @GetMapping("/signup")
     public ResponseEntity<SignUpDto> signUp(){
-        return userService.signUp();
+        return usersService.signUp();
     }
 
     // 회원 가입 시 API (회원가입 complete or denied)
     @PostMapping("/signup")
     public ResponseEntity<Map<String, String>> signUpRequest(@RequestBody @Valid SignUpRequestDto signUpData) throws URISyntaxException {
-        return userService.signUpRequest(signUpData);
+        return usersService.signUpRequest(signUpData);
     }
 
 //    // 로그인 API (일반 로그인)

@@ -1,6 +1,6 @@
 package com.aivle.carekids.domain.playInfo.models;
 
-import com.aivle.carekids.domain.user.models.User;
+import com.aivle.carekids.domain.user.models.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -14,10 +14,10 @@ public class PlayInfoUsers {
     @EmbeddedId
     private PlayInfoUsersId playInfoUsersId;
 
-    @MapsId("userId")
+    @MapsId("usersId")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "users_id")
+    private Users users;
 
     @MapsId("playInfoId")
     @ManyToOne(fetch = FetchType.LAZY)

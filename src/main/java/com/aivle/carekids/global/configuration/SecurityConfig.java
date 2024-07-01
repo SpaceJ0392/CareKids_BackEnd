@@ -5,7 +5,7 @@ import com.aivle.carekids.domain.user.general.jwt.JwtRepository;
 import com.aivle.carekids.domain.user.general.jwt.JwtService;
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils;
 import com.aivle.carekids.domain.user.general.filter.LoginFilter;
-import com.aivle.carekids.domain.user.repository.UserRepository;
+import com.aivle.carekids.domain.user.repository.UsersRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,7 +43,7 @@ public class SecurityConfig {
     }
 
     private final JwtRepository jwtRepository;
-    private final UserRepository userRepository;
+    private final UsersRepository usersRepository;
 
 
     /* H2 console 무시 */
@@ -58,7 +58,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
 
-        LoginFilter lf = new LoginFilter(authenticationManager(authenticationConfiguration), new JwtService(jwtRepository, userRepository));
+        LoginFilter lf = new LoginFilter(authenticationManager(authenticationConfiguration), new JwtService(jwtRepository, usersRepository));
 
         return http
                 .formLogin(AbstractHttpConfigurer::disable)

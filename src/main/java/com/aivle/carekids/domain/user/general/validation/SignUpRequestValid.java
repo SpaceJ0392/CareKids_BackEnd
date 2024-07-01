@@ -1,6 +1,6 @@
 package com.aivle.carekids.domain.user.general.validation;
 
-import com.aivle.carekids.domain.user.repository.UserRepository;
+import com.aivle.carekids.domain.user.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -8,13 +8,13 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class SignUpRequestValid {
 
-    private final UserRepository userRepository;
+    private final UsersRepository usersRepository;
 
     public boolean EmailValidation(String usersEmail){
-        return userRepository.existsByUserEmail(usersEmail);
+        return usersRepository.existsByUsersEmail(usersEmail);
     }
 
     public boolean NickNameValidation(String usersNickname) {
-        return userRepository.existsByUserNickname(usersNickname);
+        return usersRepository.existsByUsersNickname(usersNickname);
     }
 }

@@ -1,6 +1,6 @@
 package com.aivle.carekids.domain.question.models;
 
-import com.aivle.carekids.domain.user.models.User;
+import com.aivle.carekids.domain.user.models.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -18,8 +18,8 @@ public class QuestionUsers {
     @JoinColumn(name = "question_id")
     private Question question;
 
-    @MapsId("userId")
+    @MapsId("usersId")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "users_id")
+    private Users users;
 }

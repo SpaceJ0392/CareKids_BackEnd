@@ -1,6 +1,6 @@
 package com.aivle.carekids.domain.common.models;
 
-import com.aivle.carekids.domain.user.models.User;
+import com.aivle.carekids.domain.user.models.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -20,6 +20,6 @@ public class Region {
     private String regionName;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "region")
-    private List<User> users = new ArrayList<>();
+    private List<Users> users = new ArrayList<>();
 
 }

@@ -1,18 +1,18 @@
 package com.aivle.carekids.domain.user.general.service;
 
-import com.aivle.carekids.domain.user.models.User;
+
+import com.aivle.carekids.domain.user.models.Users;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
 @Getter
 @RequiredArgsConstructor
 public class CustomUserDetail implements UserDetails {
-    private final User user;
+    private final Users users;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -21,7 +21,7 @@ public class CustomUserDetail implements UserDetails {
         collection.add(new GrantedAuthority(){
             @Override
             public String getAuthority(){
-                return user.getUserRole().getRole();
+                return users.getUsersRole().getRole();
             }
         });
         return collection;
@@ -29,12 +29,12 @@ public class CustomUserDetail implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getUserPassword();
+        return users.getUsersPassword();
     }
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return users.getUsersEmail();
     }
 
     @Override

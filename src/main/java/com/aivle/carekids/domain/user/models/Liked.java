@@ -15,7 +15,7 @@ public class Liked {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private Users users;
 
     // TODO - 장소 테이블 추가시, 추가.
     // @ManyToOne(fetch = FetchType.LAZY)

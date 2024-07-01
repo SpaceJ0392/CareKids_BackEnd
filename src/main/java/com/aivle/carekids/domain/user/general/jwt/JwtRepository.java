@@ -19,7 +19,7 @@ public class JwtRepository {
 
     public RefreshToken save(RefreshToken refreshToken) {
         ValueOperations valueOperations = redisTemplate.opsForValue();
-        valueOperations.set(refreshToken.getToken(), refreshToken.getUserId());
+        valueOperations.set(refreshToken.getToken(), refreshToken.getUsersId());
         redisTemplate.expire(refreshToken.getToken(), JwtConstants.REFRESH_EXP_TIME, TimeUnit.MILLISECONDS); // 5분 동안 Redis 에 저장
         return refreshToken;
     }

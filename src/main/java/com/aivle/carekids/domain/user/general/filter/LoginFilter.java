@@ -6,7 +6,7 @@ import com.aivle.carekids.domain.user.general.jwt.RefreshToken;
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtConstants;
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils;
 import com.aivle.carekids.domain.user.general.service.CustomUserDetail;
-import com.aivle.carekids.domain.user.models.User;
+import com.aivle.carekids.domain.user.models.Users;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -49,15 +49,15 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         System.out.println("this is chain : "+chain);
         System.out.println("this is authResult : "+authResult);
 
-        User user = ((CustomUserDetail) authResult.getPrincipal()).getUser();
+        Users users = ((CustomUserDetail) authResult.getPrincipal()).getUsers();
 
         // 인증이 성공한 경우 토큰을 생성하여, 응답 헤더에 담아 클라이언트에게 전달
         System.out.println(JwtConstants.SECRET_KEY);
-        String accessToken = JwtUtils.generateAccessToken(user);
-        String refreshToken = JwtUtils.generateRefreshToken(user);
+        String accessToken = JwtUtils.generateAccessToken(users);
+        String refreshToken = JwtUtils.generateRefreshToken(users);
 
         // 인증이 성공했으니 Refresh Token 을 DB( Redis )에 저장한다
-        jwtService.save(new RefreshToken(refreshToken, user.getUserId()));
+        jwtService.save(new RefreshToken(refreshToken, users.getUsersId()));
 
         // 헤더로 accessToken 전달
         response.addHeader(JwtConstants.ACCESS, JwtConstants.JWT_TYPE + accessToken);

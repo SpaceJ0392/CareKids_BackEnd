@@ -6,15 +6,14 @@ import com.aivle.carekids.domain.common.models.AgeTag;
 import com.aivle.carekids.domain.common.models.Region;
 import com.aivle.carekids.domain.common.repository.AgeTagRepository;
 import com.aivle.carekids.domain.common.repository.RegionRepository;
-import com.aivle.carekids.domain.user.dto.SignInDto;
 import com.aivle.carekids.domain.user.dto.SignUpDto;
 import com.aivle.carekids.domain.user.dto.SignUpRequestDto;
 import com.aivle.carekids.domain.user.general.validation.SignUpRequestValid;
 import com.aivle.carekids.domain.user.models.Kids;
 import com.aivle.carekids.domain.user.models.Role;
-import com.aivle.carekids.domain.user.models.User;
+import com.aivle.carekids.domain.user.models.Users;
 import com.aivle.carekids.domain.user.repository.KidsRepository;
-import com.aivle.carekids.domain.user.repository.UserRepository;
+import com.aivle.carekids.domain.user.repository.UsersRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -30,9 +29,9 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class UserService {
+public class UsersService {
 
-    private final UserRepository userRepository;
+    private final UsersRepository usersRepository;
     private final KidsRepository kidsRepository;
     private final RegionRepository regionRepository;
     private final AgeTagRepository ageTagRepository;
@@ -62,27 +61,27 @@ public class UserService {
         if (signUpData == null) { return ResponseEntity.badRequest().body(new HashMap<>()); }
 
         Map<String, String> message = new HashMap<>();
-        if (requestValid.EmailValidation(signUpData.getUserEmail())) { // 중복 검사 (이메일)
+        if (requestValid.EmailValidation(signUpData.getUsersEmail())) { // 중복 검사 (이메일)
             message.put("message", "이미 사용 중인 계정입니다.");
             return ResponseEntity.badRequest().body(message);
         }
 
-        if (requestValid.NickNameValidation(signUpData.getUserNickname())){
+        if (requestValid.NickNameValidation(signUpData.getUsersNickname())){
             message.put("message", "이미 사용 중인 닉네임입니다.");
             return ResponseEntity.badRequest().body(message);
         }
 
         // Users Entity에 저장
-        User newUser = User.builder()
-                .userEmail(signUpData.getUserEmail())
-                .userNickname(signUpData.getUserNickname())
-                .userPassword(passwordEncoder.encode(signUpData.getUserPassword()))
-                .userRole(Role.USER) // default - USER
+        Users newUser = Users.builder()
+                .usersEmail(signUpData.getUsersEmail())
+                .usersNickname(signUpData.getUsersNickname())
+                .usersPassword(passwordEncoder.encode(signUpData.getUsersPassword()))
+                .usersRole(Role.USER) // default - USER
                 .build();
 
         Region region = entityModelMapper.map(signUpData.getRegion(), Region.class);
         newUser.setRegionInfo(region);
-        userRepository.save(newUser);
+        usersRepository.save(newUser);
 
         // Kids Entity에 저장
         List<Kids> newKids = new ArrayList<>();

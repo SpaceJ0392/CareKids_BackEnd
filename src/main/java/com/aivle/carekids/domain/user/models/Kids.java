@@ -20,21 +20,21 @@ public class Kids {
     private AgeTag ageTag;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "users_id")
+    private Users users;
 
     @Builder
-    public Kids(AgeTag ageTag, User user) {
+    public Kids(AgeTag ageTag, Users users) {
         this.ageTag = ageTag;
-        this.user = user;
+        this.users = users;
     }
 
     // * 사용자 정의 함수 * //
-    public static Kids setKidsInfo(User user, AgeTag ageTag) {
+    public static Kids setKidsInfo(Users users, AgeTag ageTag) {
 
-        Kids kids = Kids.builder().ageTag(ageTag).user(user).build();
+        Kids kids = Kids.builder().ageTag(ageTag).users(users).build();
 
-        user.getKids().add(kids);
+        users.getKids().add(kids);
         ageTag.getKids().add(kids);
 
         return kids;
