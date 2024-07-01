@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -27,15 +26,23 @@ public class Hospital extends OperateTime {
 
     private String hospitalAddress;
 
+    private String hospitalNewaddress;
+
     private String hospitalphone;
 
     private boolean deleted = false;
+
+    @Column(precision = 10, scale = 6)
+    private BigDecimal x;
+
+    @Column(precision = 10, scale = 6)
+    private BigDecimal y;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
     private Region region;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "hospital")
-    private List<HospitalCateMid> hospitalCateMids = new ArrayList<>();
+    @Enumerated(EnumType.STRING)
+    private HospitalType hospitalType;
 
 }

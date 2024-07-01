@@ -53,9 +53,6 @@ public class Users extends BaseCreatedAt {
     private List<Kids> kids = new ArrayList<>();
 
     @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
-    private List<Liked> liked = new ArrayList<>();
-
-    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private List<PlayInfo> playInfoUsers = new ArrayList<>();
 
     @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)

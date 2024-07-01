@@ -29,14 +29,13 @@ public class PlayInfo extends BaseEntity {
     @Lob
     private String playInfoText;
 
+    private String playInfoTools;
+
     private boolean deleted = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "age_tag_id")
     private AgeTag ageTag;
-
-    @OneToMany(mappedBy = "playInfo", fetch = FetchType.LAZY)
-    private List<PlayInfoTools> playInfoTools = new ArrayList<>();
 
     @OneToMany(mappedBy = "playInfo", fetch = FetchType.LAZY)
     private List<PlayInfoDomain> playInfoDomains = new ArrayList<>();

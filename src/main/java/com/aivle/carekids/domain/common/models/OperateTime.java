@@ -9,7 +9,7 @@ import java.time.LocalTime;
 
 @MappedSuperclass
 @Getter
-public class OperateTime extends BaseEntity {
+public abstract class OperateTime extends BaseEntity {
 
     private LocalTime startTime;
     private LocalTime endTime;

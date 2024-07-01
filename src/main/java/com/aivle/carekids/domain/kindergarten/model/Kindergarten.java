@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+import java.math.BigDecimal;
+
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -24,7 +26,15 @@ public class Kindergarten extends OperateTime {
 
     private String kindergartenAddress;
 
-    private String kindergartenphone;
+    private String kindergartenNewaddress;
+
+    private String kindergartenPhone;
+
+    @Column(precision = 10, scale = 6)
+    private BigDecimal x;
+
+    @Column(precision = 10, scale = 6)
+    private BigDecimal y;
 
     private boolean deleted = false;
 

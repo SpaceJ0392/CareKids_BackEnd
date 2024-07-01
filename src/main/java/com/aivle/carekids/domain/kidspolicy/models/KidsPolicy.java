@@ -1,5 +1,6 @@
 package com.aivle.carekids.domain.kidspolicy.models;
 
+import com.aivle.carekids.domain.common.models.AgeTag;
 import com.aivle.carekids.domain.common.models.BaseEntity;
 import com.aivle.carekids.domain.user.models.Users;
 import jakarta.persistence.*;
@@ -9,7 +10,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,14 +31,15 @@ public class KidsPolicy extends BaseEntity {
 
     private String kidsPolicyUrl;
 
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
-
     private boolean deleted = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
     private Users users;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "age_tag_id")
+    private AgeTag ageTag;
 
     @OneToMany(mappedBy = "kidsPolicy", fetch = FetchType.LAZY)
     private List<KIdsPolicyRegion> kIdsPolicyRegions = new ArrayList<>();
