@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,8 +25,10 @@ import static jakarta.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Component
+@RequiredArgsConstructor
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+    private final JwtRepository jwtRepository;
 
     private static final String[] whitelist = {"/**", "/login", "/loginHome", "/api/signup", "/renew", "/loginSuccess",
             "/login/oauth2/code/**", "/oauth2/signUp", "/error", "/js/**, /h2-console"};
@@ -35,6 +38,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         return PatternMatchUtils.simpleMatch(whitelist, requestURI);
+    }
+
+    private boolean isLogout(String accessToken) {
+        Long isLogout = jwtRepository.getValues(accessToken);
+        return isLogout == -1;
     }
 
     @Override
@@ -54,10 +62,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             // 토큰 검증
             String token = JwtUtils.getTokenFromHeader(header);
-            DecodedJWT decodedJWT = verifyToken(token);
+            if (!isLogout(token)){
+                DecodedJWT decodedJWT = verifyToken(token);
 
-            UsernamePasswordAuthenticationToken authenticationToken = JwtUtils.getAuthenticationToken(decodedJWT);
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                UsernamePasswordAuthenticationToken authenticationToken = JwtUtils.getAuthenticationToken(decodedJWT);
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            }
 
             // 이거 없으면 다음 실행 안됨!!
             doFilter(request, response, filterChain);
