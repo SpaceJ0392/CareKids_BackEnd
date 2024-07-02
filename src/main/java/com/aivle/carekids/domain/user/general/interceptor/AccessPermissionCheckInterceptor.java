@@ -2,15 +2,12 @@ package com.aivle.carekids.domain.user.general.interceptor;
 
 
 import com.aivle.carekids.domain.user.models.Role;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.HandlerInterceptor;
-
-import static jakarta.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 
 
 /**
@@ -33,7 +30,7 @@ public class AccessPermissionCheckInterceptor implements HandlerInterceptor {
                 return true;
             }
         }
-q
+
         return false;
     }
 }

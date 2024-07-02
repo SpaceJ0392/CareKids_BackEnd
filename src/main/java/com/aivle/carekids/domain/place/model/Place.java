@@ -28,6 +28,9 @@ public class Place extends OperateTime {
 
     private String placeImgUrl;
 
+    @Lob
+    private String placeDescribe;
+
     @Column(length = 100)
     private String placeAddress;
 
@@ -36,13 +39,30 @@ public class Place extends OperateTime {
     @Column(length = 15)
     private String placePhone;
 
-    public boolean parking;
+    @Enumerated(EnumType.STRING)
+    private PlaceType placeType;
+
+    @Enumerated(EnumType.STRING)
+    private ParkingType placeParking;
+
+    @Enumerated(EnumType.STRING)
+    private FreeType placeFree;
+
+    private String placeKidsMenu;
+
+    private String placeKidsTools;
+
+    private String placeDayOfWeek;
+
+    private String placeUrl;
 
     @Column(precision = 10, scale = 6)
     private BigDecimal x;
 
     @Column(precision = 10, scale = 6)
     private BigDecimal y;
+
+    private String PlaceMainPlace;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
@@ -56,6 +76,5 @@ public class Place extends OperateTime {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "place")
     private List<PlaceKeyword> placeKeywords = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "place")
-    private List<PlaceMainplace> placeMainplaces = new ArrayList<>();
+
 }

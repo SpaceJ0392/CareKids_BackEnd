@@ -1,6 +1,6 @@
 package com.aivle.carekids.domain.hospital.model;
 
-import com.aivle.carekids.domain.common.models.OperateTime;
+import com.aivle.carekids.domain.common.models.OperateDate;
 import com.aivle.carekids.domain.common.models.Region;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @Getter
 @SQLDelete(sql = "UPDATE question SET deleted = true WHERE id=?")
 @SQLRestriction("deleted=false")
-public class Hospital extends OperateTime {
+public class Hospital extends OperateDate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,7 +28,7 @@ public class Hospital extends OperateTime {
 
     private String hospitalNewaddress;
 
-    private String hospitalphone;
+    private String hospitalPhone;
 
     private boolean deleted = false;
 

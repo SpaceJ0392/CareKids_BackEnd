@@ -1,6 +1,5 @@
 package com.aivle.carekids.domain.kidspolicy.models;
 
-import com.aivle.carekids.domain.common.models.AgeTag;
 import com.aivle.carekids.domain.common.models.BaseEntity;
 import com.aivle.carekids.domain.user.models.Users;
 import jakarta.persistence.*;
@@ -29,7 +28,22 @@ public class KidsPolicy extends BaseEntity {
     @Lob
     private String kidsPolicyText;
 
+    private String kidsPolicyTarget;
+
+    private String kidsPolicyRequirement;
+
+    private String kidsPolicyRange;
+
+    private String kidsPolicySupportedSize;
+
+    private String kidsPolicySupportedDescribe;
+
+    private String kidsPolicyProcess;
+
     private String kidsPolicyUrl;
+
+    @Enumerated(EnumType.STRING)
+    private KidsPolicyType kidsPolicyType;
 
     private boolean deleted = false;
 
@@ -37,12 +51,11 @@ public class KidsPolicy extends BaseEntity {
     @JoinColumn(name = "users_id")
     private Users users;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "age_tag_id")
-    private AgeTag ageTag;
+    @OneToMany(mappedBy = "kidsPolicy", fetch = FetchType.LAZY)
+    private List<KidsPolicyAgeTag> kidsPolicyAgeTags = new ArrayList<>();
 
     @OneToMany(mappedBy = "kidsPolicy", fetch = FetchType.LAZY)
-    private List<KIdsPolicyRegion> kIdsPolicyRegions = new ArrayList<>();
+    private List<KidsPolicyRegion> kidsPolicyRegions = new ArrayList<>();
 
     // * 사용자 정의 메소드 * //
     // TODO - 입력에 대한 생성 메소드 필요

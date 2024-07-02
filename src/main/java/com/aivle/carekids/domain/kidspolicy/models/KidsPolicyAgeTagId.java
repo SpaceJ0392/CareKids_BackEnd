@@ -5,8 +5,8 @@ import jakarta.persistence.Embeddable;
 import java.io.Serializable;
 
 @Embeddable
-public class KidsPolicyRegionId implements Serializable {
+public class KidsPolicyAgeTagId implements Serializable {
 
     private Long kidsPolicyId;
-    private Long regionId;
+    private Long ageTagId;
 }

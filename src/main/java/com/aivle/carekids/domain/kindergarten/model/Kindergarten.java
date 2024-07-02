@@ -1,6 +1,6 @@
 package com.aivle.carekids.domain.kindergarten.model;
 
-import com.aivle.carekids.domain.common.models.OperateTime;
+import com.aivle.carekids.domain.common.models.OperateDate;
 import com.aivle.carekids.domain.common.models.Region;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @Getter
 @SQLDelete(sql = "UPDATE question SET deleted = true WHERE id=?")
 @SQLRestriction("deleted=false")
-public class Kindergarten extends OperateTime {
+public class Kindergarten extends OperateDate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

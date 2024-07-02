@@ -31,6 +31,8 @@ public class PlayInfo extends BaseEntity {
 
     private String playInfoTools;
 
+    private String playInfoRecommendAge;
+
     private boolean deleted = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
