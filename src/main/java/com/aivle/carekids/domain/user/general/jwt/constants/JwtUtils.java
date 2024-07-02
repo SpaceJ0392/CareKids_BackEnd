@@ -50,6 +50,7 @@ public class JwtUtils {
         return JWT.create()
                 .withSubject(JwtConstants.REFRESH)
                 .withHeader(createHeader())
+                .withClaim("id", users.getUsersId())
                 .withExpiresAt(createExpireDate(JwtConstants.REFRESH_EXP_TIME))
                 .sign(Algorithm.HMAC512(JwtConstants.SECRET_KEY));
     }
@@ -90,5 +91,10 @@ public class JwtUtils {
 
         return new UsernamePasswordAuthenticationToken(id, null,
                 Collections.singleton(new SimpleGrantedAuthority(role)));
+    }
+
+    public static Long getUsersId(DecodedJWT decodedJWT){
+        Long usersId = decodedJWT.getClaim("id").asLong();
+        return usersId;
     }
 }

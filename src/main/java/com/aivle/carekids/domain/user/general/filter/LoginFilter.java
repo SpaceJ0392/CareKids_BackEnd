@@ -58,15 +58,23 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String refreshToken = JwtUtils.generateRefreshToken(users);
 
         // 인증이 성공했으니 Refresh Token 을 DB( Redis )에 저장한다
-        jwtService.save(new RefreshToken(refreshToken, users.getUsersId()));
+        jwtService.save(new RefreshToken(users.getUsersId(), refreshToken));
 
         // 헤더로 accessToken 전달
-        response.addHeader(JwtConstants.ACCESS, JwtConstants.JWT_TYPE + accessToken);
+//        response.addHeader(JwtConstants.ACCESS, JwtConstants.JWT_TYPE + accessToken);
+
+        Cookie access_cookie = new Cookie(JwtConstants.ACCESS, accessToken);
+        access_cookie.setMaxAge((int) (JwtConstants.ACCESS_EXP_TIME / 1000));     // 5분 설정
+        access_cookie.setHttpOnly(true);
+        response.addCookie(access_cookie);
+
         // Refresh Token 은 Cookie 에 담아서 전달하되, XSS 공격 방어를 위해 HttpOnly 를 설정한다
-        Cookie cookie = new Cookie(JwtConstants.REFRESH, refreshToken);
-        cookie.setMaxAge((int) (JwtConstants.REFRESH_EXP_TIME / 1000));     // 5분 설정
-        cookie.setHttpOnly(true);
-        response.addCookie(cookie);
+        Cookie refresh_cookie = new Cookie(JwtConstants.REFRESH, refreshToken);
+        refresh_cookie.setMaxAge((int) (JwtConstants.REFRESH_EXP_TIME / 1000));     // 5분 설정
+        refresh_cookie.setHttpOnly(true);
+        response.addCookie(refresh_cookie);
+
+        response.sendRedirect("http://localhost:8080/api/home");
     }
 
     @Override

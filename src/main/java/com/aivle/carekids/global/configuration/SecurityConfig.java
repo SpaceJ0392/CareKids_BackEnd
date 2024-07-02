@@ -4,6 +4,7 @@ import com.aivle.carekids.domain.user.general.filter.JsonToHttpRequestFilter;
 import com.aivle.carekids.domain.user.general.filter.LoginFilter;
 import com.aivle.carekids.domain.user.general.jwt.JwtRepository;
 import com.aivle.carekids.domain.user.general.jwt.JwtService;
+import com.aivle.carekids.domain.user.general.service.LogoutService;
 import com.aivle.carekids.domain.user.oauth2.handler.OAuth2SuccessHandler;
 import com.aivle.carekids.domain.user.oauth2.service.CustomOAuth2UserService;
 import com.aivle.carekids.domain.user.repository.UsersRepository;
@@ -23,6 +24,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -38,6 +40,7 @@ public class SecurityConfig {
 
     private final JwtRepository jwtRepository;
     private final UsersRepository usersRepository;
+    private final LogoutService logoutService;
 
     private final CustomOAuth2UserService oAuth2UserService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
@@ -82,6 +85,10 @@ public class SecurityConfig {
                 //oauth2 설정
                 .oauth2Login(oauth2 -> oauth2.userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService))
                                 .successHandler(oAuth2SuccessHandler))
+                .logout(logoutConfig -> logoutConfig
+                        .logoutUrl("/logout")
+                        .addLogoutHandler(logoutService)
+                        .logoutSuccessHandler(((request, response, authentication) -> SecurityContextHolder.clearContext())))
         ;
 
         return http.build();

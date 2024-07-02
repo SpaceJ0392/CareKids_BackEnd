@@ -30,7 +30,7 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         String refreshToken = JwtUtils.generateRefreshToken(users);
 
         // 인증이 성공했으니 Refresh Token 을 DB( Redis )에 저장한다
-        jwtService.save(new RefreshToken(refreshToken, users.getUsersId()));
+        jwtService.save(new RefreshToken(users.getUsersId(), refreshToken));
 
         // 헤더로 accessToken 전달
         response.addHeader(JwtConstants.ACCESS, JwtConstants.JWT_TYPE + accessToken);
