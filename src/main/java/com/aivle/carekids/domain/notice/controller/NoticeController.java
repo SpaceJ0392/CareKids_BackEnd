@@ -5,10 +5,7 @@ import com.aivle.carekids.domain.notice.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -23,5 +20,10 @@ public class NoticeController {
                                                   @RequestParam(value = "size", defaultValue = "20")int size){
 
         return ResponseEntity.ok(noticeService.listNotice(page - 1, size));
+    }
+
+    @GetMapping("/notice/{id}")
+    public ResponseEntity<?> noticeDetail(@PathVariable Long id){
+        return noticeService.noticeDetail(id);
     }
 }

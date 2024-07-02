@@ -24,5 +24,5 @@ public class PageInfoDto {
     }
 
     private PageInfo pageInfo;
-    private List<NoticeDto> pageList;
+    private List<NoticeListDto> pageList;
 }

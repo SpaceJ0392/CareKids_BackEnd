@@ -9,27 +9,20 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
-public class NoticeDto extends BaseDto {
-
-    @NotEmpty @JsonProperty("id")
+public class NoticeListDto extends BaseDto {
+    @NotEmpty
+    @JsonProperty("id")
     private Long noticeId;
 
     @NotEmpty @JsonProperty("title")
     private String noticeTitle;
 
-    @NotEmpty @JsonProperty("img")
-    private String noticeImgUrl;
-
-    @JsonProperty("description")
-    private String noticeText;
-
-    public NoticeDto(Long noticeId, String noticeTitle, String noticeText, String noticeImgUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public NoticeListDto(Long noticeId, String noticeTitle, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(createdAt, updatedAt);
         this.noticeId = noticeId;
-        this.noticeText = noticeText;
-        this.noticeImgUrl = noticeImgUrl;
         this.noticeTitle = noticeTitle;
     }
 }
