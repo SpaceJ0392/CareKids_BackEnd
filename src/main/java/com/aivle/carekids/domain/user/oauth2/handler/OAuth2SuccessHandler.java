@@ -1,25 +1,20 @@
 package com.aivle.carekids.domain.user.oauth2.handler;
 
-import com.aivle.carekids.domain.user.general.jwt.constants.JwtConstants;
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils;
 import com.aivle.carekids.domain.user.general.validation.SignUpValid;
 import com.aivle.carekids.domain.user.models.Users;
 import com.aivle.carekids.domain.user.oauth2.dto.OAuth2UserDetails;
 import com.aivle.carekids.domain.user.repository.UsersRepository;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @Component
@@ -37,18 +32,12 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String redirectUrl;
         Map<String, String> valid = signUpValid.emailValidation(userDetails.getUsername());
         if (!valid.isEmpty()) { // 있으면 redirect /
-            // TODO - Json Web Token 줘야 함.
+            //Json Web Token 줘야 함.
             Users users = usersRepository.findByUsersEmail(userDetails.getUsername());
             String accessToken = JwtUtils.generateAccessToken(users);
-            redirectUrl = UriComponentsBuilder.fromHttpUrl(BASE_URL).path("/home")
+            redirectUrl = UriComponentsBuilder.fromHttpUrl(BASE_URL).path("/redirect-home")
                     .queryParam("accessToken", accessToken)
                     .build().toUriString();
-
-            Cookie access_cookie = new Cookie(JwtConstants.ACCESS, accessToken);
-            access_cookie.setMaxAge((int) (JwtConstants.ACCESS_EXP_TIME / 1000));     // 5분 설정
-            access_cookie.setHttpOnly(true);
-            response.addCookie(access_cookie);
-
 
             response.sendRedirect(redirectUrl);
 
