@@ -1,7 +1,6 @@
 package com.aivle.carekids.domain.user.general.service;
 
 import com.aivle.carekids.domain.user.general.jwt.JwtRepository;
-import com.aivle.carekids.domain.user.general.jwt.RefreshToken;
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtConstants;
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +40,6 @@ public class LogoutService implements LogoutHandler {
 
         jwtRepository.DeleteRefreshToken(usersId);
         jwtRepository.addBlackList(accessToken); // accesstoken을 블랙리스트로 추가
-
 
     }
 }

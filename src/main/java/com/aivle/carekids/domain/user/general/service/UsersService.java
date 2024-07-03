@@ -13,6 +13,7 @@ import com.aivle.carekids.domain.user.models.Kids;
 import com.aivle.carekids.domain.user.models.Users;
 import com.aivle.carekids.domain.user.repository.KidsRepository;
 import com.aivle.carekids.domain.user.repository.UsersRepository;
+import com.aivle.carekids.global.Variable.GlobelVar;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -98,7 +99,7 @@ public class UsersService {
         kidsRepository.saveAll(newKids);
 
         message.put("message", "회원 가입이 완료되었습니다.");
-        return ResponseEntity.created(new URI("http://localhost:8080/api/signin")).body(message);
+        return ResponseEntity.created(new URI(GlobelVar.CLIENT_BASE_URL + "/login")).body(message);
     }
 
 

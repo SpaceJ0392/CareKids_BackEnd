@@ -2,6 +2,7 @@ package com.aivle.carekids.domain.common.controller;
 
 import com.aivle.carekids.domain.common.service.HomeService;
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtConstants;
+import com.aivle.carekids.global.Variable.GlobelVar;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class HomeController {
         refreshCookie.setHttpOnly(true);
         response.addCookie(refreshCookie);
 
-        response.sendRedirect("http://localhost:8080");
+        response.sendRedirect(GlobelVar.CLIENT_BASE_URL);
     }
 
     @GetMapping("/home")

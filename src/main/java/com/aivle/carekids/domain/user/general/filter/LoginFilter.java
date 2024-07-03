@@ -7,6 +7,7 @@ import com.aivle.carekids.domain.user.general.jwt.constants.JwtConstants;
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils;
 import com.aivle.carekids.domain.user.general.service.CustomUserDetail;
 import com.aivle.carekids.domain.user.models.Users;
+import com.aivle.carekids.global.Variable.GlobelVar;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -74,7 +75,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         refresh_cookie.setHttpOnly(true);
         response.addCookie(refresh_cookie);
 
-        response.sendRedirect("http://localhost:8080");
+        response.sendRedirect(GlobelVar.CLIENT_BASE_URL);
     }
 
     @Override
