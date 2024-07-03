@@ -29,6 +29,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
@@ -67,6 +69,16 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         LoginFilter lf = new LoginFilter(authenticationManager(authenticationConfiguration), new JwtService(jwtRepository, usersRepository));
 
+        // CORS 설정 추가
+        CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.setAllowCredentials(true);
+        corsConfig.addAllowedOrigin("http://localhost:3000"); // React 서버 주소
+        corsConfig.addAllowedHeader("*");
+        corsConfig.addAllowedMethod("*");
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfig);
+
         http
                 //REST API 설정
                 .csrf(AbstractHttpConfigurer::disable)
@@ -89,7 +101,8 @@ public class SecurityConfig {
                         .logoutUrl("/logout")
                         .addLogoutHandler(logoutService)
                         .logoutSuccessHandler(((request, response, authentication) -> SecurityContextHolder.clearContext())))
-        ;
+                // CORS 설정 추가
+                .cors(cors -> cors.configurationSource(source));
 
         return http.build();
     }

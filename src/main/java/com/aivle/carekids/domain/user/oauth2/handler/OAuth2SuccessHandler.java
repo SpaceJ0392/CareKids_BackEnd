@@ -1,5 +1,7 @@
 package com.aivle.carekids.domain.user.oauth2.handler;
 
+import com.aivle.carekids.domain.user.general.jwt.JwtService;
+import com.aivle.carekids.domain.user.general.jwt.RefreshToken;
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils;
 import com.aivle.carekids.domain.user.general.validation.SignUpValid;
 import com.aivle.carekids.domain.user.models.Users;
@@ -22,6 +24,7 @@ import java.util.Map;
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final UsersRepository usersRepository;
     private final SignUpValid signUpValid;
+    private final JwtService jwtService;
     private static final String BASE_URL = "http://localhost:8080/api";
 
     @Override
@@ -32,18 +35,21 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String redirectUrl;
         Map<String, String> valid = signUpValid.emailValidation(userDetails.getUsername());
         if (!valid.isEmpty()) { // 있으면 redirect /
-            //Json Web Token 줘야 함.
+            //Json Web Token
             Users users = usersRepository.findByUsersEmail(userDetails.getUsername());
             String accessToken = JwtUtils.generateAccessToken(users);
+            String refreshToken = JwtUtils.generateRefreshToken(users);
+
+            jwtService.save(new RefreshToken(users.getUsersId(), refreshToken));
             redirectUrl = UriComponentsBuilder.fromHttpUrl(BASE_URL).path("/redirect-home")
                     .queryParam("accessToken", accessToken)
+                    .queryParam("refreshToken", refreshToken)
                     .build().toUriString();
 
             response.sendRedirect(redirectUrl);
 
-
         } else { // 없으면 get redirect email 및 socialtype 넣어서. (회원가입 페이지로)
-            redirectUrl = UriComponentsBuilder.fromHttpUrl(BASE_URL).path("/signup")
+            redirectUrl = UriComponentsBuilder.fromHttpUrl(BASE_URL).path("/signin/info")
                     .queryParam("email", userDetails.getUsername())
                     .queryParam("social-type", userDetails.getSocialType().toString())
                     .build().toUriString();

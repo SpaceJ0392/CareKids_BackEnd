@@ -20,14 +20,20 @@ public class HomeController {
 
     @GetMapping("/redirect-home")
     public void homeRedirect(@RequestParam(name ="accessToken", required = true) String accessToken,
-                                        RedirectAttributes redirectAttributes, HttpServletResponse response) throws IOException {
+                             @RequestParam(name ="refreshToken", required = true) String refreshToken,
+                             RedirectAttributes redirectAttributes, HttpServletResponse response) throws IOException {
 
         Cookie accessCookie = new Cookie(JwtConstants.ACCESS, accessToken);
         accessCookie.setMaxAge((int) (JwtConstants.ACCESS_EXP_TIME / 1000));     // 5분 설정
         accessCookie.setHttpOnly(true);
         response.addCookie(accessCookie);
 
-        response.sendRedirect("http://localhost:8080/api/home");
+        Cookie refreshCookie = new Cookie(JwtConstants.REFRESH, refreshToken);
+        refreshCookie.setMaxAge((int) (JwtConstants.REFRESH_EXP_TIME / 1000));     // 5분 설정
+        refreshCookie.setHttpOnly(true);
+        response.addCookie(refreshCookie);
+
+        response.sendRedirect("http://localhost:8080");
     }
 
     @GetMapping("/home")

@@ -74,7 +74,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         refresh_cookie.setHttpOnly(true);
         response.addCookie(refresh_cookie);
 
-        response.sendRedirect("http://localhost:8080/api/home");
+        response.sendRedirect("http://localhost:8080");
     }
 
     @Override

@@ -49,8 +49,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException {
 
         String header = request.getHeader(JwtConstants.JWT_HEADER);
+        // 1. 토큰이 만료됐는지 안됐는지 --> 만료됐으면, 자체적으로 재발급
 
-        // 토큰이 없거나 정상적이지 않은 경우
+
+        // 토큰이 없거나 + 로그 아웃된 사용자일 경우
         if (header == null || !header.startsWith(JwtConstants.JWT_TYPE)) {
             response.setStatus(SC_BAD_REQUEST);
             response.setContentType(APPLICATION_JSON_VALUE);
