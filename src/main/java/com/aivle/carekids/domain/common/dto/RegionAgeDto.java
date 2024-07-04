@@ -9,17 +9,14 @@ import lombok.Setter;
 
 @Getter @Setter
 @NoArgsConstructor
-public class KidsPolicyRegionAgeDto {
-
-    private KidsPolicyListDto kidsPolicyListDto;
+public class RegionAgeDto {
 
     private RegionDto regionDto;
 
     private AgeTagDto ageTagDto;
 
     @QueryProjection
-    public KidsPolicyRegionAgeDto(KidsPolicyListDto kidsPolicyListDto, RegionDto regionDto, AgeTagDto ageTagDto) {
-        this.kidsPolicyListDto = kidsPolicyListDto;
+    public RegionAgeDto(RegionDto regionDto, AgeTagDto ageTagDto) {
         this.regionDto = regionDto;
         this.ageTagDto = ageTagDto;
     }
