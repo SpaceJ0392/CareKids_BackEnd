@@ -2,23 +2,11 @@ package com.aivle.carekids.domain.user.general.jwt;
 
 
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtConstants;
-import com.nimbusds.oauth2.sdk.token.AccessToken;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.util.UriUtils;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -28,7 +16,6 @@ import java.util.concurrent.TimeUnit;
 public class JwtRepository {
 
     private final RedisTemplate redisTemplate;
-    private final RedisConnectionFactory connectionFactory;
 
     public RefreshToken save(RefreshToken refreshToken) {
         ValueOperations valueOperations = redisTemplate.opsForValue();

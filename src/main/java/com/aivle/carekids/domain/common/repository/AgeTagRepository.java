@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AgeTagRepository extends JpaRepository<AgeTag, Long> {
+public interface AgeTagRepository extends JpaRepository<AgeTag, Long>, AgeTagRepositoryCustom {
 }

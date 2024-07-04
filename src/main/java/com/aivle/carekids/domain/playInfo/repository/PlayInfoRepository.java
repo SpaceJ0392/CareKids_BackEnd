@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PlayInfoRepository extends JpaRepository<PlayInfo, Long> {
+public interface PlayInfoRepository extends JpaRepository<PlayInfo, Long>, PlayInfoRepositoryCustom{
     List<PlayInfo> findTop5ByOrderByUpdatedAtDesc();
 }

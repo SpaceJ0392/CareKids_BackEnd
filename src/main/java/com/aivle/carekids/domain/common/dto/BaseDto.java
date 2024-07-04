@@ -1,6 +1,6 @@
 package com.aivle.carekids.domain.common.dto;
 
-import lombok.AllArgsConstructor;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,8 +9,13 @@ import java.time.LocalDateTime;
 
 @Getter @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class BaseDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    @QueryProjection
+    public BaseDto(LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
 }

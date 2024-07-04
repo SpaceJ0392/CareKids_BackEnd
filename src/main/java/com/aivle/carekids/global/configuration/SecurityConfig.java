@@ -76,6 +76,7 @@ public class SecurityConfig {
         corsConfig.addAllowedOrigin("http://localhost:3000"); // React 서버 주소
         corsConfig.addAllowedHeader("*");
         corsConfig.addAllowedMethod("*");
+        corsConfig.addExposedHeader("Authorization");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfig);

@@ -1,10 +1,6 @@
 package com.aivle.carekids.domain.user.general.jwt;
 
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils;
-
-
-import java.util.NoSuchElementException;
-
 import com.aivle.carekids.domain.user.models.Users;
 import com.aivle.carekids.domain.user.repository.UsersRepository;
 import com.aivle.carekids.global.exception.BusinessLogicException;
@@ -13,7 +9,7 @@ import com.aivle.carekids.global.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +32,7 @@ public class JwtService {
         Long usersId = JwtUtils.getUsersId(JwtUtils.verifyToken(refreshToken));
         System.out.println(usersId);
         RefreshToken redisRefreshToken = jwtRepository.findRefreshTokenByUsersId(usersId).orElseThrow(() -> new NullPointerException("Refresh Token이 없습니다. 재로그인해주세요."));
-        if (redisRefreshToken.getToken() == refreshToken){
+        if (Objects.equals(redisRefreshToken.getToken(), refreshToken)){
             Users users = usersRepository.findByUsersId(usersId).orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다"));
             return JwtUtils.generateAccessToken(users);
         }

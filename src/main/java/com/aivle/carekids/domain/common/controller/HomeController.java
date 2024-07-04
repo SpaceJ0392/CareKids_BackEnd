@@ -34,11 +34,16 @@ public class HomeController {
         refreshCookie.setHttpOnly(true);
         response.addCookie(refreshCookie);
 
-        response.sendRedirect(GlobelVar.CLIENT_BASE_URL);
+        response.sendRedirect(GlobelVar.CLIENT_BASE_URL + "/api/home");
     }
 
     @GetMapping("/home")
-    public ResponseEntity<?> displayHome(){
-        return ResponseEntity.ok(homeService.displayHome());
+    public ResponseEntity<?> displayHome(@CookieValue(required = false) String accessToken){
+
+        if (accessToken == null || accessToken.isBlank()){
+            return ResponseEntity.ok(homeService.displayHomeGuest());
+        }
+        //TODO - 사용자 맞춤 메인 화면 정보 제공
+        return null;
     }
 }

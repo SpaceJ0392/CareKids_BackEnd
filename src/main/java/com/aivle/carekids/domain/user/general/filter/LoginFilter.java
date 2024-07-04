@@ -75,7 +75,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         refresh_cookie.setHttpOnly(true);
         response.addCookie(refresh_cookie);
 
-        response.sendRedirect(GlobelVar.CLIENT_BASE_URL);
+        response.sendRedirect(GlobelVar.CLIENT_BASE_URL + "/api/home");
     }
 
     @Override

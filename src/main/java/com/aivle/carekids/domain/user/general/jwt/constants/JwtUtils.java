@@ -1,29 +1,24 @@
 package com.aivle.carekids.domain.user.general.jwt.constants;
 
 
-import com.aivle.carekids.domain.common.models.AgeTag;
-import com.aivle.carekids.domain.user.models.Kids;
 import com.aivle.carekids.domain.user.models.Users;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Transactional(readOnly=true)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class JwtUtils {
-
 
     // Access Token 에는 id 와 role 을 담는다
     public static String generateAccessToken(Users users) {
@@ -94,7 +89,6 @@ public class JwtUtils {
     }
 
     public static Long getUsersId(DecodedJWT decodedJWT){
-        Long usersId = decodedJWT.getClaim("id").asLong();
-        return usersId;
+        return decodedJWT.getClaim("id").asLong();
     }
 }
