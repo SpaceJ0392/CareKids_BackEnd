@@ -37,8 +37,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
+
         return PatternMatchUtils.simpleMatch(whitelist, requestURI);
     }
+
 
     private boolean isLogout(String accessToken) {
         Long isLogout = jwtRepository.getValues(accessToken);

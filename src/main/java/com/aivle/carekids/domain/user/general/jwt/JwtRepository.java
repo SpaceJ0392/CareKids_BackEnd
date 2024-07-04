@@ -3,9 +3,11 @@ package com.aivle.carekids.domain.user.general.jwt;
 
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtConstants;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
+
 
 import java.util.Objects;
 import java.util.Optional;
@@ -16,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class JwtRepository {
 
     private final RedisTemplate redisTemplate;
+
 
     public RefreshToken save(RefreshToken refreshToken) {
         ValueOperations valueOperations = redisTemplate.opsForValue();
@@ -38,38 +41,6 @@ public class JwtRepository {
         redisTemplate.delete(usersId);
     }
 
-//    public void DeleteRefreshTokenByUsersId(Long usersId) throws IOException, ClassNotFoundException {
-//        redisTemplate.setConnectionFactory(connectionFactory);
-//        redisTemplate.setKeySerializer(new StringRedisSerializer());
-//        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-//
-//        ScanOptions options = ScanOptions.scanOptions().match("*").count(1000).build();
-//        Cursor<byte[]> cursor = redisTemplate.getConnectionFactory().getConnection().scan(options);
-//
-//        // utf-8 인코딩, 디코딩
-//        // 직렬화, 역직렬화
-//        while (cursor.hasNext()) {
-//            if (cursor.next() == null){
-//                return;
-//            }
-//
-//            String key;
-//
-//            try (ByteArrayInputStream bis = new ByteArrayInputStream(cursor.next());
-//                ObjectInputStream ois = new ObjectInputStream(bis)){
-//                key = (String) ois.readObject();
-//            }
-//
-//            ValueOperations<String, Long> valueOperations = redisTemplate.opsForValue();
-//            Long storedValue = valueOperations.get(key);
-//
-//            System.out.println(storedValue);
-//            if (usersId.equals(storedValue)) {
-//                redisTemplate.delete(key);
-//                return;
-//            }
-//        }
-//    }
 
     public void addBlackList(String at) {
         redisTemplate.opsForValue().set(at, -1);
