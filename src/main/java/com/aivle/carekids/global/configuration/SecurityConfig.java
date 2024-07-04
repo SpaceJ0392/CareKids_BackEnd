@@ -2,6 +2,7 @@ package com.aivle.carekids.global.configuration;
 
 import com.aivle.carekids.domain.user.general.filter.JsonToHttpRequestFilter;
 import com.aivle.carekids.domain.user.general.filter.LoginFilter;
+import com.aivle.carekids.domain.user.general.jwt.JwtAuthenticationFilter;
 import com.aivle.carekids.domain.user.general.jwt.JwtRepository;
 import com.aivle.carekids.domain.user.general.jwt.JwtService;
 import com.aivle.carekids.domain.user.general.service.LogoutService;
@@ -87,11 +88,12 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable) // 기본 인증 로그인 비활성화
                 .headers(c -> c.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable).disable()) // X-Frame-Options 비활성화
                 .sessionManagement(sessions -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // 인가 설정
                 .authorizeHttpRequests(
                         requests -> requests.requestMatchers(antMatcher("/admin/**")).hasRole("ADMIN")
+//                        requests -> requests.requestMatchers(antMatcher("/admin/**")).authenticated()
                                 .anyRequest().permitAll()
                 )
+//                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterAt(new JsonToHttpRequestFilter(new ObjectMapper()), lf.getClass())
                 .addFilterAt(lf, UsernamePasswordAuthenticationFilter.class)
                 //oauth2 설정
@@ -114,5 +116,10 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter(){
+        return new JwtAuthenticationFilter(jwtRepository);
     }
 }

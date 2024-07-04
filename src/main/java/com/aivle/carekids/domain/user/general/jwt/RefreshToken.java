@@ -10,12 +10,6 @@ public class RefreshToken {
     private Long usersId;
     private String token;
 
-    @Column(columnDefinition = "boolean default false")
-    private boolean expired; // 토큰 만료
-
-    @Column(columnDefinition = "boolean default false")
-    private boolean revoked; // 토큰 폐지
-
     public RefreshToken(Long usersId, String token) {
         this.usersId = usersId;
         this.token = token;
