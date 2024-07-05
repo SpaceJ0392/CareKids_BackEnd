@@ -1,6 +1,6 @@
 package com.aivle.carekids.domain.common.models;
 
-import com.aivle.carekids.domain.kidspolicy.models.KidsPolicyAgeTag;
+import com.aivle.carekids.domain.kidspolicy.models.KidsPolicyRegionAgeTag;
 import com.aivle.carekids.domain.playInfo.models.PlayInfo;
 import com.aivle.carekids.domain.user.models.Kids;
 import jakarta.persistence.*;
@@ -28,5 +28,5 @@ public class AgeTag {
     private List<Kids> kids = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "ageTag")
-    private List<KidsPolicyAgeTag> kidsPolicyAgeTags = new ArrayList<>();
+    private List<KidsPolicyRegionAgeTag> kidsPolicyRegionAgeTags = new ArrayList<>();
 }

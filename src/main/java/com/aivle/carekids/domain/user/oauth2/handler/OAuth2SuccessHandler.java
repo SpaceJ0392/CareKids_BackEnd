@@ -49,7 +49,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             response.sendRedirect(redirectUrl);
 
         } else { // 없으면 get redirect email 및 socialtype 넣어서. (회원가입 페이지로)
-            redirectUrl = UriComponentsBuilder.fromHttpUrl(GlobelVar.CLIENT_BASE_URL).path("/signin/info")
+            redirectUrl = UriComponentsBuilder.fromHttpUrl(GlobelVar.CLIENT_BASE_URL).path("/signup")
                     .queryParam("email", userDetails.getUsername())
                     .queryParam("social-type", userDetails.getSocialType().toString())
                     .build().toUriString();

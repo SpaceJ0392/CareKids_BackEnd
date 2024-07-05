@@ -52,10 +52,7 @@ public class KidsPolicy extends BaseEntity {
     private Users users;
 
     @OneToMany(mappedBy = "kidsPolicy", fetch = FetchType.LAZY)
-    private List<KidsPolicyAgeTag> kidsPolicyAgeTags = new ArrayList<>();
-
-    @OneToMany(mappedBy = "kidsPolicy", fetch = FetchType.LAZY)
-    private List<KidsPolicyRegion> kidsPolicyRegions = new ArrayList<>();
+    private List<KidsPolicyRegionAgeTag> kidsPolicyRegionAgeTags = new ArrayList<>();
 
     // * 사용자 정의 메소드 * //
     // TODO - 입력에 대한 생성 메소드 필요
