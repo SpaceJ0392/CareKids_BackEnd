@@ -30,10 +30,15 @@ public class PlayInfoRepositoryImpl implements PlayInfoRepositoryCustom{
     @Override
     public List<PlayInfoListDto> findTop4ByAgeTagOrderByUpdatedAtDesc(Long ageTagId) {
 
-        return jpaQueryFactory.select(new QPlayInfoListDto(playInfo.createdAt, playInfo.updatedAt,
-                playInfo.PlayInfoId, playInfo.playInfoTitle, playInfo.playInfoText)).from(playInfo)
-                .join(playInfo.ageTag, ageTag)
-                .where(ageTag.ageTagId.eq(ageTagId))
+        return jpaQueryFactory
+                .select(new QPlayInfoListDto(
+                        playInfo.createdAt,
+                        playInfo.updatedAt,
+                        playInfo.playInfoId,
+                        playInfo.playInfoTitle,
+                        playInfo.playInfoText))
+                .from(playInfo)
+                .where(playInfo.ageTag.ageTagId.eq(ageTagId))
                 .orderBy(playInfo.updatedAt.desc())
                 .limit(4)
                 .fetch();
