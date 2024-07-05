@@ -105,7 +105,7 @@ public class SecurityConfig {
                         .addLogoutHandler(logoutService)
                         .logoutSuccessHandler(((request, response, authentication) -> {
                             SecurityContextHolder.clearContext();
-                            response.sendRedirect(GlobelVar.CLIENT_BASE_URL + "login");
+                            response.sendRedirect(GlobelVar.CLIENT_BASE_URL + "/login");
                         })))
                 // CORS 설정 추가
                 .cors(cors -> cors.configurationSource(source));

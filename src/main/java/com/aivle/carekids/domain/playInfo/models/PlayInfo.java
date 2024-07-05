@@ -21,7 +21,7 @@ import java.util.List;
 public class PlayInfo extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long PlayInfoId;
+    private Long playInfoId;
 
     @Column(nullable = false, length = 100)
     private String playInfoTitle;

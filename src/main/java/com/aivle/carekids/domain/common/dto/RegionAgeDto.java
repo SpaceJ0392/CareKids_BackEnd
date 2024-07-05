@@ -1,7 +1,5 @@
-package com.aivle.carekids.domain.kidspolicy.dto;
+package com.aivle.carekids.domain.common.dto;
 
-import com.aivle.carekids.domain.common.dto.AgeTagDto;
-import com.aivle.carekids.domain.common.dto.RegionDto;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
