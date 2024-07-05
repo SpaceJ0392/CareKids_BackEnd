@@ -1,7 +1,9 @@
 package com.aivle.carekids.domain.common.controller;
 
+import com.aivle.carekids.domain.common.dto.HomeDto;
 import com.aivle.carekids.domain.common.service.HomeService;
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtConstants;
+import com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils;
 import com.aivle.carekids.global.Variable.GlobelVar;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,6 +21,7 @@ import java.io.IOException;
 public class HomeController {
 
     private final HomeService homeService;
+    private final JwtUtils jwtUtils;
 
     @GetMapping("/redirect-home")
     public void homeRedirect(@RequestParam(name ="accessToken", required = true) String accessToken,
@@ -34,16 +38,32 @@ public class HomeController {
         refreshCookie.setHttpOnly(true);
         response.addCookie(refreshCookie);
 
-        response.sendRedirect(GlobelVar.CLIENT_BASE_URL + "/api/home");
+        response.sendRedirect(GlobelVar.CLIENT_BASE_URL);
     }
 
     @GetMapping("/home")
-    public ResponseEntity<?> displayHome(@CookieValue(required = false) String accessToken){
+    public ResponseEntity<?> displayHome(@CookieValue(name = "AccessToken", required = false) String accessToken,
+                                         @CookieValue(name = "RefreshToken", required = false) String refreshToken){
 
-        if (accessToken == null || accessToken.isBlank()){
+        Map<String, String> verifyMap = jwtUtils.verifyJWTs(accessToken, refreshToken);
+
+        if (verifyMap.get("state") != null) {
             return ResponseEntity.ok(homeService.displayHomeGuest());
         }
-        //TODO - 사용자 맞춤 메인 화면 정보 제공
-        return null;
+
+
+        Long usersId = JwtUtils.getUsersId(JwtUtils.verifyToken(accessToken));
+        HomeDto homeDto = homeService.displayHomeUser(usersId);
+
+        if (homeDto != null){
+            if (verifyMap.get("access_token") != null){
+                return ResponseEntity.ok(Map.of("new_access_token", verifyMap.get("access_token"),
+                        "data", homeDto));
+            }
+
+            return ResponseEntity.ok(homeDto);
+        }
+
+        return ResponseEntity.badRequest().body(Map.of("message", "잘못된 접근입니다."));
     }
 }

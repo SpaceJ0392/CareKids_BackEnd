@@ -130,8 +130,7 @@ public class JwtUtils {
     }
 
     public static Long getUsersId(DecodedJWT decodedJWT){
-        Long usersId = decodedJWT.getClaim("id").asLong();
-        return usersId;
+        return decodedJWT.getClaim("id").asLong();
     }
 
     private boolean isLogout(String accessToken) {
@@ -178,7 +177,7 @@ public class JwtUtils {
         // RefreshToken 안의 usersId 를 가져와서 user 를 찾은 후 AccessToken 생성
         Long usersId = JwtUtils.getUsersId(JwtUtils.verifyToken(refreshToken));
         RefreshToken redisRefreshToken = jwtRepository.findRefreshTokenByUsersId(usersId).orElseThrow(() -> new NullPointerException("Refresh Token이 없습니다. 재로그인해주세요."));
-        if (redisRefreshToken.getToken() == refreshToken){
+        if (Objects.equals(redisRefreshToken.getToken(), refreshToken)){
             Users users = usersRepository.findByUsersId(usersId).orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다"));
             return JwtUtils.generateAccessToken(users);
         }

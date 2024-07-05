@@ -1,11 +1,11 @@
 package com.aivle.carekids.domain.kidspolicy.repository;
 
 import com.aivle.carekids.domain.common.dto.QAgeTagDto;
+import com.aivle.carekids.domain.common.dto.QRegionAgeDto;
 import com.aivle.carekids.domain.common.dto.QRegionDto;
+import com.aivle.carekids.domain.common.dto.RegionAgeDto;
 import com.aivle.carekids.domain.kidspolicy.dto.KidsPolicyListDto;
-import com.aivle.carekids.domain.kidspolicy.dto.KidsPolicyRegionAgeDto;
 import com.aivle.carekids.domain.kidspolicy.dto.QKidsPolicyListDto;
-import com.aivle.carekids.domain.kidspolicy.dto.QKidsPolicyRegionAgeDto;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +24,10 @@ public class KidsPolicyRepositoryImpl implements KidsPolicyRepositoryCustom{
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public KidsPolicyRegionAgeDto findRandomRegionAndAgeTag() {
-        return jpaQueryFactory.select(new QKidsPolicyRegionAgeDto(
-                new QKidsPolicyListDto(kidsPolicy.createdAt, kidsPolicy.updatedAt, kidsPolicy.kidsPolicyId, kidsPolicy.kidsPolicyTitle,
-                                kidsPolicy.kidsPolicyText),
-                new QRegionDto(region.regionId, region.regionName),
-                new QAgeTagDto(ageTag.ageTagId, ageTag.ageTagName)
+    public RegionAgeDto findRandomRegionAndAgeTag() {
+        return jpaQueryFactory.select(new QRegionAgeDto(
+                new QRegionDto(kidsPolicyRegion.region.regionId, region.regionName),
+                new QAgeTagDto(kidsPolicyAgeTag.ageTag.ageTagId, ageTag.ageTagName)
                 )).from(kidsPolicy)
                 .join(kidsPolicy.kidsPolicyRegions, kidsPolicyRegion)
                 .join(kidsPolicyRegion.region, region)
