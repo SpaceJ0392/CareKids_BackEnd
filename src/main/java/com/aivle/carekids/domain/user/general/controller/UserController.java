@@ -1,16 +1,11 @@
 package com.aivle.carekids.domain.user.general.controller;
 
 import com.aivle.carekids.domain.user.dto.EmailDto;
-import com.aivle.carekids.domain.user.dto.SignUpDto;
 import com.aivle.carekids.domain.user.dto.SignUpRequestDto;
-import com.aivle.carekids.domain.user.general.jwt.JwtRepository;
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtConstants;
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils;
-import com.aivle.carekids.domain.user.general.service.CustomUserDetail;
 import com.aivle.carekids.domain.user.general.service.EmailService;
 import com.aivle.carekids.domain.user.general.service.UsersService;
-import com.aivle.carekids.domain.user.repository.UsersRepository;
-import com.aivle.carekids.global.exception.BusinessLogicException;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,16 +13,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
 import java.util.Map;
-
-import static com.aivle.carekids.global.exception.ExceptionCode.USER_NOT_AUTHENTICATED;
 
 @RestController
 @RequiredArgsConstructor

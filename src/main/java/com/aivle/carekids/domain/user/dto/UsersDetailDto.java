@@ -10,7 +10,7 @@ import java.util.List;
 
 @Setter @Getter
 @NoArgsConstructor
-public class UsersDto {
+public class UsersDetailDto {
 
     private Long usersId;
 
@@ -22,7 +22,7 @@ public class UsersDto {
 
     private List<AgeTagDto> usersAgeTagDtos;
 
-    public UsersDto(Long usersId, String usersEmail, String usersNickname, RegionDto usersRegion) {
+    public UsersDetailDto(Long usersId, String usersEmail, String usersNickname, RegionDto usersRegion) {
         this.usersId = usersId;
         this.usersEmail = usersEmail;
         this.usersNickname = usersNickname;

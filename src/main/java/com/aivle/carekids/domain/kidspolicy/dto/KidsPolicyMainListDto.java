@@ -1,6 +1,5 @@
 package com.aivle.carekids.domain.kidspolicy.dto;
 
-import com.aivle.carekids.domain.common.dto.AgeTagDto;
 import com.aivle.carekids.domain.common.dto.RegionDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -16,10 +15,7 @@ import java.util.List;
 public class KidsPolicyMainListDto{
 
     @JsonProperty("region")
-    private RegionDto regionDto;
-
-    @JsonProperty("age-tag")
-    private AgeTagDto ageTagDto;
+    private List<RegionDto> regionDto;
 
     @JsonProperty("kids-policy")
     private List<KidsPolicyListDto> kidsPolicyListDtos;

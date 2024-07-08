@@ -1,6 +1,6 @@
 package com.aivle.carekids.domain.notice.controller;
 
-import com.aivle.carekids.domain.notice.dto.PageInfoDto;
+import com.aivle.carekids.domain.common.dto.PageInfoDto;
 import com.aivle.carekids.domain.notice.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

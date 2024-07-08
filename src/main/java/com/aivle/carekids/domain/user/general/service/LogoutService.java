@@ -3,6 +3,7 @@ package com.aivle.carekids.domain.user.general.service;
 import com.aivle.carekids.domain.user.general.jwt.JwtRepository;
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtConstants;
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class LogoutService implements LogoutHandler {
+
     private final JwtRepository jwtRepository;
 
     private String secretKey = JwtConstants.SECRET_KEY;
@@ -21,13 +23,15 @@ public class LogoutService implements LogoutHandler {
     @Transactional
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        String authorization = request.getHeader("AUTHORIZATION");
 
-        if(authorization == null || authorization.startsWith("Bearer ")){
+        Cookie[] cookies = request.getCookies();
+        String accessToken = JwtUtils.getAccessTokenFromCookies(cookies);
+
+
+        if(accessToken == null || accessToken.isBlank()){
             throw new RuntimeException("access token과 함께 요청하십시오.");
         }
 
-        String accessToken = authorization.split(" ")[1];
         Long usersId = JwtUtils.getUsersId(JwtUtils.verifyToken(accessToken));
         System.out.println(usersId);
 //        try {

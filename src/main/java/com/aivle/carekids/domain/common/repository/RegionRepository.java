@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RegionRepository extends JpaRepository<Region, Long>, RegionRepositoryCustom {
 
+    Region findByRegionName(String name);
 }
