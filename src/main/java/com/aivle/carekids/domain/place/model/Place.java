@@ -57,7 +57,7 @@ public class Place extends OperateTime {
 
     private String placeKidsTools;
 
-    private String placeDayOfWeek;
+    private String placeDayType;
 
     private String placeUrl;
 

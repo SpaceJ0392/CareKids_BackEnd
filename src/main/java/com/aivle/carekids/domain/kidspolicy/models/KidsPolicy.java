@@ -30,14 +30,7 @@ public class KidsPolicy extends BaseEntity {
 
     private String kidsPolicyTarget;
 
-    private String kidsPolicyRequirement;
-
-    private String kidsPolicyRange;
-
-    private String kidsPolicySupportedSize;
-
-    private String kidsPolicySupportedDescribe;
-
+    @Column(length = 500)
     private String kidsPolicyProcess;
 
     private String kidsPolicyUrl;
@@ -51,8 +44,14 @@ public class KidsPolicy extends BaseEntity {
     @JoinColumn(name = "users_id")
     private Users users;
 
+//    @OneToMany(mappedBy = "kidsPolicy", fetch = FetchType.LAZY)
+//    private List<KidsPolicyRegionAgeTag> kidsPolicyRegionAgeTags = new ArrayList<>();
+
     @OneToMany(mappedBy = "kidsPolicy", fetch = FetchType.LAZY)
-    private List<KidsPolicyRegionAgeTag> kidsPolicyRegionAgeTags = new ArrayList<>();
+    private List<KidsPolicyRegion> kidsPolicyRegions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "kidsPolicy", fetch = FetchType.LAZY)
+    private List<KidsPolicyAgeTag> kidsPolicyAgeTags = new ArrayList<>();
 
     // * 사용자 정의 메소드 * //
     // TODO - 입력에 대한 생성 메소드 필요

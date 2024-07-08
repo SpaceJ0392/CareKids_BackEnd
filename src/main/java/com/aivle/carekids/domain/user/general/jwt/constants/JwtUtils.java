@@ -134,7 +134,7 @@ public class JwtUtils {
     }
 
     private boolean isLogout(String accessToken) {
-        Long isLogout = jwtRepository.getValues(accessToken);
+        Integer isLogout = jwtRepository.getValues(accessToken);
 
         return isLogout == -1;
     }

@@ -1,9 +1,9 @@
 package com.aivle.carekids.domain.user.repository;
 
-import com.aivle.carekids.domain.user.dto.UsersDto;
+import com.aivle.carekids.domain.user.dto.UsersDetailDto;
 
 import java.util.Optional;
 
 public interface UsersRepositoryCustom {
-    Optional<UsersDto> findUsersDetailWithRegionAndKids(Long usersId);
+    Optional<UsersDetailDto> findUsersDetailWithRegionAndKids(Long usersId);
 }

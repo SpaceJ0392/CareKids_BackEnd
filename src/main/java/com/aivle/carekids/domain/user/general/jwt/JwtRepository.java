@@ -3,11 +3,9 @@ package com.aivle.carekids.domain.user.general.jwt;
 
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtConstants;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
-
 
 import java.util.Objects;
 import java.util.Optional;
@@ -46,10 +44,10 @@ public class JwtRepository {
         redisTemplate.opsForValue().set(at, -1);
     }
 
-    public Long getValues(String at){
-        Long val = (Long) redisTemplate.opsForValue().get(at);
+    public Integer getValues(String at){
+        Integer val = (Integer) redisTemplate.opsForValue().get(at);
         if (val == null){
-            return 1L;
+            return 1;
         }
         return val;
     }

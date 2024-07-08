@@ -1,12 +1,8 @@
 package com.aivle.carekids.domain.user.general.service;
 
-import com.aivle.carekids.domain.common.dto.AgeTagDto;
-import com.aivle.carekids.domain.common.dto.RegionDto;
 import com.aivle.carekids.domain.common.models.AgeTag;
 import com.aivle.carekids.domain.common.models.Region;
-import com.aivle.carekids.domain.common.repository.AgeTagRepository;
-import com.aivle.carekids.domain.common.repository.RegionRepository;
-import com.aivle.carekids.domain.user.dto.SignUpDto;
+import com.aivle.carekids.domain.common.service.CommonService;
 import com.aivle.carekids.domain.user.dto.SignUpRequestDto;
 import com.aivle.carekids.domain.user.general.validation.SignUpValid;
 import com.aivle.carekids.domain.user.models.Kids;
@@ -35,15 +31,11 @@ public class UsersService {
 
     private final UsersRepository usersRepository;
     private final KidsRepository kidsRepository;
-    private final RegionRepository regionRepository;
-    private final AgeTagRepository ageTagRepository;
     private final SignUpValid signUpValid;
 
-    private final ModelMapper dtoModelMapper;
     private final ModelMapper entityModelMapper;
-
-
     private final PasswordEncoder passwordEncoder;
+    private final CommonService commonService;
 
     public ResponseEntity<Object>  signUp(String email, String socialType) {
         //이메일이 이메일 형식인지, social type에 우리가 가지고 있는 소셜 타입만 들어왔는지 확인
@@ -55,13 +47,7 @@ public class UsersService {
             if (!message.isEmpty()){ return ResponseEntity.badRequest().body(message); }
         }
 
-        List<RegionDto> regions = regionRepository.findAll().stream()
-                .map(r -> dtoModelMapper.map(r, RegionDto.class)).toList();
-
-        List<AgeTagDto> ageTags = ageTagRepository.findAll().stream()
-                .map(a -> dtoModelMapper.map(a, AgeTagDto.class)).toList();
-
-        return ResponseEntity.ok(new SignUpDto(ageTags,regions));
+        return ResponseEntity.ok(commonService.regionAgeTagAll());
     }
 
 

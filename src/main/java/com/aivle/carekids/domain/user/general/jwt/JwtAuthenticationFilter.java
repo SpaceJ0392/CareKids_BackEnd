@@ -43,8 +43,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
     private boolean isLogout(String accessToken) {
-        Long isLogout = jwtRepository.getValues(accessToken);
-        return isLogout == -1;
+        Integer values = jwtRepository.getValues(accessToken);
+        return values == -1;
     }
 
     @Override

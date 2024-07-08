@@ -1,7 +1,5 @@
-package com.aivle.carekids.domain.user.dto;
+package com.aivle.carekids.domain.common.dto;
 
-import com.aivle.carekids.domain.common.dto.AgeTagDto;
-import com.aivle.carekids.domain.common.dto.RegionDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +9,7 @@ import java.util.List;
 
 @Setter @Getter
 @AllArgsConstructor
-public class SignUpDto {
+public class RegionAgeTagListDto {
     @JsonProperty("age-tag")
     private List<AgeTagDto> ageTag;
 
