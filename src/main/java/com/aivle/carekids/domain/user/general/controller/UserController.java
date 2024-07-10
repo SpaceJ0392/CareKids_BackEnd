@@ -1,6 +1,7 @@
 package com.aivle.carekids.domain.user.general.controller;
 
 import com.aivle.carekids.domain.user.dto.EmailDto;
+import com.aivle.carekids.domain.user.dto.NickNameValidDto;
 import com.aivle.carekids.domain.user.dto.SignUpRequestDto;
 import com.aivle.carekids.domain.user.dto.UsersDetailDto;
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtConstants;
@@ -56,6 +57,12 @@ public class UserController {
     public ResponseEntity<Map<String, String>> signUpRequest(@RequestBody @Valid SignUpRequestDto signUpData) throws URISyntaxException {
         return userService.signUpRequest(signUpData);
     }
+
+    @PostMapping("/signup/auth-nickname")
+    public  ResponseEntity<?> checkNickname(@RequestBody NickNameValidDto nickNameValidDto){
+        return userService.checkNickName(nickNameValidDto);
+    }
+
 
     @GetMapping("/user-detail")
     public ResponseEntity<?> displayUsersDetail(@CookieValue(name = "AccessToken") String accessToken,

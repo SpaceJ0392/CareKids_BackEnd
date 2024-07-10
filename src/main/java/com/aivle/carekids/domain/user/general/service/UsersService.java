@@ -3,6 +3,7 @@ package com.aivle.carekids.domain.user.general.service;
 import com.aivle.carekids.domain.common.models.AgeTag;
 import com.aivle.carekids.domain.common.models.Region;
 import com.aivle.carekids.domain.common.service.CommonService;
+import com.aivle.carekids.domain.user.dto.NickNameValidDto;
 import com.aivle.carekids.domain.user.dto.SignUpRequestDto;
 import com.aivle.carekids.domain.user.dto.UsersDetailDto;
 import com.aivle.carekids.domain.user.general.validation.SignUpValid;
@@ -90,5 +91,15 @@ public class UsersService {
     public UsersDetailDto displayUsersDetail(Long usersId){
         return  usersRepository.findUsersDetailWithRegionAndKids(usersId)
                 .orElse(null);
+    }
+
+    public ResponseEntity<?> checkNickName(NickNameValidDto nickNameValidDto) {
+
+        Map<String, String> message = new HashMap<>(signUpValid.nickNameValidation(nickNameValidDto.getNickName()));
+        if (message.isEmpty()){
+            return ResponseEntity.ok(Map.of("message", "중복된 닉네임이 존재하지 않습니다."));
+        }
+
+        return ResponseEntity.badRequest().body(message);
     }
 }
