@@ -4,7 +4,7 @@ import com.aivle.carekids.domain.common.models.BaseCreatedAt;
 import com.aivle.carekids.domain.common.models.Region;
 import com.aivle.carekids.domain.kidspolicy.models.KidsPolicy;
 import com.aivle.carekids.domain.notice.models.Notice;
-import com.aivle.carekids.domain.playInfo.models.PlayInfo;
+import com.aivle.carekids.domain.playInfo.model.PlayInfo;
 import com.aivle.carekids.domain.question.models.Question;
 import com.aivle.carekids.domain.user.dto.SignUpRequestDto;
 import jakarta.persistence.*;

@@ -1,4 +1,4 @@
-package com.aivle.carekids.domain.playInfo.models;
+package com.aivle.carekids.domain.playInfo.model;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
