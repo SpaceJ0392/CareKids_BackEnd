@@ -1,4 +1,4 @@
-package com.aivle.carekids.domain.playInfo.models;
+package com.aivle.carekids.domain.playInfo.model;
 
 import com.aivle.carekids.domain.common.models.AgeTag;
 import com.aivle.carekids.domain.common.models.BaseEntity;

@@ -12,6 +12,7 @@ import com.aivle.carekids.domain.user.models.Users;
 import com.aivle.carekids.domain.user.repository.KidsRepository;
 import com.aivle.carekids.domain.user.repository.UsersRepository;
 import com.aivle.carekids.global.Variable.GlobelVar;
+import com.aivle.carekids.global.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -87,6 +88,11 @@ public class UsersService {
         return ResponseEntity.created(new URI(GlobelVar.CLIENT_BASE_URL + "/login")).body(message);
     }
 
+    public Users findByUsersId(Long usersId){
+        Users users = usersRepository.findByUsersId(usersId)
+                .orElseThrow(() -> new UserNotFoundException("미 등록 유저입니다."));
+        return users;
+    }
 
     public UsersDetailDto displayUsersDetail(Long usersId){
         return  usersRepository.findUsersDetailWithRegionAndKids(usersId)

@@ -9,16 +9,17 @@ import lombok.Setter;
 
 import java.time.LocalTime;
 
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
-public class HospitalTimeDto extends OperateTimeDto {
+public class HospitalOperateTimeDto extends OperateTimeDto {
 
     @JsonIgnore
     private Long hospitalId;
 
-    public HospitalTimeDto(DayType dayType, LocalTime startTime, LocalTime endTime, Long hospitalId) {
+    public HospitalOperateTimeDto(DayType dayType, LocalTime startTime, LocalTime endTime, Long hospitalId) {
         super(dayType.getDayType(), startTime, endTime);
         this.hospitalId = hospitalId;
     }
+
 }

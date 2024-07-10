@@ -2,7 +2,7 @@ package com.aivle.carekids.domain.common.models;
 
 import com.aivle.carekids.domain.kidspolicy.models.KidsPolicyAgeTag;
 import com.aivle.carekids.domain.kidspolicy.models.KidsPolicyRegionAgeTag;
-import com.aivle.carekids.domain.playInfo.models.PlayInfo;
+import com.aivle.carekids.domain.playInfo.model.PlayInfo;
 import com.aivle.carekids.domain.user.models.Kids;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
