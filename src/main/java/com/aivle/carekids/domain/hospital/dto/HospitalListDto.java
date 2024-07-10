@@ -19,6 +19,15 @@ public class HospitalListDto {
     @JsonProperty("name")
     private String hospitalName;
 
+    @JsonProperty("address")
+    private String hospitalAddress;
+
+    @JsonProperty("new-address")
+    private String hospitalNewaddress;
+
+    @JsonProperty("phone")
+    private String hospitalPhone;
+
     @JsonProperty("type")
     private String hospitalType;
 
@@ -26,12 +35,14 @@ public class HospitalListDto {
     private RegionDto hospitalRegion;
 
     @JsonProperty("operate-time")
-    private List<HospitalTimeDto> operateTimeDto;
+    private List<HospitalOperateTimeDto> hospitalOperateTimeDto;
 
-    public HospitalListDto(Long hospitalId, String hospitalName, HospitalType hospitalType,
-                           RegionDto hospitalRegion) {
+    public HospitalListDto(Long hospitalId, String hospitalName, String hospitalAddress, String hospitalNewaddress, String hospitalPhone, HospitalType hospitalType, RegionDto hospitalRegion) {
         this.hospitalId = hospitalId;
         this.hospitalName = hospitalName;
+        this.hospitalAddress = hospitalAddress;
+        this.hospitalNewaddress = hospitalNewaddress;
+        this.hospitalPhone = hospitalPhone;
         this.hospitalType = hospitalType.getHospitalType();
         this.hospitalRegion = hospitalRegion;
     }

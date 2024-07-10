@@ -4,7 +4,7 @@ import com.aivle.carekids.domain.common.models.BaseCreatedAt;
 import com.aivle.carekids.domain.common.models.Region;
 import com.aivle.carekids.domain.kidspolicy.models.KidsPolicy;
 import com.aivle.carekids.domain.notice.models.Notice;
-import com.aivle.carekids.domain.playInfo.models.PlayInfo;
+import com.aivle.carekids.domain.playInfo.model.PlayInfo;
 import com.aivle.carekids.domain.question.models.Question;
 import com.aivle.carekids.domain.user.dto.SignUpRequestDto;
 import jakarta.persistence.*;
@@ -79,6 +79,10 @@ public class Users extends BaseCreatedAt {
     public void setRegionInfo(Region region){
         this.region = region;
         region.getUsers().add(this);
+    }
+
+    public void changeUsersPassword(String usersPassword){
+        this.usersPassword = usersPassword;
     }
 
     public static Users createNewUser(SignUpRequestDto signUpData){

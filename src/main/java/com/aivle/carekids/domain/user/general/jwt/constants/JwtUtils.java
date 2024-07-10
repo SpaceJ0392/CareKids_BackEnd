@@ -122,7 +122,7 @@ public class JwtUtils {
     }
 
     public static UsernamePasswordAuthenticationToken getAuthenticationToken(DecodedJWT decodedJWT) {
-        String id = decodedJWT.getClaim("id").asString();
+        Long id = decodedJWT.getClaim("id").asLong();
         String role = decodedJWT.getClaim("role").asString();
 
         return new UsernamePasswordAuthenticationToken(id, null,
@@ -153,7 +153,7 @@ public class JwtUtils {
         if (isTokenExpired(accessToken)){
             Cookie access_cookie = renewToken(refreshToken);
             verify_infos.put("message", "액세스 토큰이 만료되어, 재발급된 사용자입니다.");
-            verify_infos.put("access_cookie", String.valueOf(access_cookie));
+            verify_infos.put("access_token", String.valueOf(access_cookie));
 
             // Controller에서 response.addCookie(access_cookie); 필요
         }

@@ -19,15 +19,10 @@ public class OperateTimeDto {
     private LocalTime endTime;
 
 
-
-    public OperateTimeDto(LocalTime startTime, LocalTime endTime) {
-        this.startTime = startTime;
-        this.endTime = endTime;
-    }
-
     public OperateTimeDto(String dayType, LocalTime startTime, LocalTime endTime) {
         this.dayType = dayType;
         this.startTime = startTime;
         this.endTime = endTime;
     }
+
 }

@@ -94,8 +94,6 @@ public class KidsPolicyRepositoryImpl implements KidsPolicyRepositoryCustom {
         JPAQuery<Long> countQuery = jpaQueryFactory.select(kidsPolicy.count()).from(kidsPolicyRegion)
                 .join(kidsPolicyRegion.kidsPolicy, kidsPolicy)
                 .where(regionIn(regionId))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
                 .distinct();
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);

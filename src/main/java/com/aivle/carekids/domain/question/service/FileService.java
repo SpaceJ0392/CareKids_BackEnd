@@ -62,7 +62,7 @@ public class FileService {
             newQuestionFiles.add(questionFile);
         });
 
-        questionFileRepository.saveAll(newQuestionFiles);
+        if (!newQuestionFiles.isEmpty()) { questionFileRepository.saveAll(newQuestionFiles); }
     }
 
     public QuestionFileDto uploadFile(String usersNickname, MultipartFile file){

@@ -25,6 +25,7 @@ public class PlayInfoListDto extends BaseDto {
     @JsonRawValue
     private String playInfoText;
 
+
     @QueryProjection
     public PlayInfoListDto(LocalDateTime createdAt, LocalDateTime updatedAt, Long playInfoId, String playInfoTitle, String playInfoText) {
         super(createdAt, updatedAt);
@@ -32,4 +33,5 @@ public class PlayInfoListDto extends BaseDto {
         this.playInfoTitle = playInfoTitle;
         this.playInfoText = playInfoText;
     }
+
 }

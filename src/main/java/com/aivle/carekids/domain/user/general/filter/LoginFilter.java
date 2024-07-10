@@ -27,7 +27,6 @@ import java.io.IOException;
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
-//    private final JwtUtil jwtUtil;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -46,11 +45,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
 
-//        System.out.println("success");
-//        System.out.println("this is request : "+request);
-//        System.out.println("this is chain : "+chain);
-//        System.out.println("this is authResult : "+authResult);
-
         Users users = ((CustomUserDetail) authResult.getPrincipal()).getUsers();
 
         // 인증이 성공한 경우 토큰을 생성하여, 응답 헤더에 담아 클라이언트에게 전달
@@ -62,7 +56,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         jwtService.save(new RefreshToken(users.getUsersId(), refreshToken));
 
         // 헤더로 accessToken 전달
-//        response.addHeader(JwtConstants.ACCESS, JwtConstants.JWT_TYPE + accessToken);
+        response.addHeader(JwtConstants.ACCESS, JwtConstants.JWT_TYPE + accessToken);
 
         Cookie access_cookie = new Cookie(JwtConstants.ACCESS, accessToken);
         access_cookie.setMaxAge((int) (JwtConstants.ACCESS_EXP_TIME / 1000));     // 5분 설정
