@@ -3,22 +3,24 @@ package com.aivle.carekids.domain.common.service;
 import com.aivle.carekids.domain.common.dto.AgeTagDto;
 import com.aivle.carekids.domain.common.dto.HomeDto;
 import com.aivle.carekids.domain.common.dto.RegionDto;
+import com.aivle.carekids.domain.common.repository.RegionRepository;
 import com.aivle.carekids.domain.kidspolicy.dto.KidsPolicyListDto;
 import com.aivle.carekids.domain.kidspolicy.dto.KidsPolicyMainListDto;
-import com.aivle.carekids.domain.common.dto.RegionAgeDto;
 import com.aivle.carekids.domain.kidspolicy.repository.KidsPolicyRepository;
 import com.aivle.carekids.domain.notice.dto.NoticeDto;
 import com.aivle.carekids.domain.notice.repository.NoticeRepository;
 import com.aivle.carekids.domain.playInfo.dto.PlayInfoListDto;
 import com.aivle.carekids.domain.playInfo.dto.PlayInfoMainListDto;
 import com.aivle.carekids.domain.playInfo.repository.PlayInfoRepository;
-import com.aivle.carekids.domain.user.dto.UsersDto;
+import com.aivle.carekids.domain.user.dto.UsersDetailDto;
 import com.aivle.carekids.domain.user.repository.UsersRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -30,42 +32,44 @@ public class HomeService {
 
     private final UsersRepository usersRepository;
 
+    private final RegionRepository regionRepository;
     private final PlayInfoRepository playInfoRepository;
     private final NoticeRepository noticeRepository;
     private final KidsPolicyRepository kidsPolicyRepository;
 
     private final ModelMapper dtoModelMapper;
+    private final ObjectMapper objectMapper;
 
     public HomeDto displayHomeGuest() {
-        // 랜덤 지역, 랜덤 연령대 데이터 5개 추출
 
+        // 랜덤 나이대 놀이 정보 4개 추출
         AgeTagDto randomAgeTagInPlayInfo = playInfoRepository.findRandomAgeTagInPlayInfo();
-        List<PlayInfoListDto> playInfoList = playInfoRepository.findTop4ByAgeTagOrderByUpdatedAtDesc(randomAgeTagInPlayInfo.getAgeTagid())
-                .stream().map(p -> dtoModelMapper.map(p, PlayInfoListDto.class)).toList();
+        List<PlayInfoListDto> playInfoList = playInfoRepository.findTop4ByAgeTagOrderByUpdatedAtDesc(randomAgeTagInPlayInfo.getAgeTagId());
+        //objectMapper.enable(SerializationFeature.WRITE_NL)
+
 
         PlayInfoMainListDto playInfoMainList = new PlayInfoMainListDto(playInfoList, randomAgeTagInPlayInfo);
 
+        // 서울 전체 육아 정보 4개 추출
+        List<KidsPolicyListDto> kidsPolicyList = kidsPolicyRepository.findTop4ByRegionOrderByUpdatedAtDesc(null);
 
-        RegionAgeDto randomRegionAndAgeTag = kidsPolicyRepository.findRandomRegionAndAgeTag();
-        List<KidsPolicyListDto> kidsPolicyList = kidsPolicyRepository.findTop5ByRegionAndAgeTagOrderByUpdatedAtDesc(
-                randomRegionAndAgeTag.getRegionDto().getRegionId(), randomRegionAndAgeTag.getAgeTagDto().getAgeTagid()
-                ).stream()
-                .map(k -> dtoModelMapper.map(k, KidsPolicyListDto.class)).toList();
-
+        List<RegionDto> regionList = new ArrayList<>();
+        RegionDto regionBase = dtoModelMapper.map(regionRepository.findByRegionName("전체"), RegionDto.class);
+        regionList.add(regionBase);
         KidsPolicyMainListDto kidsPolicyMainListDto = new KidsPolicyMainListDto(
-                randomRegionAndAgeTag.getRegionDto(), randomRegionAndAgeTag.getAgeTagDto(),
-                kidsPolicyList
+                regionList, kidsPolicyList
         );
 
-
+        // 공지 사항 출력 - 수정 일자 순 5개.
         List<NoticeDto> noticeList = noticeRepository.findTop5ByOrderByUpdatedAtDesc().stream()
                 .map(n -> dtoModelMapper.map(n, NoticeDto.class)).toList();
 
         return new HomeDto(kidsPolicyMainListDto, noticeList , playInfoMainList);
+
     }
 
     public HomeDto displayHomeUser(Long usersId) {
-        Optional<UsersDto> users = usersRepository.findUsersDetailWithRegionAndKids(usersId);
+        Optional<UsersDetailDto> users = usersRepository.findUsersDetailWithRegionAndKids(usersId);
 
         if (users.isEmpty()){ return null; }
 
@@ -75,19 +79,20 @@ public class HomeService {
         Random random = new Random();
         AgeTagDto customAgeTag = kidsAgeTags.get(random.nextInt(kidsAgeTags.size()));
 
-        // 여러 아이가 있는 경우에도, 랜덤으로 여러 자녀의 연령대 중 pick 1
-        List<PlayInfoListDto> playInfoList = playInfoRepository.findTop4ByAgeTagOrderByUpdatedAtDesc(customAgeTag.getAgeTagid())
-                .stream().map(p -> dtoModelMapper.map(p, PlayInfoListDto.class)).toList();
+        // 여러 아이가 있는 경우, 랜덤으로 여러 자녀의 연령대 중 pick 1
+        List<PlayInfoListDto> playInfoList = playInfoRepository.findTop4ByAgeTagOrderByUpdatedAtDesc(customAgeTag.getAgeTagId());
         PlayInfoMainListDto playInfoMainList = new PlayInfoMainListDto(playInfoList, customAgeTag);
 
-        // 육아 정책 리스트 지역 기준으로...
-        List<KidsPolicyListDto> kidsPolicyList = kidsPolicyRepository.findTop5ByRegionAndAgeTagOrderByUpdatedAtDesc(
-                        usersRegion.getRegionId(), customAgeTag.getAgeTagid()
-                ).stream()
-                .map(k -> dtoModelMapper.map(k, KidsPolicyListDto.class)).toList();
-        KidsPolicyMainListDto kidsPolicyMainListDto = new KidsPolicyMainListDto(usersRegion, customAgeTag, kidsPolicyList);
+        // 육아 정책 리스트 (서울 전체)
+        List<KidsPolicyListDto> kidsPolicyList = kidsPolicyRepository.findTop4ByRegionOrderByUpdatedAtDesc(usersRegion.getRegionId());
 
-        // 공지 사항 (그대로)
+        List<RegionDto> regionList = new ArrayList<>();
+        regionList.add(dtoModelMapper.map(regionRepository.findByRegionName("전체"), RegionDto.class));
+        regionList.add(usersRegion);
+
+        KidsPolicyMainListDto kidsPolicyMainListDto = new KidsPolicyMainListDto(regionList, kidsPolicyList);
+
+        // 공지 사항
         List<NoticeDto> noticeList = noticeRepository.findTop5ByOrderByUpdatedAtDesc().stream()
                 .map(n -> dtoModelMapper.map(n, NoticeDto.class)).toList();
 
