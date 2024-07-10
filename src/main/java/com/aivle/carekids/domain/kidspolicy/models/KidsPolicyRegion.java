@@ -24,4 +24,5 @@ public class KidsPolicyRegion {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
     private Region region;
+
 }

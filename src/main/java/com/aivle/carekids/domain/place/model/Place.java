@@ -8,14 +8,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@EntityListeners(AuditingEntityListener.class)
 @SQLDelete(sql = "UPDATE place SET deleted = true WHERE id=?")
 @SQLRestriction("deleted=false")
 public class Place extends OperateTime {
@@ -52,7 +57,7 @@ public class Place extends OperateTime {
 
     private String placeKidsTools;
 
-    private String placeDayOfWeek;
+    private String placeDayType;
 
     private String placeUrl;
 
@@ -70,11 +75,16 @@ public class Place extends OperateTime {
 
     private boolean deleted = false;
 
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "place")
     private List<PlaceCate> placeCates = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "place")
     private List<PlaceKeyword> placeKeywords = new ArrayList<>();
-
 
 }

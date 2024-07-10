@@ -1,8 +1,8 @@
 package com.aivle.carekids.domain.notice.service;
 
+import com.aivle.carekids.domain.common.dto.PageInfoDto;
 import com.aivle.carekids.domain.notice.dto.NoticeDto;
 import com.aivle.carekids.domain.notice.dto.NoticeListDto;
-import com.aivle.carekids.domain.notice.dto.PageInfoDto;
 import com.aivle.carekids.domain.notice.models.Notice;
 import com.aivle.carekids.domain.notice.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,17 +23,19 @@ import java.util.Map;
 public class NoticeService {
 
     private final NoticeRepository noticeRepository;
+    private final ModelMapper dtoModelMapper;
 
     public PageInfoDto listNotice(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
 
         Page<Notice> noticePage = noticeRepository.findAllByOrderByUpdatedAtDesc(pageable);
-        List<NoticeListDto> noticeListDtoList = noticePage.map(notice
-                -> new NoticeListDto(
-                notice.getNoticeId(), notice.getNoticeTitle(), notice.getCreatedAt(), notice.getUpdatedAt()
-        )).toList();
+        List<NoticeListDto> noticeListDtoList = noticePage.map(elements ->
+                new NoticeListDto(elements.getNoticeId(), elements.getNoticeTitle(),
+                        elements.getCreatedAt(), elements.getUpdatedAt())).toList();
 
-        return new PageInfoDto(new PageInfoDto.PageInfo(noticePage.getTotalPages(), page + 1, size), noticeListDtoList);
+
+        return new PageInfoDto(new PageInfoDto.PageInfo(noticePage.getTotalPages(), page + 1, size, noticePage.getNumberOfElements()),
+                null, null, noticeListDtoList);
     }
 
     public ResponseEntity<?> noticeDetail(Long id) {

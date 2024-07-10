@@ -29,6 +29,7 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
         format_sql: true      # 쿼리 로그 포맷 (정렬)
         show_sql: true        # 쿼리 로그 출력
+        default_batch_fetch_size: 20
 
     defer-datasource-initialization: true
 
@@ -43,5 +44,10 @@ spring:
       host: localhost
       port: 6379
 
+
+
   jwt:
     secret: ${SECRET_KEY}
+
+file:
+  upload-path: "C:\\workspace\\carekids\\uploads"

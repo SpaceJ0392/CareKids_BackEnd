@@ -67,7 +67,7 @@ public class Users extends BaseCreatedAt {
     private List<KidsPolicy> kidsPolicys = new ArrayList<>();
 
     @Builder
-    public Users(String usersEmail, String usersPassword, String usersNickname, Role usersRole, SocialType usersSocialType) {
+    private Users(String usersEmail, String usersPassword, String usersNickname, Role usersRole, SocialType usersSocialType) {
         this.usersEmail = usersEmail;
         this.usersPassword = usersPassword;
         this.usersNickname = usersNickname;

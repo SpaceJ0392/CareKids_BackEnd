@@ -1,6 +1,6 @@
 package com.aivle.carekids.domain.kindergarten.model;
 
-import com.aivle.carekids.domain.common.models.OperateDate;
+import com.aivle.carekids.domain.common.models.BaseEntity;
 import com.aivle.carekids.domain.common.models.Region;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -10,13 +10,15 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @SQLDelete(sql = "UPDATE question SET deleted = true WHERE id=?")
 @SQLRestriction("deleted=false")
-public class Kindergarten extends OperateDate {
+public class Kindergarten extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,4 +43,8 @@ public class Kindergarten extends OperateDate {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
     private Region region;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "kindergarten")
+    private List<KindergartenOperateTime> kindergartenOperateTimes = new ArrayList<>();
+
 }

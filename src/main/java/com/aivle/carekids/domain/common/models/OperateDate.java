@@ -9,5 +9,5 @@ import lombok.Getter;
 @Getter
 public abstract class OperateDate extends OperateTime{
     @Enumerated(EnumType.STRING)
-    private DayOfWeek dayOfWeek;
+    private DayType dayType;
 }

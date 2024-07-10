@@ -1,13 +1,16 @@
-package com.aivle.carekids.domain.notice.dto;
+package com.aivle.carekids.domain.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
-@Setter @Getter
+@Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class PageInfoDto {
 
@@ -21,8 +24,19 @@ public class PageInfoDto {
 
         @JsonProperty("size")
         private int size;
+
+        @JsonProperty("count")
+        private int count;
     }
 
     private PageInfo pageInfo;
-    private List<NoticeListDto> pageList;
+
+    @JsonProperty("region")
+    private RegionDto regionDto;
+
+    @JsonProperty("age-tag")
+    private AgeTagDto ageTagDto;
+
+    private List<?> pageList;
 }
+
