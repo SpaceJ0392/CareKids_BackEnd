@@ -7,7 +7,6 @@ import com.aivle.carekids.domain.common.repository.RegionRepository;
 import com.aivle.carekids.domain.kidspolicy.dto.KidsPolicyListDto;
 import com.aivle.carekids.domain.kidspolicy.dto.KidsPolicyMainListDto;
 import com.aivle.carekids.domain.kidspolicy.repository.KidsPolicyRepository;
-import com.aivle.carekids.domain.notice.dto.NoticeDto;
 import com.aivle.carekids.domain.notice.repository.NoticeRepository;
 import com.aivle.carekids.domain.playInfo.dto.PlayInfoListDto;
 import com.aivle.carekids.domain.playInfo.dto.PlayInfoMainListDto;
@@ -60,11 +59,8 @@ public class HomeService {
                 regionList, kidsPolicyList
         );
 
-        // 공지 사항 출력 - 수정 일자 순 5개.
-        List<NoticeDto> noticeList = noticeRepository.findTop5ByOrderByUpdatedAtDesc().stream()
-                .map(n -> dtoModelMapper.map(n, NoticeDto.class)).toList();
 
-        return new HomeDto(kidsPolicyMainListDto, noticeList , playInfoMainList);
+        return new HomeDto(kidsPolicyMainListDto, playInfoMainList);
 
     }
 
@@ -92,10 +88,6 @@ public class HomeService {
 
         KidsPolicyMainListDto kidsPolicyMainListDto = new KidsPolicyMainListDto(regionList, kidsPolicyList);
 
-        // 공지 사항
-        List<NoticeDto> noticeList = noticeRepository.findTop5ByOrderByUpdatedAtDesc().stream()
-                .map(n -> dtoModelMapper.map(n, NoticeDto.class)).toList();
-
-        return new HomeDto(kidsPolicyMainListDto, noticeList, playInfoMainList);
+        return new HomeDto(kidsPolicyMainListDto, playInfoMainList);
     }
 }

@@ -4,6 +4,7 @@ import com.aivle.carekids.domain.common.models.AgeTag;
 import com.aivle.carekids.domain.common.models.Region;
 import com.aivle.carekids.domain.common.service.CommonService;
 import com.aivle.carekids.domain.user.dto.SignUpRequestDto;
+import com.aivle.carekids.domain.user.dto.UsersDetailDto;
 import com.aivle.carekids.domain.user.general.validation.SignUpValid;
 import com.aivle.carekids.domain.user.models.Kids;
 import com.aivle.carekids.domain.user.models.Users;
@@ -19,10 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -89,4 +87,8 @@ public class UsersService {
     }
 
 
+    public UsersDetailDto displayUsersDetail(Long usersId){
+        return  usersRepository.findUsersDetailWithRegionAndKids(usersId)
+                .orElse(null);
+    }
 }

@@ -25,7 +25,7 @@ public class KidsPolicyController {
     public ResponseEntity<?> displayKidsPolicy(@CookieValue(name = "AccessToken", required = false) String accessToken,
                                                @CookieValue(name = "RefreshToken", required = false) String refreshToken,
                                                @RequestParam(value = "page", defaultValue = "1")int page,
-                                               @RequestParam(value = "size", defaultValue = "20")int size){
+                                               @RequestParam(value = "size", defaultValue = "12")int size){
 
         Map<String, String> verifyMap = jwtUtils.verifyJWTs(accessToken, refreshToken);
 
@@ -60,7 +60,7 @@ public class KidsPolicyController {
     @PostMapping("/kids-policy/search")
     public ResponseEntity<Object> searchKidsPolicy(@RequestBody SearchRegionAgeTagDto searchRegionAgeTagDto,
                                                    @RequestParam(value = "page", defaultValue = "1")int page,
-                                                   @RequestParam(value = "size", defaultValue = "20")int size){
+                                                   @RequestParam(value = "size", defaultValue = "12")int size){
 
         PageInfoDto searchKidsPolicyListDto = kidsPolicyService.searchKidsPolicy(searchRegionAgeTagDto, page - 1, size);
         if (searchKidsPolicyListDto == null) {
