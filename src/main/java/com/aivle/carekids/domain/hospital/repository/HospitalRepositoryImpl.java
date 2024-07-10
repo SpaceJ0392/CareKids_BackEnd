@@ -144,6 +144,7 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
 
     @Override
     public Page<HospitalListDto> searchHospitalByFilter(SearchRegionDto searchRegionDto, Pageable pageable) {
+
         List<HospitalListDto> content = jpaQueryFactory.select(
                         Projections.constructor(
                                 HospitalListDto.class,
@@ -170,7 +171,7 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
     }
 
     private BooleanExpression regionEq(Long regionId) {
-        return isEmpty(regionId) ? null : hospital.region.regionId.eq(regionId);
+        return isEmpty(regionId) || regionId == 26 ? null : hospital.region.regionId.eq(regionId);
     }
 
     private BooleanExpression queryContains(String query) {

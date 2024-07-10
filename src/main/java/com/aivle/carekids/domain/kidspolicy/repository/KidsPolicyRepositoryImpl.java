@@ -206,7 +206,7 @@ public class KidsPolicyRepositoryImpl implements KidsPolicyRepositoryCustom {
     }
 
     private BooleanExpression regionIn(Long regionId) {
-        return isEmpty(regionId) ? null : kidsPolicyRegion.region.regionName.eq("전체").or(kidsPolicyRegion.region.regionId.eq(regionId));
+        return isEmpty(regionId) || regionId == 26 ? null : kidsPolicyRegion.region.regionId.eq(regionId);
     }
 
     private BooleanExpression ageTagIn(List<Long> ageTagIds) {

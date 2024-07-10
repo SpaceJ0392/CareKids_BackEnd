@@ -48,7 +48,7 @@ public class QuestionService {
 
 
         return new PageInfoDto(new PageInfoDto.PageInfo(questionPage.getTotalPages(), page + 1, size, questionPage.getNumberOfElements()),
-                questionListDtoList);
+                null, null, questionListDtoList);
     }
 
     @Transactional
@@ -76,9 +76,7 @@ public class QuestionService {
         Question saveQuestion = questionRepository.save(newQuestion);
 
         //파일 저장
-        if (multipartFiles != null) {
-                fileService.saveFile(saveQuestion, multipartFiles, users.get().getUsersNickname());
-        }
+        fileService.saveFile(saveQuestion, multipartFiles, users.get().getUsersNickname());
 
         return Map.of("message", "게시글이 생성되었습니다.");
     }

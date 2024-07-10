@@ -2,6 +2,7 @@ package com.aivle.carekids.domain.question.dto;
 
 import com.aivle.carekids.domain.user.dto.UsersLightDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRawValue;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,6 +18,7 @@ public class QuestionDetailDto {
     private String questionTitle;
 
     @JsonProperty("text")
+    @JsonRawValue
     private String questionText;
 
     @JsonProperty("secret")

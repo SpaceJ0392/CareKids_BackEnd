@@ -30,6 +30,13 @@ public class PageInfoDto {
     }
 
     private PageInfo pageInfo;
+
+    @JsonProperty("region")
+    private RegionDto regionDto;
+
+    @JsonProperty("age-tag")
+    private AgeTagDto ageTagDto;
+
     private List<?> pageList;
 }
 

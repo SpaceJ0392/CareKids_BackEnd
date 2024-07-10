@@ -50,7 +50,8 @@ public class HomeController {
         Map<String, String> verifyMap = jwtUtils.verifyJWTs(accessToken, refreshToken);
 
         if (verifyMap.get("state") != null) {
-            return ResponseEntity.ok(homeService.displayHomeGuest());
+            HomeDto homeDto = homeService.displayHomeGuest();
+            return ResponseEntity.ok(homeDto);
         }
 
         HttpHeaders headers = new HttpHeaders();

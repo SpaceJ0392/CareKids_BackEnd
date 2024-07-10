@@ -14,12 +14,16 @@ import java.util.List;
 @NoArgsConstructor
 public class HospitalListDto {
 
+    @JsonProperty("id")
     private Long hospitalId;
 
+    @JsonProperty("name")
     private String hospitalName;
 
+    @JsonProperty("type")
     private String hospitalType;
 
+    @JsonProperty("region")
     private RegionDto hospitalRegion;
 
     @JsonProperty("operate-time")

@@ -3,12 +3,14 @@ package com.aivle.carekids.domain.hospital.service;
 import com.aivle.carekids.domain.common.dto.PageInfoDto;
 import com.aivle.carekids.domain.common.dto.RegionDto;
 import com.aivle.carekids.domain.common.dto.SearchRegionDto;
+import com.aivle.carekids.domain.common.repository.RegionRepository;
 import com.aivle.carekids.domain.hospital.dto.HospitalDetailDto;
 import com.aivle.carekids.domain.hospital.dto.HospitalListDto;
 import com.aivle.carekids.domain.hospital.repository.HospitalRepository;
 import com.aivle.carekids.domain.user.dto.UsersDetailDto;
 import com.aivle.carekids.domain.user.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,21 +25,25 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class HospitalService {
 
+    private final RegionRepository regionRepository;
     private final HospitalRepository hospitalRepository;
     private final UsersRepository usersRepository;
+
+    private final ModelMapper dtoModelMapper;
 
     public com.aivle.carekids.domain.common.dto.PageInfoDto displayHospitalGuest(int page, int size) {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<HospitalListDto> hospitalPage = hospitalRepository.findAllByOrderByUpdatedAtDescByPageByRegion(null, pageable);
+        RegionDto regionDto = dtoModelMapper.map(regionRepository.findByRegionName("전체"), RegionDto.class);
+        Page<HospitalListDto> hospitalPage = hospitalRepository.findAllByOrderByUpdatedAtDescByPageByRegion(regionDto.getRegionId(), pageable);
 
         return new PageInfoDto(new PageInfoDto.PageInfo(
                 hospitalPage.getTotalPages(),
                 hospitalPage.getNumber() + 1,
                 hospitalPage.getSize(),
                 hospitalPage.getNumberOfElements()
-        ), hospitalPage.getContent());
+        ), regionDto, null, hospitalPage.getContent());
 
     }
 
@@ -56,7 +62,7 @@ public class HospitalService {
                 hospitalPage.getNumber() + 1,
                 hospitalPage.getSize(),
                 hospitalPage.getNumberOfElements()
-        ), hospitalPage.getContent());
+        ), users.get().getUsersRegion(),users.get().getUsersAgeTagDtos().get(0), hospitalPage.getContent());
     }
 
     public HospitalDetailDto hospitalDetail(Long hospitalId) {
@@ -75,6 +81,6 @@ public class HospitalService {
                 searchHospitalListDtos.getNumber() + 1,
                 searchHospitalListDtos.getSize(),
                 searchHospitalListDtos.getNumberOfElements()
-        ), searchHospitalListDtos.getContent());
+        ), searchRegionDto.getRegionDto(), null, searchHospitalListDtos.getContent());
     }
 }

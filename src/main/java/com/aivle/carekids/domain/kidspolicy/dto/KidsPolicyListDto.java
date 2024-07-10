@@ -4,6 +4,7 @@ import com.aivle.carekids.domain.common.dto.AgeTagDto;
 import com.aivle.carekids.domain.common.dto.BaseDto;
 import com.aivle.carekids.domain.common.dto.RegionDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRawValue;
 import com.querydsl.core.annotations.QueryProjection;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
@@ -24,6 +25,7 @@ public class KidsPolicyListDto extends BaseDto {
     private String kidsPolicyTitle;
 
     @JsonProperty("description")
+    @JsonRawValue
     private String kidsPolicyText;
 
     @JsonProperty("region")

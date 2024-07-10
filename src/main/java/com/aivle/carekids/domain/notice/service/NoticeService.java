@@ -35,7 +35,7 @@ public class NoticeService {
 
 
         return new PageInfoDto(new PageInfoDto.PageInfo(noticePage.getTotalPages(), page + 1, size, noticePage.getNumberOfElements()),
-                noticeListDtoList);
+                null, null, noticeListDtoList);
     }
 
     public ResponseEntity<?> noticeDetail(Long id) {

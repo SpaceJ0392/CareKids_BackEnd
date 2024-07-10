@@ -3,12 +3,14 @@ package com.aivle.carekids.domain.kidspolicy.service;
 import com.aivle.carekids.domain.common.dto.PageInfoDto;
 import com.aivle.carekids.domain.common.dto.RegionDto;
 import com.aivle.carekids.domain.common.dto.SearchRegionAgeTagDto;
+import com.aivle.carekids.domain.common.repository.RegionRepository;
 import com.aivle.carekids.domain.kidspolicy.dto.KidsPolicyDetailDto;
 import com.aivle.carekids.domain.kidspolicy.dto.KidsPolicyListDto;
 import com.aivle.carekids.domain.kidspolicy.repository.KidsPolicyRepository;
 import com.aivle.carekids.domain.user.dto.UsersDetailDto;
 import com.aivle.carekids.domain.user.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,18 +26,24 @@ public class KidsPolicyService {
 
     private final KidsPolicyRepository kidsPolicyRepository;
     private final UsersRepository usersRepository;
+    private final RegionRepository regionRepository;
+
+    private final ModelMapper dtoModelMapper;
 
     public PageInfoDto displayKidsPolicyGuest(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
+
+        RegionDto regionDto = dtoModelMapper.map(regionRepository.findByRegionName("전체"), RegionDto.class);
         Page<KidsPolicyListDto> kidsPolicyList =
-                kidsPolicyRepository.findByRegionAndAgeTagOrderByUpdatedAtDescPage(null, pageable);
+                kidsPolicyRepository.findByRegionAndAgeTagOrderByUpdatedAtDescPage(regionDto.getKidsPolicyId(), pageable);
+
 
         return new PageInfoDto(new PageInfoDto.PageInfo(
                 kidsPolicyList.getTotalPages(),
                 kidsPolicyList.getNumber() + 1,
                 kidsPolicyList.getSize(),
                 kidsPolicyList.getNumberOfElements()
-        ), kidsPolicyList.getContent());
+        ), regionDto, null, kidsPolicyList.getContent());
     }
 
     public PageInfoDto displayKidsPolicyUser(Long usersId, int page, int size) {
@@ -54,7 +62,7 @@ public class KidsPolicyService {
                 kidsPolicyList.getNumber() + 1,
                 kidsPolicyList.getSize(),
                 kidsPolicyList.getNumberOfElements()
-        ), kidsPolicyList.getContent());
+        ), users.get().getUsersRegion(), users.get().getUsersAgeTagDtos().get(0), kidsPolicyList.getContent());
     }
 
     public KidsPolicyDetailDto kidsPolicyDetail(Long kidsPolicyId) {
@@ -72,6 +80,6 @@ public class KidsPolicyService {
                 searchHospitalListDtos.getNumber() + 1,
                 searchHospitalListDtos.getSize(),
                 searchHospitalListDtos.getNumberOfElements()
-        ), searchHospitalListDtos.getContent());
+        ), searchRegionAgeTagDto.getRegionDto(), searchRegionAgeTagDto.getAgeTagDto(), searchHospitalListDtos.getContent());
     }
 }
