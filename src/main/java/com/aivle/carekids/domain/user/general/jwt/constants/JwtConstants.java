@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class JwtConstants {
     public static String SECRET_KEY;
-    public static final long ACCESS_EXP_TIME = 600000 * 1;   // 10 분 설정
+    public static final long ACCESS_EXP_TIME = 60000 * 100;   // 100 분 설정
     public static final long REFRESH_EXP_TIME = 60000 * 5;   // 5 분 설정
 
 

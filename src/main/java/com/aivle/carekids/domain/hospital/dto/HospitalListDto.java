@@ -1,6 +1,5 @@
 package com.aivle.carekids.domain.hospital.dto;
 
-import com.aivle.carekids.domain.common.dto.OperateTimeDto;
 import com.aivle.carekids.domain.common.dto.RegionDto;
 import com.aivle.carekids.domain.hospital.model.HospitalType;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -27,7 +26,7 @@ public class HospitalListDto {
     private RegionDto hospitalRegion;
 
     @JsonProperty("operate-time")
-    private List<OperateTimeDto> operateTimeDto;
+    private List<HospitalTimeDto> operateTimeDto;
 
     public HospitalListDto(Long hospitalId, String hospitalName, HospitalType hospitalType,
                            RegionDto hospitalRegion) {
