@@ -1,6 +1,6 @@
 package com.aivle.carekids.domain.place.model;
 
-import com.aivle.carekids.domain.common.models.OperateTime;
+import com.aivle.carekids.domain.common.models.BaseEntity;
 import com.aivle.carekids.domain.common.models.Region;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -8,12 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +20,7 @@ import java.util.List;
 @EntityListeners(AuditingEntityListener.class)
 @SQLDelete(sql = "UPDATE place SET deleted = true WHERE id=?")
 @SQLRestriction("deleted=false")
-public class Place extends OperateTime {
+public class Place extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long placeId;
@@ -31,17 +28,21 @@ public class Place extends OperateTime {
     @Column(length = 100, nullable = false)
     private String placeName;
 
+    @Column(length = 500)
     private String placeImgUrl;
-
-    @Lob
-    private String placeDescribe;
 
     @Column(length = 100)
     private String placeAddress;
 
     private String placeNewAddress;
 
-    @Column(length = 15)
+    @Column(precision = 10, scale = 6)
+    private BigDecimal placeX;
+
+    @Column(precision = 10, scale = 6)
+    private BigDecimal placeY;
+
+    @Column(length = 70)
     private String placePhone;
 
     @Enumerated(EnumType.STRING)
@@ -53,33 +54,13 @@ public class Place extends OperateTime {
     @Enumerated(EnumType.STRING)
     private FreeType placeFree;
 
-    private String placeKidsMenu;
-
-    private String placeKidsTools;
-
-    private String placeDayType;
-
-    private String placeUrl;
-
-    @Column(precision = 10, scale = 6)
-    private BigDecimal x;
-
-    @Column(precision = 10, scale = 6)
-    private BigDecimal y;
-
-    private String PlaceMainPlace;
+    private String placeOperateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
     private Region region;
 
     private boolean deleted = false;
-
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "place")
     private List<PlaceCate> placeCates = new ArrayList<>();

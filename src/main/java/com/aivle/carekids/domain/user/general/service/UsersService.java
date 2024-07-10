@@ -36,7 +36,7 @@ public class UsersService {
     private final PasswordEncoder passwordEncoder;
     private final CommonService commonService;
 
-    public ResponseEntity<Object>  signUp(String email, String socialType) {
+    public ResponseEntity<?>  signUp(String email, String socialType) {
         //이메일이 이메일 형식인지, social type에 우리가 가지고 있는 소셜 타입만 들어왔는지 확인
         if (email != null && socialType != null){
             Map<String, String> message = new HashMap<>();
