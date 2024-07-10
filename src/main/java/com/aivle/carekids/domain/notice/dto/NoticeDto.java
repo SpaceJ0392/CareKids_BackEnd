@@ -2,7 +2,6 @@ package com.aivle.carekids.domain.notice.dto;
 
 import com.aivle.carekids.domain.common.dto.BaseDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRawValue;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +23,6 @@ public class NoticeDto extends BaseDto {
     private String noticeImgUrl;
 
     @JsonProperty("description")
-    @JsonRawValue
     private String noticeText;
 
     public NoticeDto(Long noticeId, String noticeTitle, String noticeText, String noticeImgUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {

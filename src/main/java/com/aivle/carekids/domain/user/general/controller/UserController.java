@@ -34,7 +34,7 @@ public class UserController {
 
     // 회원 가입 페이지 입장 API
     @GetMapping("/signup")
-    public ResponseEntity<Object> signUp(@RequestParam(required = false) String email,
+    public ResponseEntity<?> signUp(@RequestParam(required = false) String email,
                                             @RequestParam(value = "social-type", required = false) String socialType){
 
         return userService.signUp(email, socialType);
