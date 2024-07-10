@@ -40,7 +40,7 @@ public class HomeController {
         refreshCookie.setHttpOnly(true);
         response.addCookie(refreshCookie);
 
-        response.sendRedirect(GlobelVar.CLIENT_BASE_URL + "/api/home");
+        response.sendRedirect(GlobelVar.CLIENT_BASE_URL);
     }
 
     @GetMapping("/home")
