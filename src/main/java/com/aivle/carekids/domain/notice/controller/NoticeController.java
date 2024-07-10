@@ -17,7 +17,7 @@ public class NoticeController {
 
     @GetMapping("/notice")
     public ResponseEntity<PageInfoDto> listNotice(@RequestParam(value = "page", defaultValue = "1")int page,
-                                                  @RequestParam(value = "size", defaultValue = "20")int size){
+                                                  @RequestParam(value = "size", defaultValue = "12")int size){
 
         return ResponseEntity.ok(noticeService.listNotice(page - 1, size));
     }

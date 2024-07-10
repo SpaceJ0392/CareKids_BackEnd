@@ -1,7 +1,9 @@
 package com.aivle.carekids.domain.user.general.controller;
 
 import com.aivle.carekids.domain.user.dto.EmailDto;
+import com.aivle.carekids.domain.user.dto.NickNameValidDto;
 import com.aivle.carekids.domain.user.dto.SignUpRequestDto;
+import com.aivle.carekids.domain.user.dto.UsersDetailDto;
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtConstants;
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils;
 import com.aivle.carekids.domain.user.general.service.EmailService;
@@ -12,6 +14,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,6 +56,36 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<Map<String, String>> signUpRequest(@RequestBody @Valid SignUpRequestDto signUpData) throws URISyntaxException {
         return userService.signUpRequest(signUpData);
+    }
+
+    @PostMapping("/signup/auth-nickname")
+    public  ResponseEntity<?> checkNickname(@RequestBody NickNameValidDto nickNameValidDto){
+        return userService.checkNickName(nickNameValidDto);
+    }
+
+
+    @GetMapping("/user-detail")
+    public ResponseEntity<?> displayUsersDetail(@CookieValue(name = "AccessToken") String accessToken,
+                              @CookieValue(name = "RefreshToken") String refreshToken){
+
+        Map<String, String> tokenMaps = jwtUtils.verifyJWTs(accessToken, refreshToken);
+        if (tokenMaps.get("state") != null) {
+            return ResponseEntity.badRequest().body(Map.of("message", "잘못된 접근 입니다."));
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        if (tokenMaps.get("access_token") != null) {
+            headers.add(HttpHeaders.SET_COOKIE, tokenMaps.get("access_token"));
+        }
+
+        Long usersId = JwtUtils.getUsersId(JwtUtils.verifyToken(accessToken));
+        UsersDetailDto usersDetailDto = userService.displayUsersDetail(usersId);
+
+        if (usersDetailDto == null){
+            return ResponseEntity.badRequest().headers(headers).body(Map.of("message", "존재하지 않는 사용자 입니다."));
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(usersDetailDto);
     }
 
 

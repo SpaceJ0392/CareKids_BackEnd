@@ -25,7 +25,7 @@ public class HospitalController {
     public ResponseEntity<?> displayHospital(@CookieValue(name = "AccessToken", required = false) String accessToken,
                                              @CookieValue(name = "RefreshToken", required = false) String refreshToken,
                                              @RequestParam(value = "page", defaultValue = "1")int page,
-                                             @RequestParam(value = "size", defaultValue = "20")int size){
+                                             @RequestParam(value = "size", defaultValue = "12")int size){
 
         Map<String, String> verifyMap = jwtUtils.verifyJWTs(accessToken, refreshToken);
 
@@ -60,7 +60,7 @@ public class HospitalController {
     @PostMapping("/hospital/search")
     public ResponseEntity<Object> searchHospital(@RequestBody SearchRegionDto searchRegionDto,
                                                  @RequestParam(value = "page", defaultValue = "1")int page,
-                                                 @RequestParam(value = "size", defaultValue = "20")int size){
+                                                 @RequestParam(value = "size", defaultValue = "12")int size){
 
         PageInfoDto searchHospitalListDto = hospitalService.searchHospital(searchRegionDto, page - 1, size);
         if (searchHospitalListDto == null) {

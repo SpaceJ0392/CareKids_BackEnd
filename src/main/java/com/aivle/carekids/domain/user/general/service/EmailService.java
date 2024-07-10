@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -44,18 +42,9 @@ public class EmailService {
 
     // 이메일 내용 변경
     private String setContext(String code) {
+
         Context context = new Context();
-        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
-
         context.setVariable("code", code);
-
-        templateResolver.setPrefix("templates/");
-        templateResolver.setSuffix(".html");
-        templateResolver.setTemplateMode(TemplateMode.HTML);
-        templateResolver.setCharacterEncoding("UTF-8");
-        templateResolver.setCacheable(false);
-
-        templateEngine.setTemplateResolver(templateResolver);
         return templateEngine.process("mail", context);
     }
 
