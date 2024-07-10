@@ -55,6 +55,9 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
                                 HospitalListDto.class,
                                 hospital.hospitalId,
                                 hospital.hospitalName,
+                                hospital.hospitalAddress,
+                                hospital.hospitalNewaddress,
+                                hospital.hospitalPhone,
                                 hospital.hospitalType,
                                 Projections.constructor(RegionDto.class, region.regionId, region.regionName)
                         )).from(hospital)
@@ -132,7 +135,7 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
         content.setHospitalOperateTimes(
                 jpaQueryFactory.select(
                                 Projections.constructor(
-                                        OperateTimeDto.class,
+                                        HospitalOperateTimeDto.class,
                                         hospitalOperateTime.dayType,
                                         hospitalOperateTime.startTime,
                                         hospitalOperateTime.endTime,
@@ -153,6 +156,9 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
                                 HospitalListDto.class,
                                 hospital.hospitalId,
                                 hospital.hospitalName,
+                                hospital.hospitalAddress,
+                                hospital.hospitalNewaddress,
+                                hospital.hospitalPhone,
                                 hospital.hospitalType,
                                 Projections.constructor(RegionDto.class, region.regionId, region.regionName)
                         )).from(hospital)

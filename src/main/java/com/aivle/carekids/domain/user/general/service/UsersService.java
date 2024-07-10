@@ -4,6 +4,7 @@ import com.aivle.carekids.domain.common.models.AgeTag;
 import com.aivle.carekids.domain.common.models.Region;
 import com.aivle.carekids.domain.common.service.CommonService;
 import com.aivle.carekids.domain.user.dto.NickNameValidDto;
+import com.aivle.carekids.domain.user.dto.PasswordDto;
 import com.aivle.carekids.domain.user.dto.SignUpRequestDto;
 import com.aivle.carekids.domain.user.dto.UsersDetailDto;
 import com.aivle.carekids.domain.user.general.validation.SignUpValid;
@@ -15,6 +16,7 @@ import com.aivle.carekids.global.Variable.GlobelVar;
 import com.aivle.carekids.global.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -107,5 +109,23 @@ public class UsersService {
         }
 
         return ResponseEntity.badRequest().body(message);
+    }
+
+    @Transactional
+    public ResponseEntity<?> changePassword(HttpHeaders headers, PasswordDto passwordDto) {
+
+        // 유효성 검사
+        Map<String, String> message = new HashMap<>(signUpValid.passwordValidation(passwordDto.getNewUsersPassword(), ""));
+        if (!message.isEmpty()) {
+            return ResponseEntity.badRequest().headers(headers).body(message);
+        }
+
+        Optional<Users> users = usersRepository.findByUsersId(passwordDto.getUsersId());
+        if (users.isEmpty()) {
+            return ResponseEntity.badRequest().headers(headers).body(Map.of("users-not-found", "해당 사용자를 찾을 수 없습니다."));
+        }
+
+        users.get().changeUsersPassword(passwordDto.getNewUsersPassword());
+        return ResponseEntity.created(URI.create(GlobelVar.CLIENT_BASE_URL)).body(Map.of("message", "비밀번호가 변경되었습니다."));
     }
 }

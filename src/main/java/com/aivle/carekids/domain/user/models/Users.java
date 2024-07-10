@@ -81,6 +81,10 @@ public class Users extends BaseCreatedAt {
         region.getUsers().add(this);
     }
 
+    public void changeUsersPassword(String usersPassword){
+        this.usersPassword = usersPassword;
+    }
+
     public static Users createNewUser(SignUpRequestDto signUpData){
 
         SocialType socialType = Optional.ofNullable(signUpData.getUsersSocialType())
