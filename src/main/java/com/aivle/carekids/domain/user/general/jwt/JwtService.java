@@ -5,6 +5,7 @@ import com.aivle.carekids.domain.user.models.Users;
 import com.aivle.carekids.domain.user.repository.UsersRepository;
 import com.aivle.carekids.global.exception.BusinessLogicException;
 import com.aivle.carekids.global.exception.ExceptionCode;
+import com.aivle.carekids.global.exception.GlobalExceptionHandler;
 import com.aivle.carekids.global.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,4 +39,6 @@ public class JwtService {
         }
         else throw new BusinessLogicException(ExceptionCode.TOKEN_IS_NOT_SAME);
     }
-}
+
+
+    }

@@ -4,6 +4,7 @@ import com.aivle.carekids.domain.common.dto.HomeDto;
 import com.aivle.carekids.domain.common.service.HomeService;
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtConstants;
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils;
+import com.aivle.carekids.domain.user.models.Role;
 import com.aivle.carekids.global.Variable.GlobelVar;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,7 +51,9 @@ public class HomeController {
 
         Map<String, String> verifyMap = jwtUtils.verifyJWTs(accessToken, refreshToken);
 
-        if (verifyMap.get("state") != null) {
+
+
+        if (verifyMap.get("state") != null || Objects.equals(verifyMap.get("사용자 role"), Role.ADMIN.getRole())) {
             HomeDto homeDto = homeService.displayHomeGuest();
             return ResponseEntity.ok(homeDto);
         }
