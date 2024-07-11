@@ -16,15 +16,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomUserDetailService implements UserDetailsService {
     private final UsersRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Users userData = userRepository.findByUsersEmail(username);
-
-        String pw = passwordEncoder.encode(userData.getUsersPassword());
-
-        int a = 1;
 
         if (userData == null){
             throw new UsernameNotFoundException("User not registered");
