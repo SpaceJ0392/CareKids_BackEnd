@@ -133,6 +133,10 @@ public class JwtUtils {
         return decodedJWT.getClaim("id").asLong();
     }
 
+    public static String getUsersRole(DecodedJWT decodedJWT){
+        return decodedJWT.getClaim("role").asString();
+    }
+
     private boolean isLogout(String accessToken) {
         Integer isLogout = jwtRepository.getValues(accessToken);
 
@@ -141,6 +145,9 @@ public class JwtUtils {
 
     public Map<String, String> verifyJWTs(String accessToken, String refreshToken){
         Map<String, String> verify_infos = new HashMap<>();
+
+        String role = verifyToken(accessToken).getClaim("role").asString();
+        verify_infos.put("role", role);
 
         // token이 null이거나, 로그아웃된 사용자인 경우
         if (accessToken == null || isLogout(accessToken)){
@@ -158,8 +165,6 @@ public class JwtUtils {
             // Controller에서 response.addCookie(access_cookie); 필요
         }
 
-        String role = verifyToken(accessToken).getClaim("role").asString();
-        verify_infos.put("사용자 role", role);
         return verify_infos;
     }
 

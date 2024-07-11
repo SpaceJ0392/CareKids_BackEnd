@@ -9,16 +9,22 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailService implements UserDetailsService {
     private final UsersRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Users userData = userRepository.findByUsersEmail(username);
+
+        String pw = passwordEncoder.encode(userData.getUsersPassword());
+
+        int a = 1;
 
         if (userData == null){
             throw new UsernameNotFoundException("User not registered");
@@ -26,6 +32,8 @@ public class CustomUserDetailService implements UserDetailsService {
         if (username != null){
             return new CustomUserDetail(userData);
         }
+
+
         return null;
     }
 }

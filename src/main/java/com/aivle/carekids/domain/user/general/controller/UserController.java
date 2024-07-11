@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -120,5 +121,27 @@ public class UserController {
         }
 
         return ResponseEntity.ok().body(verify_infos);
+    }
+
+    @GetMapping("/login-check")
+    public ResponseEntity<Map<String, String>> IsLogin(HttpServletRequest request, HttpServletResponse response){
+        Map<String, String> login_info = new HashMap<>();
+
+        Cookie[] cookies = request.getCookies();
+        String accessToken = JwtUtils.getAccessTokenFromCookies(cookies);
+        String refreshToken = JwtUtils.getRefreshTokenFromCookies(cookies);
+
+        Map<String, String> verify_infos = jwtUtils.verifyJWTs(accessToken, refreshToken);
+
+        if (verify_infos.containsKey("state")) { // -> 비로그인 사용자
+            login_info.put("is_login", "false");
+            return ResponseEntity.ok().body(login_info);
+        }
+
+        String usersRole = JwtUtils.getUsersRole(JwtUtils.verifyToken(accessToken));
+        login_info.put("is_login", "true");
+        login_info.put("user_role", usersRole);
+        return ResponseEntity.ok().body(login_info);
+
     }
 }

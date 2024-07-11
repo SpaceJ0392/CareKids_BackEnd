@@ -1,10 +1,12 @@
 package com.aivle.carekids.global.configuration;
 
+import com.aivle.carekids.domain.user.general.filter.CustomAuthenticationProvider;
 import com.aivle.carekids.domain.user.general.filter.JsonToHttpRequestFilter;
 import com.aivle.carekids.domain.user.general.filter.LoginFilter;
 import com.aivle.carekids.domain.user.general.jwt.JwtAuthenticationFilter;
 import com.aivle.carekids.domain.user.general.jwt.JwtRepository;
 import com.aivle.carekids.domain.user.general.jwt.JwtService;
+import com.aivle.carekids.domain.user.general.service.CustomUserDetailService;
 import com.aivle.carekids.domain.user.general.service.LogoutService;
 import com.aivle.carekids.domain.user.oauth2.handler.OAuth2SuccessHandler;
 import com.aivle.carekids.domain.user.oauth2.service.CustomOAuth2UserService;
@@ -113,6 +115,9 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+
+
 
     //* 비밀번호 암호화 bean */
     @Bean
