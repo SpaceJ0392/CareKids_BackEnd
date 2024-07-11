@@ -9,6 +9,7 @@ import com.aivle.carekids.domain.user.general.service.LogoutService;
 import com.aivle.carekids.domain.user.oauth2.handler.OAuth2SuccessHandler;
 import com.aivle.carekids.domain.user.oauth2.service.CustomOAuth2UserService;
 import com.aivle.carekids.domain.user.repository.UsersRepository;
+import com.aivle.carekids.domain.user.repository.UsersRepositoryCustom;
 import com.aivle.carekids.global.Variable.GlobelVar;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -69,7 +70,7 @@ public class SecurityConfig {
     /* 권한 부여 */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        LoginFilter lf = new LoginFilter(authenticationManager(authenticationConfiguration), new JwtService(jwtRepository, usersRepository));
+        LoginFilter lf = new LoginFilter(authenticationManager(authenticationConfiguration), new JwtService(jwtRepository, usersRepository), new ObjectMapper());
 
         // CORS 설정 추가
         CorsConfiguration corsConfig = new CorsConfiguration();
