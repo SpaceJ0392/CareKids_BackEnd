@@ -146,8 +146,6 @@ public class JwtUtils {
     public Map<String, String> verifyJWTs(String accessToken, String refreshToken){
         Map<String, String> verify_infos = new HashMap<>();
 
-        String role = verifyToken(accessToken).getClaim("role").asString();
-        verify_infos.put("role", role);
 
         // token이 null이거나, 로그아웃된 사용자인 경우
         if (accessToken == null || isLogout(accessToken)){
@@ -155,6 +153,9 @@ public class JwtUtils {
             verify_infos.put("state", "false");
             return verify_infos;
         }
+
+        String role = verifyToken(accessToken).getClaim("role").asString();
+        verify_infos.put("사용자 role", role);
 
         // 토큰이 만료된 경우 재발급
         if (isTokenExpired(accessToken)){
