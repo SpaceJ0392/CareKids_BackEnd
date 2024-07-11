@@ -5,6 +5,7 @@ import com.aivle.carekids.domain.common.dto.SearchRegionAgeTagDto;
 import com.aivle.carekids.domain.kidspolicy.dto.KidsPolicyDetailDto;
 import com.aivle.carekids.domain.kidspolicy.service.KidsPolicyService;
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils;
+import com.aivle.carekids.domain.user.models.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api")
@@ -29,7 +31,7 @@ public class KidsPolicyController {
 
         Map<String, String> verifyMap = jwtUtils.verifyJWTs(accessToken, refreshToken);
 
-        if (verifyMap.get("state") != null) {
+        if (verifyMap.get("state") != null || Objects.equals(verifyMap.get("사용자 role"), Role.ADMIN.getRole())) {
             return ResponseEntity.ok(kidsPolicyService.displayKidsPolicyGuest(page - 1, size));
         }
 

@@ -1,5 +1,6 @@
 package com.aivle.carekids.global.configuration;
 
+import com.aivle.carekids.domain.user.general.Authentication.CustomAuthenticationManager;
 import com.aivle.carekids.domain.user.general.filter.JsonToHttpRequestFilter;
 import com.aivle.carekids.domain.user.general.filter.LoginFilter;
 import com.aivle.carekids.domain.user.general.jwt.JwtAuthenticationFilter;
@@ -9,7 +10,6 @@ import com.aivle.carekids.domain.user.general.service.LogoutService;
 import com.aivle.carekids.domain.user.oauth2.handler.OAuth2SuccessHandler;
 import com.aivle.carekids.domain.user.oauth2.service.CustomOAuth2UserService;
 import com.aivle.carekids.domain.user.repository.UsersRepository;
-import com.aivle.carekids.domain.user.repository.UsersRepositoryCustom;
 import com.aivle.carekids.global.Variable.GlobelVar;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +46,8 @@ public class SecurityConfig {
     private final JwtRepository jwtRepository;
     private final UsersRepository usersRepository;
     private final LogoutService logoutService;
+    private final ObjectMapper objectMapper;
+    private final CustomAuthenticationManager customAuthenticationManager;
 
     private final CustomOAuth2UserService oAuth2UserService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
@@ -70,7 +72,7 @@ public class SecurityConfig {
     /* 권한 부여 */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        LoginFilter lf = new LoginFilter(authenticationManager(authenticationConfiguration), new JwtService(jwtRepository, usersRepository), new ObjectMapper());
+        LoginFilter lf = new LoginFilter(authenticationManager(authenticationConfiguration), customAuthenticationManager, new JwtService(jwtRepository, usersRepository), new ObjectMapper());
 
         // CORS 설정 추가
         CorsConfiguration corsConfig = new CorsConfiguration();
@@ -96,7 +98,7 @@ public class SecurityConfig {
                                 .anyRequest().permitAll()
                 )
 //                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterAt(new JsonToHttpRequestFilter(new ObjectMapper()), lf.getClass())
+                .addFilterAt(new JsonToHttpRequestFilter(objectMapper, usersRepository), lf.getClass())
                 .addFilterAt(lf, UsernamePasswordAuthenticationFilter.class)
                 //oauth2 설정
                 .oauth2Login(oauth2 -> oauth2.userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService))

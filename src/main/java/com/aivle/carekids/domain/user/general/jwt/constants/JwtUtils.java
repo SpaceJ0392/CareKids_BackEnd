@@ -149,6 +149,9 @@ public class JwtUtils {
             return verify_infos;
         }
 
+        String role = verifyToken(accessToken).getClaim("role").asString();
+        verify_infos.put("사용자 role", role);
+
         // 토큰이 만료된 경우 재발급
         if (isTokenExpired(accessToken)){
             Cookie access_cookie = renewToken(refreshToken);
@@ -158,8 +161,6 @@ public class JwtUtils {
             // Controller에서 response.addCookie(access_cookie); 필요
         }
 
-        String role = verifyToken(accessToken).getClaim("role").asString();
-        verify_infos.put("사용자 role", role);
         return verify_infos;
     }
 
