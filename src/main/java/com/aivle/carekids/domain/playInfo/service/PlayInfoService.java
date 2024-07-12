@@ -2,6 +2,7 @@ package com.aivle.carekids.domain.playInfo.service;
 
 import com.aivle.carekids.domain.common.dto.*;
 import com.aivle.carekids.domain.common.models.AgeTag;
+import com.aivle.carekids.domain.common.repository.AgeTagRepository;
 import com.aivle.carekids.domain.kindergarten.dto.KindergartenDetailDto;
 import com.aivle.carekids.domain.kindergarten.dto.KindergartenListDto;
 import com.aivle.carekids.domain.kindergarten.repository.KindergartenRepository;
@@ -11,6 +12,7 @@ import com.aivle.carekids.domain.playInfo.repository.PlayInfoRepository;
 import com.aivle.carekids.domain.user.dto.UsersDetailDto;
 import com.aivle.carekids.domain.user.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,21 +28,24 @@ public class PlayInfoService {
 
     private final PlayInfoRepository playInfoRepository;
     private final UsersRepository usersRepository;
+    private final AgeTagRepository ageTagRepository;
     private final Random random = new Random();
+
+    private final ModelMapper dtoModelMapper;
 
     public PageInfoDto displayPlayInfoGuest(int page, int size) {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        AgeTagDto randAgeTag = playInfoRepository.findRandomAgeTagInPlayInfo();
-        Page<PlayInfoListDto> playInfoPage = playInfoRepository.findAllByOrderByUpdatedAtDescByPageByAge(randAgeTag.getAgeTagId(), pageable);
+        AgeTagDto ageTagDto = dtoModelMapper.map(ageTagRepository.findByAgeTagName("전체(12세 이하)"), AgeTagDto.class);
+        Page<PlayInfoListDto> playInfoPage = playInfoRepository.findAllByOrderByUpdatedAtDescByPageByAge(null, pageable);
 
         return new PageInfoDto(new PageInfoDto.PageInfo(
                 playInfoPage.getTotalPages(),
                 playInfoPage.getNumber() + 1,
                 playInfoPage.getSize(),
                 playInfoPage.getNumberOfElements()
-        ), null, randAgeTag, playInfoPage.getContent());
+        ), null, ageTagDto, playInfoPage.getContent());
     }
 
     public PageInfoDto displayPlayInfoUser(Long usersId, int page, int size) {

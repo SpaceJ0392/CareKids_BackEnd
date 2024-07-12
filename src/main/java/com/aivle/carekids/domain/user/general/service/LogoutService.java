@@ -25,7 +25,11 @@ public class LogoutService implements LogoutHandler {
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
 
         Cookie[] cookies = request.getCookies();
+
         String accessToken = JwtUtils.getAccessTokenFromCookies(cookies);
+
+        System.out.println(cookies);
+        System.out.println(accessToken);
 
 
         if(accessToken == null || accessToken.isBlank()){
@@ -34,6 +38,7 @@ public class LogoutService implements LogoutHandler {
 
         Long usersId = JwtUtils.getUsersId(JwtUtils.verifyToken(accessToken));
         System.out.println(usersId);
+
 //        try {
 //            jwtRepository.DeleteRefreshTokenByUsersId(usersId);
 //        } catch (IOException e) {
