@@ -34,6 +34,8 @@ public class FileService {
     @Transactional
     public void saveFile(Question targetQuestion, List<MultipartFile> questionFiles, String usersNickname) {
 
+        if (questionFiles.isEmpty()) { return; }
+
         List<QuestionFile> targetQuestionFile = new ArrayList<>();
 
         questionFiles.forEach(file -> {

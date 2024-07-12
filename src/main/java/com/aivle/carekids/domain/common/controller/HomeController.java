@@ -53,7 +53,7 @@ public class HomeController {
 
 
 
-        if (verifyMap.get("state") != null || Objects.equals(verifyMap.get("사용자 role"), Role.ADMIN.getRole())) {
+        if (verifyMap.get("state") != null || Objects.equals(verifyMap.get("사용자 role"), Role.ROLE_ADMIN.getRole())) {
             HomeDto homeDto = homeService.displayHomeGuest();
             return ResponseEntity.ok(homeDto);
         }

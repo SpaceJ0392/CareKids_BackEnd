@@ -29,7 +29,7 @@ public class SignUpRequestDto {
     @NotBlank(message = "닉네임을 입력해주세요.")
     private String usersNickname;
 
-    private Role role = Role.USER; // 기본값 유저
+    private Role role = Role.ROLE_USER; // 기본값 유저
 
     @JsonProperty("region")
     @Valid

@@ -4,9 +4,11 @@ package com.aivle.carekids.global.configuration;
 import com.aivle.carekids.domain.user.general.Authentication.CustomAuthenticationManager;
 import com.aivle.carekids.domain.user.general.filter.JsonToHttpRequestFilter;
 import com.aivle.carekids.domain.user.general.filter.LoginFilter;
+import com.aivle.carekids.domain.user.general.handler.CustomAccessDeniedHandler;
 import com.aivle.carekids.domain.user.general.jwt.JwtAuthenticationFilter;
 import com.aivle.carekids.domain.user.general.jwt.JwtRepository;
 import com.aivle.carekids.domain.user.general.jwt.JwtService;
+import com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils;
 import com.aivle.carekids.domain.user.general.service.LogoutService;
 import com.aivle.carekids.domain.user.oauth2.handler.OAuth2SuccessHandler;
 import com.aivle.carekids.domain.user.oauth2.service.CustomOAuth2UserService;
@@ -52,12 +54,14 @@ public class SecurityConfig {
 
     private final CustomOAuth2UserService oAuth2UserService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final JwtUtils jwtUtils;
 
     private final AuthenticationConfiguration authenticationConfiguration;
-    @Value("${spring.jwt.secret}") private String secret;
+    @Value("${spring.jwt.secret}")
+    private String secret;
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception{
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
 
@@ -94,16 +98,15 @@ public class SecurityConfig {
                 .headers(c -> c.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable).disable()) // X-Frame-Options 비활성화
                 .sessionManagement(sessions -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
-                        requests -> requests.requestMatchers(antMatcher("/admin/**")).hasRole("ADMIN")
-//                        requests -> requests.requestMatchers(antMatcher("/admin/**")).authenticated()
+                        requests -> requests.requestMatchers(antMatcher("/api/admin/**")).hasRole("ADMIN")
                                 .anyRequest().permitAll()
                 )
-//                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class)
                 .addFilterAt(new JsonToHttpRequestFilter(objectMapper, usersRepository), lf.getClass())
                 .addFilterAt(lf, UsernamePasswordAuthenticationFilter.class)
                 //oauth2 설정
                 .oauth2Login(oauth2 -> oauth2.userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService))
-                                .successHandler(oAuth2SuccessHandler))
+                        .successHandler(oAuth2SuccessHandler))
                 .logout(logoutConfig -> logoutConfig
                         .logoutUrl("/logout")
                         .addLogoutHandler(logoutService)
@@ -114,20 +117,15 @@ public class SecurityConfig {
                 // CORS 설정 추가
                 .cors(cors -> cors.configurationSource(source));
 
+        //TODO - Access Denied 문제 해결
+        http.exceptionHandling(handler -> handler.accessDeniedHandler(new CustomAccessDeniedHandler(objectMapper)));
+
         return http.build();
     }
-
-
-
 
     //* 비밀번호 암호화 bean */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter(){
-        return new JwtAuthenticationFilter(jwtRepository);
     }
 }

@@ -29,6 +29,8 @@ public class CustomAuthenticationManager implements AuthenticationManager {
             throw new UserNotFoundException("잘못된 사용자입니다.");
         }
 
-        return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+        UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(userDetails, authentication.getCredentials(), userDetails.getAuthorities());
+        result.setDetails(authentication.getDetails());
+        return result;
     }
 }
