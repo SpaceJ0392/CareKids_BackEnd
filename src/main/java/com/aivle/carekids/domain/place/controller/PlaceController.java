@@ -2,8 +2,6 @@ package com.aivle.carekids.domain.place.controller;
 
 import com.aivle.carekids.domain.common.dto.PageInfoDto;
 import com.aivle.carekids.domain.common.dto.SearchRegionCateDto;
-import com.aivle.carekids.domain.common.dto.SearchRegionDto;
-import com.aivle.carekids.domain.kindergarten.dto.KindergartenDetailDto;
 import com.aivle.carekids.domain.place.dto.PlaceDetailDto;
 import com.aivle.carekids.domain.place.service.PlaceService;
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils;
@@ -33,7 +31,7 @@ public class PlaceController {
 
         Map<String, String> verifyMap = jwtUtils.verifyJWTs(accessToken, refreshToken);
 
-        if (verifyMap.get("state") != null || Objects.equals(verifyMap.get("사용자 role"), Role.ADMIN.getRole())) { // 미가입 OR 로그아웃된 사용자인 경우
+        if (verifyMap.get("state") != null || Objects.equals(verifyMap.get("사용자 role"), Role.ROLE_ADMIN.getRole())) { // 미가입 OR 로그아웃된 사용자인 경우
             return ResponseEntity.ok(placeService.displayPlaceGuest(page - 1, size));
         }
 
