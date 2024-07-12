@@ -1,9 +1,11 @@
 package com.aivle.carekids.domain.notice.models;
 
 import com.aivle.carekids.domain.common.models.BaseEntity;
+import com.aivle.carekids.domain.notice.dto.NoticeDto;
 import com.aivle.carekids.domain.user.models.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
@@ -33,6 +35,36 @@ public class Notice extends BaseEntity {
     @JoinColumn(name = "users_id")
     private Users users;
 
+    @Builder
+    public Notice(String noticeTitle, String noticeText, String noticeImgUrl) {
+        this.noticeTitle = noticeTitle;
+        this.noticeText = noticeText;
+        this.noticeImgUrl = noticeImgUrl;
+    }
+
     // TODO - 입력에 대한 생성 메소드 필요
 
+    public void setUsersInfo(Users users){
+        this.users = users;
+        users.getNotices().add(this);
+    }
+
+    public static Notice createNewNotice(NoticeDto noticeDto){
+
+        return Notice.builder()
+                .noticeTitle(noticeDto.getNoticeTitle())
+                .noticeText(noticeDto.getNoticeText())
+                .noticeImgUrl(noticeDto.getNoticeImgUrl())
+                .build();
+    }
+
+    public void updateNotice(NoticeDto noticeDto){
+        this.noticeTitle = noticeDto.getNoticeTitle();
+        this.noticeText = noticeDto.getNoticeText();
+        this.noticeImgUrl = noticeDto.getNoticeImgUrl();
+    }
+
+    public void setDeletedInfo(boolean deleted) {
+        this.deleted = deleted;
+    }
 }
