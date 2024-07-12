@@ -1,6 +1,10 @@
 package com.aivle.carekids.domain.place.controller;
 
 import com.aivle.carekids.domain.common.dto.PageInfoDto;
+import com.aivle.carekids.domain.common.dto.SearchRegionCateDto;
+import com.aivle.carekids.domain.common.dto.SearchRegionDto;
+import com.aivle.carekids.domain.kindergarten.dto.KindergartenDetailDto;
+import com.aivle.carekids.domain.place.dto.PlaceDetailDto;
 import com.aivle.carekids.domain.place.service.PlaceService;
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils;
 import com.aivle.carekids.domain.user.models.Role;
@@ -47,5 +51,27 @@ public class PlaceController {
         }
 
         return ResponseEntity.badRequest().headers(headers).body(Map.of("message", "잘못된 접근입니다."));
+    }
+
+    @GetMapping("/place/{id}")
+    public ResponseEntity<?> placeDetail(@PathVariable Long id){
+
+        PlaceDetailDto placeDetailDto = placeService.placeDetail(id);
+
+        if (placeDetailDto != null){ return ResponseEntity.ok(placeDetailDto); }
+        return ResponseEntity.badRequest().body(Map.of("message", "잘못된 접근입니다."));
+    }
+
+    @PostMapping("/place/search")
+    public ResponseEntity<Object> searchKindergarten(@RequestBody SearchRegionCateDto searchRegionCateDto,
+                                                     @RequestParam(value = "page", defaultValue = "1")int page,
+                                                     @RequestParam(value = "size", defaultValue = "12")int size){
+
+        PageInfoDto searchPlaceListDto = placeService.searchPlace(searchRegionCateDto, page - 1, size);
+        if (searchPlaceListDto == null) {
+            return ResponseEntity.badRequest().body(Map.of("message", "조회 대상이 존재하지 않습니다."));
+        }
+
+        return ResponseEntity.ok(searchPlaceListDto);
     }
 }

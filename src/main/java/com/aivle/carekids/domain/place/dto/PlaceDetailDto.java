@@ -2,10 +2,15 @@ package com.aivle.carekids.domain.place.dto;
 
 import com.aivle.carekids.domain.common.dto.RegionDto;
 import com.aivle.carekids.domain.place.model.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+@Getter @Setter
+@NoArgsConstructor
 public class PlaceDetailDto {
 
     private Long placeId;
@@ -17,10 +22,6 @@ public class PlaceDetailDto {
     private String placeAddress;
 
     private String placeNewAddress;
-
-    private BigDecimal placeX;
-
-    private BigDecimal placeY;
 
     private String placePhone;
 
@@ -38,14 +39,12 @@ public class PlaceDetailDto {
 
     private List<PlaceKeywordDto> placeKeywords;
 
-    public PlaceDetailDto(Long placeId, String placeName, String placeImgUrl, String placeAddress, String placeNewAddress, BigDecimal placeX, BigDecimal placeY, String placePhone, PlaceType placeType, ParkingType placeParking, FreeType placeFree, String placeOperateTime, RegionDto regionDto, PlaceSubcateDto placeSubcate) {
+    public PlaceDetailDto(Long placeId, String placeName, String placeImgUrl, String placeAddress, String placeNewAddress, String placePhone, PlaceType placeType, ParkingType placeParking, FreeType placeFree, String placeOperateTime, RegionDto regionDto, PlaceSubcateDto placeSubcate) {
         this.placeId = placeId;
         this.placeName = placeName;
         this.placeImgUrl = placeImgUrl;
         this.placeAddress = placeAddress;
         this.placeNewAddress = placeNewAddress;
-        this.placeX = placeX;
-        this.placeY = placeY;
         this.placePhone = placePhone;
         this.placeType = placeType;
         this.placeParking = placeParking;
