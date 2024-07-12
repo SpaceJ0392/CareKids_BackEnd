@@ -7,6 +7,7 @@ import com.aivle.carekids.domain.place.model.Place;
 import com.aivle.carekids.domain.user.models.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

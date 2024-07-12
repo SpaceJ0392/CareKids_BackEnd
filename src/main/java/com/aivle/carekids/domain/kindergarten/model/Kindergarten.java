@@ -1,9 +1,13 @@
 package com.aivle.carekids.domain.kindergarten.model;
 
+import com.aivle.carekids.admin.kindergarten.dto.KindergartenAdminDto;
 import com.aivle.carekids.domain.common.models.BaseEntity;
 import com.aivle.carekids.domain.common.models.Region;
+import com.aivle.carekids.domain.question.dto.QuestionDetailDto;
+import com.aivle.carekids.domain.question.models.Question;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
@@ -46,5 +50,32 @@ public class Kindergarten extends BaseEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "kindergarten")
     private List<KindergartenOperateTime> kindergartenOperateTimes = new ArrayList<>();
+
+    @Builder
+    public Kindergarten(Long kindergartenId, String kindergartenName, String kindergartenAddress, String kindergartenNewaddress, String kindergartenPhone, Region region, List<KindergartenOperateTime> kindergartenOperateTimes) {
+        this.kindergartenId = kindergartenId;
+        this.kindergartenName = kindergartenName;
+        this.kindergartenAddress = kindergartenAddress;
+        this.kindergartenNewaddress = kindergartenNewaddress;
+        this.kindergartenPhone = kindergartenPhone;
+        this.region = region;
+        this.kindergartenOperateTimes = kindergartenOperateTimes;
+    }
+
+    public static Kindergarten createKindergarten(KindergartenAdminDto kindergartenAdminDto){
+        return Kindergarten.builder()
+                .kindergartenId(kindergartenAdminDto.getKindergartenId())
+                .kindergartenName(kindergartenAdminDto.getKindergartenName())
+                .kindergartenAddress(kindergartenAdminDto.getKindergartenAddress())
+                .kindergartenNewaddress(kindergartenAdminDto.getKindergartenNewaddress())
+                .kindergartenPhone(kindergartenAdminDto.getKindergartenPhone())
+                .build();
+    }
+
+    public void updateQuestion(QuestionDetailDto questionDetailDto){
+        this.questionTitle = questionDetailDto.getQuestionTitle();
+        this.questionText = questionDetailDto.getQuestionText();
+        this.secret = questionDetailDto.getSecret();
+    }
 
 }
