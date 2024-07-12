@@ -91,9 +91,8 @@ public class UsersService {
     }
 
     public Users findByUsersId(Long usersId){
-        Users users = usersRepository.findByUsersId(usersId)
+        return usersRepository.findByUsersId(usersId)
                 .orElseThrow(() -> new UserNotFoundException("미 등록 유저입니다."));
-        return users;
     }
 
     public UsersDetailDto displayUsersDetail(Long usersId){
