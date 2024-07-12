@@ -87,7 +87,7 @@ public class UsersService {
         kidsRepository.saveAll(newKids);
 
         message.put("message", "회원 가입이 완료되었습니다.");
-        return ResponseEntity.created(new URI(GlobelVar.CLIENT_BASE_URL + "/login")).body(message);
+        return ResponseEntity.created(new URI( "http://localhost:3000" + "/login")).body(message); // GlobelVar.CLIENT_BASE_URL
     }
 
     public Users findByUsersId(Long usersId){

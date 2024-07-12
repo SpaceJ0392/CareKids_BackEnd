@@ -70,8 +70,8 @@ public class SecurityConfig {
     @ConditionalOnProperty(name = "spring.h2.console.enabled", havingValue = "true") //false면 접근 불가...
     public WebSecurityCustomizer configure() {
         return web -> web.ignoring()
-                .requestMatchers(PathRequest.toH2Console());
-        //.requestMatchers("/error", "/favicon.ico");
+                .requestMatchers(PathRequest.toH2Console())
+                .requestMatchers("/error", "/favicon.ico");
     }
 
     /* 권한 부여 */

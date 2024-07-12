@@ -50,4 +50,4 @@ spring:
     secret: ${SECRET_KEY}
 
 file:
-  upload-path: "C:\\workspace\\carekids\\uploads"
+  upload-path: "C:\\uploads"

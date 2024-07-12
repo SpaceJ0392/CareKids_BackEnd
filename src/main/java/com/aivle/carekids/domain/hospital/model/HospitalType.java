@@ -12,4 +12,11 @@ public enum HospitalType {
     UCPP("준응급 소아환자 진료"), PCPP("경증 소아환자 일차진료");
 
     private final String hospitalType;
+
+    public static HospitalType fromHospitalTypeString(String hospitalType) {
+        for (HospitalType type : HospitalType.values()) {
+            if (type.getHospitalType().equals(hospitalType)) { return type; }
+        }
+        throw new IllegalArgumentException("No matching HospitalType for description: " + hospitalType);
+    }
 }
