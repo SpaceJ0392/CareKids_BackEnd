@@ -60,14 +60,19 @@ public class QuestionService {
         if (multipartFiles == null) { multipartFiles = new ArrayList<>(); }
 
         if (questionDetailDto.getQuestionId() != null){
-            //게시글 수정
-            Optional<Question> targetQuestion = questionRepository.findById(questionDetailDto.getQuestionId());
-            if (targetQuestion.isEmpty()) { return Map.of("message", "존재하지 않는 게시글입니다."); }
-            targetQuestion.get().updateQuestion(questionDetailDto);
 
-            //파일도 수정
-            fileService.updateFile(targetQuestion.get(), users.get(), multipartFiles);
-            return Map.of("message", "수정이 완료되었습니다.");
+            if (!questionDetailDto.isQuestionCheck()) {
+                //게시글 수정
+                Optional<Question> targetQuestion = questionRepository.findById(questionDetailDto.getQuestionId());
+                if (targetQuestion.isEmpty()) { return Map.of("message", "존재하지 않는 게시글입니다."); }
+                targetQuestion.get().updateQuestion(questionDetailDto);
+
+                //파일도 수정
+                fileService.updateFile(targetQuestion.get(), users.get(), multipartFiles);
+                return Map.of("message", "수정이 완료되었습니다.");
+            }
+
+            return Map.of("message", "이미 답변된 문의사항입니다.");
         }
 
         //게시글 작성 후 저장
@@ -91,7 +96,7 @@ public class QuestionService {
 
         // 비밀 글이라면, 작성자하고, 관리자만 접근 가능.
         if (targetQuestion.get().getSecret() &&
-                !(targetQuestion.get().getUsers() != users.get() || users.get().getUsersRole() != Role.ADMIN)){
+                !(targetQuestion.get().getUsers() != users.get() || users.get().getUsersRole() != Role.ROLE_ADMIN)){
 
             return null;
         }

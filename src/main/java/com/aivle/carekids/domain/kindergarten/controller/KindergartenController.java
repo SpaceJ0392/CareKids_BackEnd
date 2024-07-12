@@ -32,7 +32,7 @@ public class KindergartenController {
 
         Map<String, String> verifyMap = jwtUtils.verifyJWTs(accessToken, refreshToken);
 
-        if (verifyMap.get("state") != null || Objects.equals(verifyMap.get("사용자 role"), Role.ADMIN.getRole())) { // 미가입 OR 로그아웃된 사용자인 경우
+        if (verifyMap.get("state") != null || Objects.equals(verifyMap.get("사용자 role"), Role.ROLE_ADMIN.getRole())) { // 미가입 OR 로그아웃된 사용자인 경우
             return ResponseEntity.ok(kindergartenService.displayKindergartenGuest(page - 1, size));
         }
 
