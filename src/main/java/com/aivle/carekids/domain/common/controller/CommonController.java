@@ -19,6 +19,11 @@ public class CommonController {
         return ResponseEntity.ok(commonService.regionAgeTagAll());
     }
 
+    @GetMapping("/region-subcate")
+    public ResponseEntity<Object> regionSubcate(){
+        return ResponseEntity.ok(commonService.regionSubcateAll());
+    }
+
     @GetMapping("/region")
     public ResponseEntity<Object> regionAll(){
         return ResponseEntity.ok(commonService.regionAll());
