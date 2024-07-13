@@ -23,7 +23,7 @@ import java.util.List;
 public class Hospital extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long hospitalId;
 
     private String hospitalName;

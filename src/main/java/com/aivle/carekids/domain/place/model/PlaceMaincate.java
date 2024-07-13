@@ -14,7 +14,7 @@ import java.util.List;
 public class PlaceMaincate {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long placeMaincateId;
 
     private String placeMaincateName;

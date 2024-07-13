@@ -27,7 +27,7 @@ import java.util.Optional;
 public class Users extends BaseCreatedAt {
     // 사용자 정보 엔티티
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long usersId;
 
     @Column(length = 30, nullable = false, unique = true)

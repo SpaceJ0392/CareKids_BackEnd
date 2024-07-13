@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class KindergartenOperateTime extends OperateDate {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long kindergartenOperateTimeId;
 
     @ManyToOne(fetch = FetchType.LAZY)

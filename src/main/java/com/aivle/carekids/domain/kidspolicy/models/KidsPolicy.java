@@ -21,7 +21,7 @@ import java.util.List;
 @SQLRestriction("deleted=false")
 public class KidsPolicy extends BaseEntity {
     // 육아 정책 엔티티
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long kidsPolicyId;
 
     @Column(nullable = false, length = 100)

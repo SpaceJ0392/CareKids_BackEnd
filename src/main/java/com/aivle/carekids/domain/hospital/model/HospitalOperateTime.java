@@ -17,7 +17,7 @@ import java.time.LocalTime;
 public class HospitalOperateTime extends OperateDate {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long hospitalOperateTimeId;
 
     @ManyToOne(fetch = FetchType.LAZY)

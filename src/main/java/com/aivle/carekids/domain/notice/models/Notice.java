@@ -18,7 +18,7 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("deleted=false")
 public class Notice extends BaseEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long noticeId;
 
     @Column(nullable = false, length = 100)

@@ -22,7 +22,7 @@ import java.util.List;
 @SQLRestriction("deleted=false")
 public class Place extends BaseEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long placeId;
 
     @Column(length = 100, nullable = false)

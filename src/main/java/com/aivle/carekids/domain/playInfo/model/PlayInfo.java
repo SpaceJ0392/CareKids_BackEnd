@@ -20,7 +20,7 @@ import java.util.List;
 @SQLRestriction("deleted=false")
 public class PlayInfo extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long playInfoId;
 
     @Column(nullable = false, length = 100)

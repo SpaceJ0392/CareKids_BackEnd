@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 public class Keyword {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long keywordId;
 
     private String keywordName;
