@@ -99,7 +99,7 @@ public class FileService {
 
     public String uploadFileNotice(MultipartFile file) throws IOException {
 
-        if (file.isEmpty()) { return null; }
+        if (file == null || file.isEmpty()) { return null; }
 
         String originalName = file.getOriginalFilename();
         String mimeType = file.getContentType();

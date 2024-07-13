@@ -63,6 +63,6 @@ public class QuestionAdminController {
         }
 
         Long usersId = JwtUtils.getUsersId(JwtUtils.verifyToken(accessToken));
-        return ResponseEntity.ok(questionAdminService.editAnswerForQuestion(questionAnswerDto));
+        return questionAdminService.editAnswerForQuestion(questionAnswerDto);
     }
 }
