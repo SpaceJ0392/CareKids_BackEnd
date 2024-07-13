@@ -52,9 +52,9 @@ public class KindergartenAdminController {
     }
 
     @PostMapping("/kindergarten/edit")
-    public ResponseEntity<?> createKindergarten(@CookieValue(name ="AccessToken", required = false) String accessToken,
-                                            @CookieValue(name ="RefreshToken", required = false) String refreshToken,
-                                            @RequestPart(name = "data") KindergartenDetailDto kindergartenDetailDto){
+    public ResponseEntity<?> createKindergarten(@CookieValue(name = "AccessToken") String accessToken,
+                                                @CookieValue(name = "RefreshToken") String refreshToken,
+                                            @RequestBody KindergartenDetailDto kindergartenDetailDto){
 
         // 권한 검사
         // 1. 미로그인 사용자인지
@@ -72,7 +72,7 @@ public class KindergartenAdminController {
             headers.add(HttpHeaders.SET_COOKIE, verifyMap.get("access_token"));
         }
 
-        return ResponseEntity.ok(kindergartenAdminService.editKindergarten(kindergartenDetailDto));
+        return kindergartenAdminService.editKindergarten(kindergartenDetailDto);
     }
 
     @DeleteMapping("/kindergarten/delete/{id}")

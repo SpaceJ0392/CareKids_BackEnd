@@ -37,10 +37,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Cookie[] cookies = request.getCookies();
             String accessToken = JwtUtils.getAccessTokenFromCookies(cookies);
             String refreshToken = JwtUtils.getRefreshTokenFromCookies(cookies);
-            DecodedJWT decodedToken = verifyToken(accessToken);
+            if (accessToken == null || refreshToken == null){
+                throw new AccessDeniedException("denied Error");
+            }
 
+            DecodedJWT decodedToken = verifyToken(accessToken);
             String usersRole = JwtUtils.getUsersRole(decodedToken);
-            if (accessToken == null || refreshToken == null || !Objects.equals(usersRole, Role.ROLE_ADMIN.getRole())){
+            if (!Objects.equals(usersRole, Role.ROLE_ADMIN.getRole())){
                 throw new AccessDeniedException("denied Error");
             }
             else {

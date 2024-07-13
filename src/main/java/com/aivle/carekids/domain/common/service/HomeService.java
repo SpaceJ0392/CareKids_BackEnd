@@ -42,12 +42,14 @@ public class HomeService {
     public HomeDto displayHomeGuest() {
 
         // 랜덤 나이대 놀이 정보 4개 추출
-        AgeTagDto randomAgeTagInPlayInfo = playInfoRepository.findRandomAgeTagInPlayInfo();
-        List<PlayInfoListDto> playInfoList = playInfoRepository.findTop4ByAgeTagOrderByUpdatedAtDesc(randomAgeTagInPlayInfo.getAgeTagId());
-        //objectMapper.enable(SerializationFeature.WRITE_NL)
+//        AgeTagDto randomAgeTagInPlayInfo = playInfoRepository.findRandomAgeTagInPlayInfo();
+//        List<PlayInfoListDto> playInfoList = playInfoRepository.findTop4ByAgeTagOrderByUpdatedAtDesc(randomAgeTagInPlayInfo.getAgeTagId());
+//        //objectMapper.enable(SerializationFeature.WRITE_NL)
 
 
-        PlayInfoMainListDto playInfoMainList = new PlayInfoMainListDto(playInfoList, randomAgeTagInPlayInfo);
+        // 관리자 테스트 용
+        List<PlayInfoListDto> playInfoList = playInfoRepository.findTop4ByAgeTagOrderByUpdatedAtDesc(null);
+        PlayInfoMainListDto playInfoMainList = new PlayInfoMainListDto(playInfoList, null);
 
         // 서울 전체 육아 정보 4개 추출
         List<KidsPolicyListDto> kidsPolicyList = kidsPolicyRepository.findTop4ByRegionOrderByUpdatedAtDesc(null);
