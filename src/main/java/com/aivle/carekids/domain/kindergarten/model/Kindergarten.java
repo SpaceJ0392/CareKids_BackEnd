@@ -1,10 +1,8 @@
 package com.aivle.carekids.domain.kindergarten.model;
 
-import com.aivle.carekids.admin.kindergarten.dto.KindergartenAdminDto;
 import com.aivle.carekids.domain.common.models.BaseEntity;
 import com.aivle.carekids.domain.common.models.Region;
-import com.aivle.carekids.domain.question.dto.QuestionDetailDto;
-import com.aivle.carekids.domain.question.models.Question;
+import com.aivle.carekids.domain.kindergarten.dto.KindergartenDetailDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -52,30 +50,47 @@ public class Kindergarten extends BaseEntity {
     private List<KindergartenOperateTime> kindergartenOperateTimes = new ArrayList<>();
 
     @Builder
-    public Kindergarten(Long kindergartenId, String kindergartenName, String kindergartenAddress, String kindergartenNewaddress, String kindergartenPhone, Region region, List<KindergartenOperateTime> kindergartenOperateTimes) {
+    public Kindergarten(Long kindergartenId, String kindergartenName, String kindergartenAddress, String kindergartenNewaddress, String kindergartenPhone) {
         this.kindergartenId = kindergartenId;
         this.kindergartenName = kindergartenName;
         this.kindergartenAddress = kindergartenAddress;
         this.kindergartenNewaddress = kindergartenNewaddress;
         this.kindergartenPhone = kindergartenPhone;
-        this.region = region;
-        this.kindergartenOperateTimes = kindergartenOperateTimes;
     }
 
-    public static Kindergarten createKindergarten(KindergartenAdminDto kindergartenAdminDto){
+    public static Kindergarten createNewKindergarten(KindergartenDetailDto kindergartenDetailDto){
         return Kindergarten.builder()
-                .kindergartenId(kindergartenAdminDto.getKindergartenId())
-                .kindergartenName(kindergartenAdminDto.getKindergartenName())
-                .kindergartenAddress(kindergartenAdminDto.getKindergartenAddress())
-                .kindergartenNewaddress(kindergartenAdminDto.getKindergartenNewaddress())
-                .kindergartenPhone(kindergartenAdminDto.getKindergartenPhone())
+                .kindergartenName(kindergartenDetailDto.getKindergartenName())
+                .kindergartenAddress(kindergartenDetailDto.getKindergartenAddress())
+                .kindergartenNewaddress(kindergartenDetailDto.getKindergartenNewaddress())
+                .kindergartenPhone(kindergartenDetailDto.getKindergartenPhone())
                 .build();
     }
 
-    public void updateQuestion(QuestionDetailDto questionDetailDto){
-        this.questionTitle = questionDetailDto.getQuestionTitle();
-        this.questionText = questionDetailDto.getQuestionText();
-        this.secret = questionDetailDto.getSecret();
+    public void setRegionInfo(Region targetRegion) {
+        this.region = targetRegion;
+//        targetRegion.getKindergartens().add(this);
+    }
+
+    public void updateKindergartenInfo(KindergartenDetailDto kindergartenDetailDto) {
+
+        this.kindergartenName = kindergartenDetailDto.getKindergartenName();
+        this.kindergartenAddress = kindergartenDetailDto.getKindergartenAddress();
+        this.kindergartenNewaddress = kindergartenDetailDto.getKindergartenNewaddress();
+        this.kindergartenPhone = kindergartenDetailDto.getKindergartenPhone();
+
+    }
+
+    public void clearOperateTime() {
+        kindergartenOperateTimes.forEach(operateTime -> {
+            operateTime.setKindergartenInfo(null);
+        });
+        this.kindergartenOperateTimes.clear();
+    }
+
+
+    public void deletedKindergarten(boolean deleted){
+        this.deleted = deleted;
     }
 
 }

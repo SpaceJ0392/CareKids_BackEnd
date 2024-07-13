@@ -23,16 +23,16 @@ public class KindergartenDetailDto {
 
     private String kindergartenPhone;
 
-    private RegionDto kindergartenRegion;
+    private RegionDto region;
 
     private List<KindergartenOperateTimeDto> kindergartenOperateTimes = new ArrayList<>();
 
-    public KindergartenDetailDto(Long kindergartenId, String kindergartenName, String kindergartenAddress, String kindergartenNewaddress, String kindergartenPhone, RegionDto kindergartenRegion) {
+    public KindergartenDetailDto(Long kindergartenId, String kindergartenName, String kindergartenAddress, String kindergartenNewaddress, String kindergartenPhone, RegionDto region) {
         this.kindergartenId = kindergartenId;
         this.kindergartenName = kindergartenName;
         this.kindergartenAddress = kindergartenAddress;
         this.kindergartenNewaddress = kindergartenNewaddress;
         this.kindergartenPhone = kindergartenPhone;
-        this.kindergartenRegion = kindergartenRegion;
+        this.region = region;
     }
 }
