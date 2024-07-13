@@ -10,15 +10,14 @@ import lombok.NoArgsConstructor;
 @Getter
 public class PlaceCate {
 
-    @EmbeddedId
-    private PlaceCateId placeCateId;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long placeCateId;
 
-    @MapsId("placeId")
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id")
     private Place place;
 
-    @MapsId("placeSubCateId")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_subcate_id")
     private PlaceSubcate placeSubcate;

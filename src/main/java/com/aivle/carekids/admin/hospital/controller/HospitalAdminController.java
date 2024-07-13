@@ -51,7 +51,7 @@ public class HospitalAdminController {
     }
 
     @PostMapping("/hospital/edit")
-    public ResponseEntity<?> displayHospitalDetail(@CookieValue(name = "AccessToken") String accessToken,
+    public ResponseEntity<?> editHospital(@CookieValue(name = "AccessToken") String accessToken,
                                                    @CookieValue(name = "RefreshToken") String refreshToken,
                                                    @RequestBody HospitalDetailDto hospitalDetailDto) {
 

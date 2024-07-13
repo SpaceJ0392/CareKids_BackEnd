@@ -82,4 +82,5 @@ public class KidsPolicyService {
                 searchHospitalListDtos.getNumberOfElements()
         ), searchRegionAgeTagDto.getRegionDto(), searchRegionAgeTagDto.getAgeTagDto(), searchHospitalListDtos.getContent());
     }
+
 }
