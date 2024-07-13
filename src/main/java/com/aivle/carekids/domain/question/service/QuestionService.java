@@ -95,10 +95,10 @@ public class QuestionService {
         if (targetQuestion.isEmpty() || users.isEmpty()) { return null; }
 
         // 비밀 글이라면, 작성자하고, 관리자만 접근 가능.
-        if (targetQuestion.get().getSecret() &&
-                !(targetQuestion.get().getUsers() != users.get() || users.get().getUsersRole() != Role.ROLE_ADMIN)){
-
-            return null;
+        if (targetQuestion.get().getSecret()){
+            if (targetQuestion.get().getUsers() != users.get() || users.get().getUsersRole() != Role.ROLE_ADMIN) {
+                return null;
+            }
         }
 
         QuestionDetailDto questionDetail = dtoModelMapper.map(targetQuestion.get(), QuestionDetailDto.class);

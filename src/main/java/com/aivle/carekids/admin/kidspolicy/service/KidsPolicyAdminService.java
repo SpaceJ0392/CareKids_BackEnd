@@ -70,7 +70,7 @@ public class KidsPolicyAdminService {
 
             kidsPolicyAgeTagRepository.saveAll(newKidsPolicyAgeTagList);
 
-            return ResponseEntity.ok(Map.of("message", "병원 정보가 등록되었습니다."));
+            return ResponseEntity.ok(Map.of("message", "육아 정책 정보가 등록되었습니다."));
         }
 
         Optional<KidsPolicy> targetKidsPolicy = kidsPolicyRepository.findById(kidsPolicyDetailDto.getKidsPolicyId());
@@ -109,10 +109,10 @@ public class KidsPolicyAdminService {
     public ResponseEntity<?> deleteKidsPolicy(Long kidsPolicyId) {
         Optional<KidsPolicy> targetKidsPolicy = kidsPolicyRepository.findById(kidsPolicyId);
         if (targetKidsPolicy.isEmpty()) {
-            return ResponseEntity.badRequest().body(Map.of("not-found", "병원 정보를 찾을 수 없습니다."));
+            return ResponseEntity.badRequest().body(Map.of("not-found", "육아 정책 정보를 찾을 수 없습니다."));
         }
 
         targetKidsPolicy.get().deletedKidsPolicy(true);
-        return ResponseEntity.ok(Map.of("message", "병원 정보가 삭제되었습니다."));
+        return ResponseEntity.ok(Map.of("message", "육아 정책 정보가 삭제되었습니다."));
     }
 }

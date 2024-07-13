@@ -52,6 +52,7 @@ public class SecurityConfig {
     private final ObjectMapper objectMapper;
     private final CustomAuthenticationManager customAuthenticationManager;
 
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomOAuth2UserService oAuth2UserService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final JwtUtils jwtUtils;
@@ -115,10 +116,9 @@ public class SecurityConfig {
                             response.sendRedirect(GlobelVar.CLIENT_BASE_URL + "/login");
                         })))
                 // CORS 설정 추가
-                .cors(cors -> cors.configurationSource(source));
-
-        //TODO - Access Denied 문제 해결
-        http.exceptionHandling(handler -> handler.accessDeniedHandler(new CustomAccessDeniedHandler(objectMapper)));
+                .cors(cors -> cors.configurationSource(source))
+                //Access Denied 문제 해결
+                .exceptionHandling(handler -> handler.accessDeniedHandler(customAccessDeniedHandler));
 
         return http.build();
     }
@@ -128,4 +128,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }
