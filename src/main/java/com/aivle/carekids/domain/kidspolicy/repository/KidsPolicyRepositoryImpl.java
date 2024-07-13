@@ -156,10 +156,11 @@ public class KidsPolicyRepositoryImpl implements KidsPolicyRepositoryCustom {
                         kidsPolicy.createdAt, kidsPolicy.updatedAt, kidsPolicy.kidsPolicyId, kidsPolicy.kidsPolicyTitle,
                         kidsPolicy.kidsPolicyText
                 ))
-                .from(kidsPolicyRegionAgeTag)
-                .join(kidsPolicyRegionAgeTag.kidsPolicy, kidsPolicy)
-                .join(kidsPolicyRegionAgeTag.region, region)
-                .join(kidsPolicyRegionAgeTag.ageTag, ageTag)
+                .from(kidsPolicy)
+                .join(kidsPolicy.kidsPolicyRegions, kidsPolicyRegion)
+                .join(kidsPolicyRegion.region, region)
+                .join(kidsPolicy.kidsPolicyAgeTags, kidsPolicyAgeTag)
+                .join(kidsPolicyAgeTag.ageTag, ageTag)
                 .where(
                         queryContains(searchRegionAgeTagDto.getQuery()),
                         regionSearchIn(searchRegionAgeTagDto.getRegionDto().getRegionId()),
@@ -192,11 +193,11 @@ public class KidsPolicyRepositoryImpl implements KidsPolicyRepositoryCustom {
     }
 
     private BooleanExpression regionSearchIn(Long regionId) {
-        return isEmpty(regionId) ? null : kidsPolicyRegionAgeTag.region.regionId.eq(regionId);
+        return isEmpty(regionId) ? null : kidsPolicyRegion.region.regionId.eq(regionId);
     }
 
     private BooleanExpression ageTagSearchIn(List<Long> ageTagIds) {
-        return isEmpty(ageTagIds) ? null : kidsPolicyRegionAgeTag.ageTag.ageTagId.in(ageTagIds);
+        return isEmpty(ageTagIds) ? null : kidsPolicyAgeTag.ageTag.ageTagId.in(ageTagIds);
     }
 
     private BooleanExpression regionEq(Long regionId) {

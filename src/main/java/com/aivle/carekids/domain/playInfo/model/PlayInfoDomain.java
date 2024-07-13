@@ -10,15 +10,13 @@ import lombok.NoArgsConstructor;
 @Getter
 public class PlayInfoDomain {
 
-    @EmbeddedId
-    private PlayInfoDomainId playInfoDomainId;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long playInfoDomainId;
 
-    @MapsId("playInfoId")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "play_info_id")
     private PlayInfo playInfo;
 
-    @MapsId("devDomainId")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dev_domain_id")
     private DevDomain devDomain;

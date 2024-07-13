@@ -1,9 +1,11 @@
 package com.aivle.carekids.admin.utils.controller;
 
 import com.aivle.carekids.admin.utils.dto.HospitalTypeDto;
+import com.aivle.carekids.admin.utils.dto.KidsPolicyTypeDto;
 import com.aivle.carekids.admin.utils.dto.OperateDateTypeDto;
 import com.aivle.carekids.domain.common.models.DayType;
 import com.aivle.carekids.domain.hospital.model.HospitalType;
+import com.aivle.carekids.domain.kidspolicy.models.KidsPolicyType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,4 +37,14 @@ public class UtilsController {
 
         return ResponseEntity.ok(operateDateTypeDtos);
     }
+
+    @GetMapping("/kidsPolicy-type")
+    public ResponseEntity<?> displayKidsPolicyType(){
+
+        List<KidsPolicyTypeDto> kidsPolicyTypeDtos = Arrays.stream(KidsPolicyType.values())
+                .map(kidsPolicyType -> new KidsPolicyTypeDto(kidsPolicyType, kidsPolicyType.getKidsPolicyType())).toList();
+
+        return ResponseEntity.ok(kidsPolicyTypeDtos);
+    }
+
 }
