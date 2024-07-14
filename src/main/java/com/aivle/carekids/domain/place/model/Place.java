@@ -2,8 +2,14 @@ package com.aivle.carekids.domain.place.model;
 
 import com.aivle.carekids.domain.common.models.BaseEntity;
 import com.aivle.carekids.domain.common.models.Region;
+import com.aivle.carekids.domain.hospital.dto.HospitalDetailDto;
+import com.aivle.carekids.domain.hospital.model.HospitalType;
+import com.aivle.carekids.domain.kidspolicy.models.KidsPolicyType;
+import com.aivle.carekids.domain.place.dto.PlaceDetailDto;
+import com.aivle.carekids.domain.playInfo.model.PlayInfo;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
@@ -68,4 +74,76 @@ public class Place extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "place")
     private List<PlaceKeyword> placeKeywords = new ArrayList<>();
 
+    @Builder
+    public Place(Long placeId, String placeName, String placeImgUrl, String placeAddress, String placeNewAddress, String placePhone, PlaceType placeType, ParkingType placeParking, FreeType placeFree, String placeOperateTime) {
+        this.placeName = placeName;
+        this.placeImgUrl = placeImgUrl;
+        this.placeAddress = placeAddress;
+        this.placeNewAddress = placeNewAddress;
+        this.placePhone = placePhone;
+        this.placeType = placeType;
+        this.placeParking = placeParking;
+        this.placeFree = placeFree;
+        this.placeOperateTime = placeOperateTime;
+    }
+
+    public static Place createNewPlace(PlaceDetailDto placeDetailDto) {
+        PlaceType placeType = PlaceType.fromPlaceTypeString(placeDetailDto.getPlaceType());
+        ParkingType parkingType = ParkingType.fromParkingTypeString(placeDetailDto.getPlaceParking());
+        FreeType freeType = FreeType.fromFreeTypeString(placeDetailDto.getPlaceFree());
+
+        return Place.builder()
+                .placeName(placeDetailDto.getPlaceName())
+                .placeImgUrl(placeDetailDto.getPlaceImgUrl())
+                .placeAddress(placeDetailDto.getPlaceAddress())
+                .placeNewAddress(placeDetailDto.getPlaceNewAddress())
+                .placePhone(placeDetailDto.getPlacePhone())
+                .placeType(placeType)
+                .placeParking(parkingType)
+                .placeFree(freeType)
+                .placeOperateTime(placeDetailDto.getPlaceOperateTime())
+                .build();
+    }
+
+    public void setRegionInfo(Region targetRegion) {
+        this.region = targetRegion;
+        targetRegion.getPlace().add(this);
+    }
+
+    public void updatePlaceInfo(PlaceDetailDto placeDetailDto) {
+
+        PlaceType placeType = PlaceType.fromPlaceTypeString(placeDetailDto.getPlaceType());
+        ParkingType parkingType = ParkingType.fromParkingTypeString(placeDetailDto.getPlaceParking());
+        FreeType freeType = FreeType.fromFreeTypeString(placeDetailDto.getPlaceFree());
+
+        this.placeName = placeDetailDto.getPlaceName();
+        this.placeImgUrl = placeDetailDto.getPlaceImgUrl();
+        this.placeAddress = placeDetailDto.getPlaceAddress();
+        this.placeNewAddress = placeDetailDto.getPlaceNewAddress();
+        this.placePhone = placeDetailDto.getPlacePhone();
+        this.placeType = placeType;
+        this.placeParking = parkingType;
+        this.placeFree = freeType;
+        this.placeOperateTime = placeDetailDto.getPlaceOperateTime();
+
+    }
+
+    public void clearPlaceCates() {
+        placeCates.forEach(placeCate -> {
+            placeCate.setPlaceCateInfo(null, null);
+        });
+        this.placeCates.clear();
+    }
+
+
+    public void clearPlaceKeywords() {
+        placeKeywords.forEach(placeKeyword -> {
+            placeKeyword.setPlaceKeywordInfo(null, null);
+        });
+        this.placeKeywords.clear();
+    }
+
+    public void deletedPlace(boolean deleted){
+        this.deleted = deleted;
+    }
 }
