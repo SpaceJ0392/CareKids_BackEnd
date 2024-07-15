@@ -11,6 +11,7 @@ import java.time.LocalTime;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class HospitalOperateTimeDto extends OperateTimeDto {
 
     @JsonIgnore
