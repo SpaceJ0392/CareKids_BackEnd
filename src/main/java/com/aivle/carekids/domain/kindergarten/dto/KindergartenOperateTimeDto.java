@@ -4,12 +4,14 @@ import com.aivle.carekids.domain.common.dto.OperateTimeDto;
 import com.aivle.carekids.domain.common.models.DayType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalTime;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class KindergartenOperateTimeDto extends OperateTimeDto {
 
     @JsonIgnore

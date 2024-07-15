@@ -8,9 +8,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PlaceSubcateDto {
 
+    private Long placeSubcateId;
+
     private String placeSubcateName;
 
-    public PlaceSubcateDto(String placeSubcateName) {
+    public PlaceSubcateDto(Long placeSubcateId, String placeSubcateName) {
+        this.placeSubcateId = placeSubcateId;
         this.placeSubcateName = placeSubcateName;
     }
 }

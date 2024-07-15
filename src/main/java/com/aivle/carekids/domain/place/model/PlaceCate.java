@@ -1,7 +1,11 @@
 package com.aivle.carekids.domain.place.model;
 
+import com.aivle.carekids.domain.common.models.Region;
+import com.aivle.carekids.domain.kidspolicy.models.KidsPolicy;
+import com.aivle.carekids.domain.kidspolicy.models.KidsPolicyRegion;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,5 +25,33 @@ public class PlaceCate {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_subcate_id")
     private PlaceSubcate placeSubcate;
+
+    @Builder
+    public PlaceCate(Place place, PlaceSubcate placeSubcate) {
+        this.place = place;
+        this.placeSubcate = placeSubcate;
+    }
+
+    public static PlaceCate createNewPlaceCate(Place place, PlaceSubcate placeSubcate) {
+        return PlaceCate.builder()
+                .place(place)
+                .placeSubcate(placeSubcate)
+                .build();
+    }
+
+    public void setPlaceCateInfo(Place place, PlaceSubcate placeSubcate){
+
+        if (place == null || placeSubcate == null){
+            this.place = null;
+            this.placeSubcate = null;
+            return;
+        }
+
+        this.place = place;
+        place.getPlaceCates().add(this);
+
+        this.placeSubcate = placeSubcate;
+        placeSubcate.getPlaceCates().add(this);
+    }
 
 }
