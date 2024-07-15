@@ -13,7 +13,6 @@ import com.aivle.carekids.domain.playInfo.dto.PlayInfoMainListDto;
 import com.aivle.carekids.domain.playInfo.repository.PlayInfoRepository;
 import com.aivle.carekids.domain.user.dto.UsersDetailDto;
 import com.aivle.carekids.domain.user.repository.UsersRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -37,17 +36,16 @@ public class HomeService {
     private final KidsPolicyRepository kidsPolicyRepository;
 
     private final ModelMapper dtoModelMapper;
-    private final ObjectMapper objectMapper;
 
     public HomeDto displayHomeGuest() {
 
         // 랜덤 나이대 놀이 정보 4개 추출
 //        AgeTagDto randomAgeTagInPlayInfo = playInfoRepository.findRandomAgeTagInPlayInfo();
 //        List<PlayInfoListDto> playInfoList = playInfoRepository.findTop4ByAgeTagOrderByUpdatedAtDesc(randomAgeTagInPlayInfo.getAgeTagId());
-//        //objectMapper.enable(SerializationFeature.WRITE_NL)
+//        objectMapper.enable(SerializationFeature.WRITE_NL)
 
 
-        // 관리자 테스트 용
+//         관리자 테스트 용
         List<PlayInfoListDto> playInfoList = playInfoRepository.findTop4ByAgeTagOrderByUpdatedAtDesc(null);
         PlayInfoMainListDto playInfoMainList = new PlayInfoMainListDto(playInfoList, null);
 

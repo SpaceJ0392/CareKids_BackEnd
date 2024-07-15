@@ -69,7 +69,7 @@ public class Kindergarten extends BaseEntity {
 
     public void setRegionInfo(Region targetRegion) {
         this.region = targetRegion;
-//        targetRegion.getKindergartens().add(this);
+        targetRegion.getKindergartens().add(this);
     }
 
     public void updateKindergartenInfo(KindergartenDetailDto kindergartenDetailDto) {

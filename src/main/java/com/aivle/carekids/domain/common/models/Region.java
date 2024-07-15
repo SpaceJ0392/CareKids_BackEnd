@@ -4,6 +4,7 @@ import com.aivle.carekids.domain.common.dto.RegionDto;
 import com.aivle.carekids.domain.hospital.model.Hospital;
 import com.aivle.carekids.domain.kidspolicy.models.KidsPolicyRegion;
 import com.aivle.carekids.domain.kidspolicy.models.KidsPolicyRegionAgeTag;
+import com.aivle.carekids.domain.kindergarten.model.Kindergarten;
 import com.aivle.carekids.domain.place.model.Place;
 import com.aivle.carekids.domain.user.models.Users;
 import jakarta.persistence.*;
@@ -33,6 +34,9 @@ public class Region {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "region")
     private List<Hospital> hospitals = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "region")
+    private List<Kindergarten> kindergartens = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "region")
     private List<KidsPolicyRegionAgeTag> kidsPolicyRegionAgeTags = new ArrayList<>();
