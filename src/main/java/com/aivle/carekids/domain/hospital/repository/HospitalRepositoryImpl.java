@@ -73,7 +73,12 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
         content.forEach(c -> c.setHospitalOperateTimeDto(operateTimeByHospitalList.get(c.getHospitalId())));
 
 
-        JPAQuery<Long> countQuery = jpaQueryFactory.select(hospital.count()).from(hospital);
+        JPAQuery<Long> countQuery = jpaQueryFactory.select(hospital.count()).from(hospital)
+                .join(hospital.region, region)
+                .where(regionEq(regionId))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 
@@ -176,7 +181,16 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
         content.forEach(c -> c.setHospitalOperateTimeDto(operateTimeByHospitalList.get(c.getHospitalId())));
 
 
-        JPAQuery<Long> countQuery = jpaQueryFactory.select(hospital.count()).from(hospital);
+        JPAQuery<Long> countQuery = jpaQueryFactory.select(hospital.count()).from(hospital)
+                .join(hospital.region, region)
+                .where(
+                        regionEq(searchRegionDto.getRegionDto().getRegionId()),
+                        queryContains(searchRegionDto.getQuery())
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+
+
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 

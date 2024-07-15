@@ -1,6 +1,8 @@
 package com.aivle.carekids.domain.playInfo.repository;
 
-import com.aivle.carekids.domain.common.dto.*;
+import com.aivle.carekids.domain.common.dto.AgeTagDto;
+import com.aivle.carekids.domain.common.dto.QAgeTagDto;
+import com.aivle.carekids.domain.common.dto.SearchAgeTagDto;
 import com.aivle.carekids.domain.playInfo.dto.DevDomainDto;
 import com.aivle.carekids.domain.playInfo.dto.PlayInfoDetailDto;
 import com.aivle.carekids.domain.playInfo.dto.PlayInfoListDto;
@@ -19,7 +21,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.aivle.carekids.domain.common.models.QAgeTag.ageTag;
-import static com.aivle.carekids.domain.kidspolicy.models.QKidsPolicy.kidsPolicy;
 import static com.aivle.carekids.domain.playInfo.model.QDevDomain.devDomain;
 import static com.aivle.carekids.domain.playInfo.model.QPlayInfo.playInfo;
 import static com.aivle.carekids.domain.playInfo.model.QPlayInfoDomain.playInfoDomain;
@@ -77,7 +78,12 @@ public class PlayInfoRepositoryImpl implements PlayInfoRepositoryCustom{
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        JPAQuery<Long> countQuery = jpaQueryFactory.select(playInfo.count()).from(playInfo);
+        JPAQuery<Long> countQuery = jpaQueryFactory.select(playInfo.count()).from(playInfo)
+                .join(playInfo.ageTag, ageTag)
+                .where(ageEq(ageTagId))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 
@@ -143,7 +149,15 @@ public class PlayInfoRepositoryImpl implements PlayInfoRepositoryCustom{
                 .fetch();
 
 
-        JPAQuery<Long> countQuery = jpaQueryFactory.select(playInfo.count()).from(playInfo);
+        JPAQuery<Long> countQuery = jpaQueryFactory.select(playInfo.count()).from(playInfo)
+                .join(playInfo.ageTag, ageTag)
+                .where(
+                        ageEq(searchAgeTagDto.getAgeTagDto().getAgeTagId()),
+                        queryContains(searchAgeTagDto.getQuery())
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 
