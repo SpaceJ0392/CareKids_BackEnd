@@ -50,7 +50,7 @@ public class PlayInfoRepositoryImpl implements PlayInfoRepositoryCustom{
                         playInfo.playInfoTitle,
                         playInfo.playInfoText))
                 .from(playInfo)
-                .where(playInfo.ageTag.ageTagId.eq(ageTagId))
+                .where(playInfo.ageTag.ageTagName.eq("전체(12세 이하)").or(ageEq(ageTagId)))
                 .orderBy(playInfo.updatedAt.desc())
                 .limit(4)
                 .fetch();

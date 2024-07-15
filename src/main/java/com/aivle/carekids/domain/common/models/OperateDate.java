@@ -14,6 +14,7 @@ import java.time.LocalTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class OperateDate extends OperateTime{
     @Enumerated(EnumType.STRING)
+
     protected DayType dayType;
 
     public OperateDate(DayType dayType, LocalTime startTime, LocalTime endTime) {

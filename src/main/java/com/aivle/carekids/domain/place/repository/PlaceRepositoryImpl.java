@@ -3,7 +3,6 @@ package com.aivle.carekids.domain.place.repository;
 
 import com.aivle.carekids.domain.common.dto.RegionDto;
 import com.aivle.carekids.domain.common.dto.SearchRegionCateDto;
-import com.aivle.carekids.domain.kindergarten.dto.KindergartenOperateTimeDto;
 import com.aivle.carekids.domain.place.dto.PlaceDetailDto;
 import com.aivle.carekids.domain.place.dto.PlaceKeywordDto;
 import com.aivle.carekids.domain.place.dto.PlaceListDto;
@@ -23,7 +22,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.aivle.carekids.domain.common.models.QRegion.region;
-import static com.aivle.carekids.domain.kindergarten.model.QKindergarten.kindergarten;
 import static com.aivle.carekids.domain.place.model.QPlace.place;
 import static com.aivle.carekids.domain.place.model.QPlaceCate.placeCate;
 import static com.aivle.carekids.domain.place.model.QPlaceKeyword.placeKeyword;
@@ -45,7 +43,7 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
                                 place.placeAddress,
                                 place.placeNewAddress,
                                 place.placeOperateTime,
-                                Projections.constructor(PlaceSubcateDto.class, placeCate.placeSubcate.placeSubcateName)
+                                Projections.constructor(PlaceSubcateDto.class, placeCate.placeSubcate.placeSubcateId, placeCate.placeSubcate.placeSubcateName)
                         )).from(place)
                 .join(place.placeCates, placeCate)
                 .where(regionEq(regionId))
@@ -74,6 +72,7 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
                         Projections.constructor(
                                 PlaceKeywordDto.class,
                                 place.placeId,
+                                placeKeyword.keyword.keywordId,
                                 placeKeyword.keyword.keywordName
                         ))
                 .from(placeKeyword)
@@ -92,12 +91,12 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
                         place.placeAddress,
                         place.placeNewAddress,
                         place.placePhone,
-                        place.placeType,
-                        place.placeParking,
-                        place.placeFree,
+                        place.placeType.stringValue(),
+                        place.placeParking.stringValue(),
+                        place.placeFree.stringValue(),
                         place.placeOperateTime,
                         Projections.constructor(RegionDto.class, region.regionId, region.regionName),
-                        Projections.constructor(PlaceSubcateDto.class, placeCate.placeSubcate.placeSubcateName)
+                        Projections.constructor(PlaceSubcateDto.class, placeCate.placeSubcate.placeSubcateId, placeCate.placeSubcate.placeSubcateName)
                 )).from(place)
                 .join(place.region, region)
                 .join(place.placeCates, placeCate)
@@ -113,6 +112,7 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
                                 Projections.constructor(
                                         PlaceKeywordDto.class,
                                         place.placeId,
+                                        placeKeyword.keyword.keywordId,
                                         placeKeyword.keyword.keywordName
                                 ))
                         .from(placeKeyword)
@@ -134,7 +134,7 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
                                 place.placeAddress,
                                 place.placeNewAddress,
                                 place.placeOperateTime,
-                                Projections.constructor(PlaceSubcateDto.class, placeCate.placeSubcate.placeSubcateName)
+                                Projections.constructor(PlaceSubcateDto.class, placeCate.placeSubcate.placeSubcateId, placeCate.placeSubcate.placeSubcateName)
                         )).from(place)
                 .join(place.placeCates, placeCate)
                 .where(
