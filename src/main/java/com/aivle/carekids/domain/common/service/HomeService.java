@@ -7,7 +7,6 @@ import com.aivle.carekids.domain.common.repository.RegionRepository;
 import com.aivle.carekids.domain.kidspolicy.dto.KidsPolicyListDto;
 import com.aivle.carekids.domain.kidspolicy.dto.KidsPolicyMainListDto;
 import com.aivle.carekids.domain.kidspolicy.repository.KidsPolicyRepository;
-import com.aivle.carekids.domain.notice.repository.NoticeRepository;
 import com.aivle.carekids.domain.playInfo.dto.PlayInfoListDto;
 import com.aivle.carekids.domain.playInfo.dto.PlayInfoMainListDto;
 import com.aivle.carekids.domain.playInfo.repository.PlayInfoRepository;
@@ -33,7 +32,6 @@ public class HomeService {
 
     private final RegionRepository regionRepository;
     private final PlayInfoRepository playInfoRepository;
-    private final NoticeRepository noticeRepository;
     private final KidsPolicyRepository kidsPolicyRepository;
 
     private final ModelMapper dtoModelMapper;
