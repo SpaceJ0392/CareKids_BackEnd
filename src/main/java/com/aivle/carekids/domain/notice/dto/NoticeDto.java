@@ -1,6 +1,8 @@
 package com.aivle.carekids.domain.notice.dto;
 
 import com.aivle.carekids.domain.common.dto.BaseDto;
+import com.aivle.carekids.domain.user.models.Users;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
@@ -24,6 +26,9 @@ public class NoticeDto extends BaseDto {
 
     @JsonProperty("description")
     private String noticeText;
+
+    @JsonIgnore
+    private Users users;
 
     public NoticeDto(Long noticeId, String noticeTitle, String noticeText, String noticeImgUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(createdAt, updatedAt);

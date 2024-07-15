@@ -2,7 +2,6 @@ package com.aivle.carekids.domain.user.general.jwt;
 
 
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils;
-import com.aivle.carekids.domain.user.models.Role;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -17,8 +16,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.nio.file.AccessDeniedException;
-import java.util.Objects;
 
 import static com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils.verifyToken;
 
@@ -32,21 +29,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 
-        String url = request.getRequestURI();
-        if (url.startsWith("/api/admin/")){
-            Cookie[] cookies = request.getCookies();
-            String accessToken = JwtUtils.getAccessTokenFromCookies(cookies);
-            String refreshToken = JwtUtils.getRefreshTokenFromCookies(cookies);
-            DecodedJWT decodedToken = verifyToken(accessToken);
+        Cookie[] cookies = request.getCookies();
+        String accessToken = JwtUtils.getAccessTokenFromCookies(cookies);
+        String refreshToken = JwtUtils.getRefreshTokenFromCookies(cookies);
 
+        String url = request.getRequestURI();
+        if ((accessToken != null && refreshToken != null) && url.startsWith("/api/admin/")){
+
+            DecodedJWT decodedToken = verifyToken(accessToken);
             String usersRole = JwtUtils.getUsersRole(decodedToken);
-            if (accessToken == null || refreshToken == null || !Objects.equals(usersRole, Role.ROLE_ADMIN.getRole())){
-                throw new AccessDeniedException("denied Error");
-            }
-            else {
-                UsernamePasswordAuthenticationToken authenticationToken = JwtUtils.getAuthenticationToken(decodedToken);
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            }
+
+            UsernamePasswordAuthenticationToken authenticationToken = JwtUtils.getAuthenticationToken(decodedToken);
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
 
         doFilter(request, response, filterChain);

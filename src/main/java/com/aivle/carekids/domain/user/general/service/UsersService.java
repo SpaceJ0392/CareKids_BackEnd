@@ -87,13 +87,12 @@ public class UsersService {
         kidsRepository.saveAll(newKids);
 
         message.put("message", "회원 가입이 완료되었습니다.");
-        return ResponseEntity.created(new URI(GlobelVar.CLIENT_BASE_URL + "/login")).body(message);
+        return ResponseEntity.created(new URI( GlobelVar.CLIENT_BASE_URL + "/login")).body(message); // GlobelVar.CLIENT_BASE_URL
     }
 
     public Users findByUsersId(Long usersId){
-        Users users = usersRepository.findByUsersId(usersId)
+        return usersRepository.findByUsersId(usersId)
                 .orElseThrow(() -> new UserNotFoundException("미 등록 유저입니다."));
-        return users;
     }
 
     public UsersDetailDto displayUsersDetail(Long usersId){

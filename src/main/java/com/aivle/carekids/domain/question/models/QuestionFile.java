@@ -13,7 +13,7 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLDelete(sql = "UPDATE question_file SET deleted = true WHERE id=?")
 @SQLRestriction("deleted=false")
 public class QuestionFile {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long questionFIleId;
 
     private String questionFileName;

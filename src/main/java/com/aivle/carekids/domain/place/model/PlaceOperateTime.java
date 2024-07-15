@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class PlaceOperateTime extends OperateDate {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long placeOperateTimeId;
 
     @ManyToOne(fetch = FetchType.LAZY)

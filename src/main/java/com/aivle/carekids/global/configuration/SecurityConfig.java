@@ -13,7 +13,6 @@ import com.aivle.carekids.domain.user.general.service.LogoutService;
 import com.aivle.carekids.domain.user.oauth2.handler.OAuth2SuccessHandler;
 import com.aivle.carekids.domain.user.oauth2.service.CustomOAuth2UserService;
 import com.aivle.carekids.domain.user.repository.UsersRepository;
-import com.aivle.carekids.global.Variable.GlobelVar;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,6 +51,7 @@ public class SecurityConfig {
     private final ObjectMapper objectMapper;
     private final CustomAuthenticationManager customAuthenticationManager;
 
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomOAuth2UserService oAuth2UserService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final JwtUtils jwtUtils;
@@ -70,8 +70,8 @@ public class SecurityConfig {
     @ConditionalOnProperty(name = "spring.h2.console.enabled", havingValue = "true") //false면 접근 불가...
     public WebSecurityCustomizer configure() {
         return web -> web.ignoring()
-                .requestMatchers(PathRequest.toH2Console());
-        //.requestMatchers("/error", "/favicon.ico");
+                .requestMatchers(PathRequest.toH2Console())
+                .requestMatchers("/error", "/favicon.ico");
     }
 
     /* 권한 부여 */
@@ -112,13 +112,12 @@ public class SecurityConfig {
                         .addLogoutHandler(logoutService)
                         .logoutSuccessHandler(((request, response, authentication) -> {
                             SecurityContextHolder.clearContext();
-                            response.sendRedirect(GlobelVar.CLIENT_BASE_URL + "/login");
+
                         })))
                 // CORS 설정 추가
-                .cors(cors -> cors.configurationSource(source));
-
-        //TODO - Access Denied 문제 해결
-        http.exceptionHandling(handler -> handler.accessDeniedHandler(new CustomAccessDeniedHandler(objectMapper)));
+                .cors(cors -> cors.configurationSource(source))
+                //Access Denied 문제 해결
+                .exceptionHandling(handler -> handler.accessDeniedHandler(customAccessDeniedHandler));
 
         return http.build();
     }
@@ -128,4 +127,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }
