@@ -70,7 +70,7 @@ public class KindergartenRepositoryImpl implements KindergartenRepositoryCustom 
     }
 
     private BooleanExpression regionEq(Long regionId) {
-        return isEmpty(regionId) ? null : kindergarten.region.regionId.eq(regionId);
+        return isEmpty(regionId) || regionId == 26 ? null : hospital.region.regionId.eq(regionId);
     }
 
 
