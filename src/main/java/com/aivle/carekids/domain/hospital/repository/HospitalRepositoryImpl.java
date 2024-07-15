@@ -75,9 +75,7 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
 
         JPAQuery<Long> countQuery = jpaQueryFactory.select(hospital.count()).from(hospital)
                 .join(hospital.region, region)
-                .where(regionEq(regionId))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
+                .where(regionEq(regionId));
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
@@ -186,9 +184,7 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
                 .where(
                         regionEq(searchRegionDto.getRegionDto().getRegionId()),
                         queryContains(searchRegionDto.getQuery())
-                )
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
+                );
 
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
