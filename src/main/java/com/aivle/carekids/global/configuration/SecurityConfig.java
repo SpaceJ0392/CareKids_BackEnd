@@ -14,6 +14,7 @@ import com.aivle.carekids.domain.user.oauth2.handler.OAuth2SuccessHandler;
 import com.aivle.carekids.domain.user.oauth2.service.CustomOAuth2UserService;
 import com.aivle.carekids.domain.user.repository.UsersRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -113,6 +114,10 @@ public class SecurityConfig {
                         .logoutSuccessHandler(((request, response, authentication) -> {
                             SecurityContextHolder.clearContext();
 
+                            response.setStatus(HttpServletResponse.SC_OK);
+                            response.setContentType("application/json");
+                            response.setCharacterEncoding("UTF-8");
+                            response.getWriter().write("{\"message\": \"로그아웃 되었습니다.\"}");
                         })))
                 // CORS 설정 추가
                 .cors(cors -> cors.configurationSource(source))
