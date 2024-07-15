@@ -38,7 +38,9 @@ public class JsonToHttpRequestFilter implements Filter {
 
             request.setParameter(SPRING_SECURITY_FORM_USERNAME_KEY, loginData.getEmail());
             request.setParameter(SPRING_SECURITY_FORM_PASSWORD_KEY, loginData.getPassword());
-            request.setParameter(ROLE, users.getUsersRole().getRole());
+            if (users != null){
+                request.setParameter(ROLE, users.getUsersRole().getRole());
+            }
         }
         chain.doFilter(request, resp);
     }

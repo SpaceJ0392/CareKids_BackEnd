@@ -50,6 +50,9 @@ public class KindergartenRepositoryImpl implements KindergartenRepositoryCustom 
                                 KindergartenListDto.class,
                                 kindergarten.kindergartenId,
                                 kindergarten.kindergartenName,
+                                kindergarten.kindergartenAddress,
+                                kindergarten.kindergartenNewaddress,
+                                kindergarten.kindergartenPhone,
                                 Projections.constructor(RegionDto.class, region.regionId, region.regionName)
                         )).from(kindergarten)
                 .join(kindergarten.region, region)
@@ -132,6 +135,9 @@ public class KindergartenRepositoryImpl implements KindergartenRepositoryCustom 
                                 KindergartenListDto.class,
                                 kindergarten.kindergartenId,
                                 kindergarten.kindergartenName,
+                                kindergarten.kindergartenAddress,
+                                kindergarten.kindergartenNewaddress,
+                                kindergarten.kindergartenPhone,
                                 Projections.constructor(RegionDto.class, region.regionId, region.regionName)
                         )).from(kindergarten)
                 .join(kindergarten.region, region)

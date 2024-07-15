@@ -5,14 +5,18 @@ import com.aivle.carekids.domain.question.models.Question;
 import com.aivle.carekids.domain.question.models.QuestionFile;
 import com.aivle.carekids.domain.question.repository.QuestionFileRepository;
 import com.aivle.carekids.domain.user.models.Users;
+import com.aivle.carekids.global.Variable.GlobelVar;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,12 +31,17 @@ public class FileService {
 
     @Value("${file.upload-path}")
     private String BASE_PATH;
+    private static final String NOTICE_IMG_PATH = "";
+
 
     private final QuestionFileRepository questionFileRepository;
     private final ModelMapper entityModelMapper;
+    private final ResourceLoader resourceLoader;
 
     @Transactional
     public void saveFile(Question targetQuestion, List<MultipartFile> questionFiles, String usersNickname) {
+
+        if (questionFiles.isEmpty()) { return; }
 
         List<QuestionFile> targetQuestionFile = new ArrayList<>();
 
@@ -79,12 +88,41 @@ public class FileService {
         try {
             if (!Files.exists(filePath.getParent())){
                 Files.createDirectories(filePath.getParent());
-                int a = 1;
             }
-            int a = 1;
+
             Files.copy(file.getInputStream(), filePath);
         } catch (Exception e) { return null; }
 
         return new QuestionFileDto(originalName, saveName, filePath.toString());
+    }
+
+
+    public String uploadFileNotice(MultipartFile file) throws IOException {
+
+        if (file == null || file.isEmpty()) { return null; }
+
+        String originalName = file.getOriginalFilename();
+        String mimeType = file.getContentType();
+        if (mimeType != null && !mimeType.startsWith("image/")) { return null; }
+
+
+        UUID uuid = UUID.randomUUID();
+        assert originalName != null;
+        String saveName = uuid.toString() + "_" + originalName;
+
+        Resource resource = resourceLoader.getResource("classpath:static/images");
+        Path resourcePath = Paths.get(resource.getURI());
+        Path filePath = resourcePath.resolve("notice").resolve(saveName);
+
+        try {
+            if (!Files.exists(filePath.getParent())){
+                Files.createDirectories(filePath.getParent());
+            }
+            Files.copy(file.getInputStream(), filePath);
+        } catch (Exception e) { return null; }
+
+        String targetImg = filePath.subpath(resourcePath.getNameCount(), filePath.getNameCount())
+                .toString().replaceAll("\\\\", "/");
+        return GlobelVar.SERVER_BASE_URL + "/images/" + targetImg;
     }
 }

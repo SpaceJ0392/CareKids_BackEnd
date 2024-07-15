@@ -7,13 +7,11 @@ import com.aivle.carekids.domain.common.repository.RegionRepository;
 import com.aivle.carekids.domain.kidspolicy.dto.KidsPolicyListDto;
 import com.aivle.carekids.domain.kidspolicy.dto.KidsPolicyMainListDto;
 import com.aivle.carekids.domain.kidspolicy.repository.KidsPolicyRepository;
-import com.aivle.carekids.domain.notice.repository.NoticeRepository;
 import com.aivle.carekids.domain.playInfo.dto.PlayInfoListDto;
 import com.aivle.carekids.domain.playInfo.dto.PlayInfoMainListDto;
 import com.aivle.carekids.domain.playInfo.repository.PlayInfoRepository;
 import com.aivle.carekids.domain.user.dto.UsersDetailDto;
 import com.aivle.carekids.domain.user.repository.UsersRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -33,21 +31,21 @@ public class HomeService {
 
     private final RegionRepository regionRepository;
     private final PlayInfoRepository playInfoRepository;
-    private final NoticeRepository noticeRepository;
     private final KidsPolicyRepository kidsPolicyRepository;
 
     private final ModelMapper dtoModelMapper;
-    private final ObjectMapper objectMapper;
 
     public HomeDto displayHomeGuest() {
 
         // 랜덤 나이대 놀이 정보 4개 추출
-        AgeTagDto randomAgeTagInPlayInfo = playInfoRepository.findRandomAgeTagInPlayInfo();
-        List<PlayInfoListDto> playInfoList = playInfoRepository.findTop4ByAgeTagOrderByUpdatedAtDesc(randomAgeTagInPlayInfo.getAgeTagId());
-        //objectMapper.enable(SerializationFeature.WRITE_NL)
+//        AgeTagDto randomAgeTagInPlayInfo = playInfoRepository.findRandomAgeTagInPlayInfo();
+//        List<PlayInfoListDto> playInfoList = playInfoRepository.findTop4ByAgeTagOrderByUpdatedAtDesc(randomAgeTagInPlayInfo.getAgeTagId());
+//        objectMapper.enable(SerializationFeature.WRITE_NL)
 
 
-        PlayInfoMainListDto playInfoMainList = new PlayInfoMainListDto(playInfoList, randomAgeTagInPlayInfo);
+//         관리자 테스트 용
+        List<PlayInfoListDto> playInfoList = playInfoRepository.findTop4ByAgeTagOrderByUpdatedAtDesc(null);
+        PlayInfoMainListDto playInfoMainList = new PlayInfoMainListDto(playInfoList, null);
 
         // 서울 전체 육아 정보 4개 추출
         List<KidsPolicyListDto> kidsPolicyList = kidsPolicyRepository.findTop4ByRegionOrderByUpdatedAtDesc(null);

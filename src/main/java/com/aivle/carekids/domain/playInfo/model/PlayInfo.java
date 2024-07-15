@@ -2,9 +2,14 @@ package com.aivle.carekids.domain.playInfo.model;
 
 import com.aivle.carekids.domain.common.models.AgeTag;
 import com.aivle.carekids.domain.common.models.BaseEntity;
+import com.aivle.carekids.domain.common.models.Region;
+import com.aivle.carekids.domain.kindergarten.dto.KindergartenDetailDto;
+import com.aivle.carekids.domain.kindergarten.model.Kindergarten;
+import com.aivle.carekids.domain.playInfo.dto.PlayInfoDetailDto;
 import com.aivle.carekids.domain.user.models.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
@@ -20,7 +25,7 @@ import java.util.List;
 @SQLRestriction("deleted=false")
 public class PlayInfo extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long playInfoId;
 
     @Column(nullable = false, length = 100)
@@ -46,5 +51,52 @@ public class PlayInfo extends BaseEntity {
     @JoinColumn(name = "users_id")
     private Users users;
 
-    // TODO - 입력에 대한 생성 메소드 필요
+    @Builder
+    public PlayInfo(Long playInfoId, String playInfoTitle, String playInfoText, String playInfoTools, String playInfoRecommendAge) {
+        this.playInfoId = playInfoId;
+        this.playInfoTitle = playInfoTitle;
+        this.playInfoText = playInfoText;
+        this.playInfoTools = playInfoTools;
+        this.playInfoRecommendAge = playInfoRecommendAge;
+    }
+
+    public void setUserInfo(Users targetUsers) {
+        this.users = targetUsers;
+        targetUsers.getPlayInfoUsers().add(this);
+    }
+
+    public void setAgeTagInfo(AgeTag targetAgeTag) {
+        this.ageTag = targetAgeTag;
+        targetAgeTag.getPlayInfos().add(this);
+    }
+
+    public static PlayInfo createNewPlayInfo(PlayInfoDetailDto playInfoDetailDto){
+        return PlayInfo.builder()
+                .playInfoTitle(playInfoDetailDto.getPlayInfoTitle())
+                .playInfoText(playInfoDetailDto.getPlayInfoText())
+                .playInfoTools(playInfoDetailDto.getPlayInfoTools())
+                .playInfoRecommendAge(playInfoDetailDto.getPlayInfoRecommendAge())
+                .build();
+    }
+
+
+    public void updatePlayInfo(PlayInfoDetailDto playInfoDetailDto) {
+
+        this.playInfoTitle = playInfoDetailDto.getPlayInfoTitle();
+        this.playInfoText = playInfoDetailDto.getPlayInfoText();
+        this.playInfoTools = playInfoDetailDto.getPlayInfoTools();
+        this.playInfoRecommendAge = playInfoDetailDto.getPlayInfoRecommendAge();
+
+    }
+
+    public void clearDevDomains() {
+        this.playInfoDomains.forEach(PlayInfoDomain -> {PlayInfoDomain.setPlayInfoDomainInfo(null,null);});
+
+        this.playInfoDomains.clear();
+    }
+
+
+    public void deletedPlayInfo(boolean deleted){
+        this.deleted = deleted;
+    }
 }

@@ -14,7 +14,7 @@ import java.util.List;
 public class DevDomain {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long devDomainId;
 
     private String devDomainType;

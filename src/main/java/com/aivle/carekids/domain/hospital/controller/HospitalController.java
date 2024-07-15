@@ -31,7 +31,7 @@ public class HospitalController {
 
         Map<String, String> verifyMap = jwtUtils.verifyJWTs(accessToken, refreshToken);
 
-        if (verifyMap.get("state") != null || Objects.equals(verifyMap.get("사용자 role"), Role.ADMIN.getRole())) {
+        if (verifyMap.get("state") != null || Objects.equals(verifyMap.get("사용자 role"), Role.ROLE_ADMIN.getRole())) {
             return ResponseEntity.ok(hospitalService.displayHospitalGuest(page - 1, size));
         }
 

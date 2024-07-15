@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 public class PlaceSubcate {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long placeSubcateId;
 
     private String placeSubcateName;

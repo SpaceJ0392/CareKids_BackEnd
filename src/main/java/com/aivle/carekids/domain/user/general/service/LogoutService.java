@@ -27,20 +27,12 @@ public class LogoutService implements LogoutHandler {
         Cookie[] cookies = request.getCookies();
         String accessToken = JwtUtils.getAccessTokenFromCookies(cookies);
 
-
         if(accessToken == null || accessToken.isBlank()){
             throw new RuntimeException("access token과 함께 요청하십시오.");
         }
 
         Long usersId = JwtUtils.getUsersId(JwtUtils.verifyToken(accessToken));
         System.out.println(usersId);
-//        try {
-//            jwtRepository.DeleteRefreshTokenByUsersId(usersId);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        } catch (ClassNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
 
         jwtRepository.DeleteRefreshToken(usersId);
         jwtRepository.addBlackList(accessToken); // accesstoken을 블랙리스트로 추가

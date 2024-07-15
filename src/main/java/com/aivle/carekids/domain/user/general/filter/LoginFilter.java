@@ -26,27 +26,28 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 
 @AllArgsConstructor
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
+
     private final AuthenticationManager authenticationManager;
     private final CustomAuthenticationManager customAuthenticationManager;
     private final JwtService jwtService;
     private ObjectMapper objectMapper;
-
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         System.out.println(request);
         String username = obtainUsername(request);
         String password = obtainPassword(request);
-        String role = request.getParameter("role");
+        Optional<String> role = Optional.ofNullable(request.getParameter("role"));
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, password, null);
         setDetails(request, usernamePasswordAuthenticationToken);
 
-        if (role.equals("ROLE_ADMIN")){
+        if (role.isPresent() && role.get().equals("ROLE_ADMIN")) {
             //role이 관리자라면, 토큰을 만들지 않아서, 비밀번호 검출 시, 비밀번호 인코딩 없이 검사
             return customAuthenticationManager.authenticate(usernamePasswordAuthenticationToken);
         }

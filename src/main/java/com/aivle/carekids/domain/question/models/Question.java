@@ -8,7 +8,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -21,7 +20,7 @@ import java.util.List;
 @SQLDelete(sql = "UPDATE question SET deleted = true WHERE id=?")
 @SQLRestriction("deleted=false")
 public class Question extends BaseEntity {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long questionId;
 
     @Column(length = 100, nullable = false)
@@ -52,6 +51,7 @@ public class Question extends BaseEntity {
         this.questionTitle = questionTitle;
         this.questionText = questionText;
         this.secret = secret;
+
     }
 
     public boolean getSecret(){ return secret; }
@@ -66,6 +66,11 @@ public class Question extends BaseEntity {
     public void setDeletedInfo(boolean deleted){
         this.deleted = deleted;
         this.questionFiles.forEach(files -> {files.setDeletedInfo(deleted);});
+    }
+
+    public void setQuestionAnswerInfo(String questionAnswer){
+        this.questionAnswer = questionAnswer;
+        this.questionCheck = true;
     }
 
     public static Question createQuestion(QuestionDetailDto questionDetailDto){

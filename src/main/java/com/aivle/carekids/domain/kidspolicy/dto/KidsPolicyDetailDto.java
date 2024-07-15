@@ -3,7 +3,6 @@ package com.aivle.carekids.domain.kidspolicy.dto;
 import com.aivle.carekids.domain.common.dto.AgeTagDto;
 import com.aivle.carekids.domain.common.dto.RegionDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRawValue;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,15 +20,16 @@ public class KidsPolicyDetailDto {
     private String kidsPolicyTitle;
 
     @JsonProperty("text")
-    @JsonRawValue
     private String kidsPolicyText;
 
     @JsonProperty("target")
-    @JsonRawValue
     private String kidsPolicyTarget;
 
     @JsonProperty("process")
     private String kidsPolicyProcess;
+
+    @JsonProperty("type")
+    private String kidsPolicyType;
 
     @JsonProperty("url")
     private String kidsPolicyUrl;
