@@ -63,7 +63,10 @@ public class KindergartenRepositoryImpl implements KindergartenRepositoryCustom 
         Map<Long, List<KindergartenOperateTimeDto>> operateTimeByKindergartenList = findOperateTimeByKindergartenList(content);
         content.forEach(c -> c.setKindergartenOperateTimeDto(operateTimeByKindergartenList.get(c.getKindergartenId())));
 
-        JPAQuery<Long> countQuery = jpaQueryFactory.select(kindergarten.count()).from(kindergarten);
+        JPAQuery<Long> countQuery = jpaQueryFactory.select(kindergarten.count()).from(kindergarten)
+                .join(kindergarten.region, region)
+                .where(regionEq(regionId));
+
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 
@@ -156,9 +159,7 @@ public class KindergartenRepositoryImpl implements KindergartenRepositoryCustom 
                 .where(
                         regionEq(searchRegionDto.getRegionDto().getRegionId()),
                         queryContains(searchRegionDto.getQuery())
-                )
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
+                );
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }

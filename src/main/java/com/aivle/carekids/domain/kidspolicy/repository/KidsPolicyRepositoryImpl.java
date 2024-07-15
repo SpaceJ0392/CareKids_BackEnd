@@ -74,8 +74,8 @@ public class KidsPolicyRepositoryImpl implements KidsPolicyRepositoryCustom {
         List<KidsPolicyListDto> content = jpaQueryFactory.select(new QKidsPolicyListDto(
                         kidsPolicy.createdAt, kidsPolicy.updatedAt, kidsPolicy.kidsPolicyId, kidsPolicy.kidsPolicyTitle,
                         kidsPolicy.kidsPolicyText
-                )).from(kidsPolicyRegion)
-                .join(kidsPolicyRegion.kidsPolicy, kidsPolicy)
+                )).from(kidsPolicy)
+                .join(kidsPolicy.kidsPolicyRegions, kidsPolicyRegion)
                 .where(regionIn(regionId))
                 .orderBy(
                         kidsPolicy.updatedAt.desc()
@@ -91,8 +91,8 @@ public class KidsPolicyRepositoryImpl implements KidsPolicyRepositoryCustom {
         Map<Long, List<AgeTagDto>> ageTagByKidsPolicyList = findAgeTagByKidsPolicyList(content);
         content.forEach(c -> c.setAgeTagDtos(ageTagByKidsPolicyList.get(c.getKidsPolicyId())));
 
-        JPAQuery<Long> countQuery = jpaQueryFactory.select(kidsPolicy.count()).from(kidsPolicyRegion)
-                .join(kidsPolicyRegion.kidsPolicy, kidsPolicy)
+        JPAQuery<Long> countQuery = jpaQueryFactory.select(kidsPolicy.count()).from(kidsPolicy)
+                .join(kidsPolicy.kidsPolicyRegions, kidsPolicyRegion)
                 .where(regionIn(regionId))
                 .distinct();
 
@@ -146,11 +146,6 @@ public class KidsPolicyRepositoryImpl implements KidsPolicyRepositoryCustom {
     @Override
     public Page<KidsPolicyListDto> searchKidsPolicyByFilter(SearchRegionAgeTagDto searchRegionAgeTagDto, Pageable pageable) {
 
-        List<Long> ageTagIdList = null;
-        if(searchRegionAgeTagDto.getAgeTagDto().getAgeTagId() != null){
-            ageTagIdList = List.of(searchRegionAgeTagDto.getAgeTagDto().getAgeTagId());
-        }
-
         List<KidsPolicyListDto> content = jpaQueryFactory.
                 select(new QKidsPolicyListDto(
                         kidsPolicy.createdAt, kidsPolicy.updatedAt, kidsPolicy.kidsPolicyId, kidsPolicy.kidsPolicyTitle,
@@ -163,8 +158,8 @@ public class KidsPolicyRepositoryImpl implements KidsPolicyRepositoryCustom {
                 .join(kidsPolicyAgeTag.ageTag, ageTag)
                 .where(
                         queryContains(searchRegionAgeTagDto.getQuery()),
-                        regionSearchIn(searchRegionAgeTagDto.getRegionDto().getRegionId()),
-                        ageTagSearchIn(ageTagIdList)
+                        regionSearchEq(searchRegionAgeTagDto.getRegionDto().getRegionId()),
+                        ageTagSearchEq(searchRegionAgeTagDto.getAgeTagDto().getAgeTagId())
                 )
                 .distinct()
                 .orderBy(kidsPolicy.updatedAt.desc())
@@ -178,26 +173,24 @@ public class KidsPolicyRepositoryImpl implements KidsPolicyRepositoryCustom {
         Map<Long, List<AgeTagDto>> ageTagByKidsPolicyList = findAgeTagByKidsPolicyList(content);
         content.forEach(c -> c.setAgeTagDtos(ageTagByKidsPolicyList.get(c.getKidsPolicyId())));
 
-        JPAQuery<Long> countQuery = jpaQueryFactory.select(kidsPolicy.count()).from(kidsPolicyRegionAgeTag)
-                .join(kidsPolicyRegionAgeTag.kidsPolicy, kidsPolicy)
-                .join(kidsPolicyRegionAgeTag.region, region)
-                .join(kidsPolicyRegionAgeTag.ageTag, ageTag)
+        JPAQuery<Long> countQuery = jpaQueryFactory.select(kidsPolicy.countDistinct()).from(kidsPolicy)
+                .join(kidsPolicy.kidsPolicyRegions, kidsPolicyRegion)
+                .join(kidsPolicy.kidsPolicyAgeTags, kidsPolicyAgeTag)
                 .where(
                         queryContains(searchRegionAgeTagDto.getQuery()),
-                        regionSearchIn(searchRegionAgeTagDto.getRegionDto().getRegionId()),
-                        ageTagSearchIn(ageTagIdList)
-                )
-                .distinct();
+                        regionSearchEq(searchRegionAgeTagDto.getRegionDto().getRegionId()),
+                        ageTagSearchEq(searchRegionAgeTagDto.getAgeTagDto().getAgeTagId())
+                );
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 
-    private BooleanExpression regionSearchIn(Long regionId) {
+    private BooleanExpression regionSearchEq(Long regionId) {
         return isEmpty(regionId) ? null : kidsPolicyRegion.region.regionId.eq(regionId);
     }
 
-    private BooleanExpression ageTagSearchIn(List<Long> ageTagIds) {
-        return isEmpty(ageTagIds) ? null : kidsPolicyAgeTag.ageTag.ageTagId.in(ageTagIds);
+    private BooleanExpression ageTagSearchEq(Long ageTagId) {
+        return isEmpty(ageTagId) ? null : ageTag.ageTagId.eq(ageTagId);
     }
 
     private BooleanExpression regionEq(Long regionId) {
