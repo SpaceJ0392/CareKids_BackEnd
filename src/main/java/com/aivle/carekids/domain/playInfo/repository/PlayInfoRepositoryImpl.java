@@ -86,7 +86,7 @@ public class PlayInfoRepositoryImpl implements PlayInfoRepositoryCustom{
     }
 
     private BooleanExpression ageEq(Long ageTagId) {
-        return isEmpty(ageTagId) ? null : playInfo.ageTag.ageTagId.eq(ageTagId);
+        return isEmpty(ageTagId) || ageTagId == 5 ? null : playInfo.ageTag.ageTagId.eq(ageTagId);
     }
 
 
