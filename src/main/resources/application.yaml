@@ -5,7 +5,7 @@ spring:
     group:
       dev: email, security, dev
       oper: email, security, oper
-    active: oper
+    active: dev
 
   sql:
     init:
