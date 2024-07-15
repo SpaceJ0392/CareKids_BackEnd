@@ -16,7 +16,6 @@ public class KidsPolicyAgeTag {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long kidsPolicyAgeTagId;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "kids_policy_id")
     private KidsPolicy kidsPolicy;

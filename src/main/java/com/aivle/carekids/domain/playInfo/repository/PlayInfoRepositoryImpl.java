@@ -80,9 +80,7 @@ public class PlayInfoRepositoryImpl implements PlayInfoRepositoryCustom{
 
         JPAQuery<Long> countQuery = jpaQueryFactory.select(playInfo.count()).from(playInfo)
                 .join(playInfo.ageTag, ageTag)
-                .where(ageEq(ageTagId))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
+                .where(ageEq(ageTagId));
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
@@ -154,9 +152,7 @@ public class PlayInfoRepositoryImpl implements PlayInfoRepositoryCustom{
                 .where(
                         ageEq(searchAgeTagDto.getAgeTagDto().getAgeTagId()),
                         queryContains(searchAgeTagDto.getQuery())
-                )
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
+                );
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }

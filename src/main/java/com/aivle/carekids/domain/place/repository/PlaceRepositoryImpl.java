@@ -55,11 +55,9 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
         Map<Long, List<PlaceKeywordDto>> keywordsByPlaceList = findKeywordsByPlaceList(content);
         content.forEach(c -> c.setPlaceKeywords(keywordsByPlaceList.get(c.getPlaceId())));
 
-        JPAQuery<Long> countQuery = jpaQueryFactory.select(place.count()).from(place)
+        JPAQuery<Long> countQuery = jpaQueryFactory.select(place.countDistinct()).from(place)
                 .join(place.placeCates, placeCate)
-                .where(regionEq(regionId))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
+                .where(regionEq(regionId));
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
@@ -155,15 +153,13 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
         Map<Long, List<PlaceKeywordDto>> keywordsByPlaceList = findKeywordsByPlaceList(content);
         content.forEach(c -> c.setPlaceKeywords(keywordsByPlaceList.get(c.getPlaceId())));
 
-        JPAQuery<Long> countQuery = jpaQueryFactory.select(place.count()).from(place)
+        JPAQuery<Long> countQuery = jpaQueryFactory.select(place.countDistinct()).from(place)
                 .join(place.placeCates, placeCate)
                 .where(
                         regionEq(searchRegionCateDto.getRegionDto().getRegionId()),
                         subcateEq(searchRegionCateDto.getSubcateDto().getPlaceSubcateName()),
                         queryContains(searchRegionCateDto.getQuery())
-                )
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
+                );
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
