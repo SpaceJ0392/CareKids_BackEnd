@@ -13,7 +13,6 @@ import com.aivle.carekids.domain.user.general.service.LogoutService;
 import com.aivle.carekids.domain.user.oauth2.handler.OAuth2SuccessHandler;
 import com.aivle.carekids.domain.user.oauth2.service.CustomOAuth2UserService;
 import com.aivle.carekids.domain.user.repository.UsersRepository;
-import com.aivle.carekids.global.Variable.GlobelVar;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -113,7 +112,7 @@ public class SecurityConfig {
                         .addLogoutHandler(logoutService)
                         .logoutSuccessHandler(((request, response, authentication) -> {
                             SecurityContextHolder.clearContext();
-                            response.sendRedirect(GlobelVar.CLIENT_BASE_URL + "/login");
+
                         })))
                 // CORS 설정 추가
                 .cors(cors -> cors.configurationSource(source))
