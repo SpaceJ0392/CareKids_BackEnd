@@ -28,6 +28,7 @@ public class KidsPolicy extends BaseEntity {
     private String kidsPolicyTitle;
 
     @Lob
+    @Column(columnDefinition = "LONGTEXT")
     private String kidsPolicyText;
 
     private String kidsPolicyTarget;
