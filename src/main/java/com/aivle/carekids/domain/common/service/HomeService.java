@@ -40,7 +40,7 @@ public class HomeService {
         // 랜덤 나이대 놀이 정보 4개 추출
         AgeTagDto randomAgeTagInPlayInfo = playInfoRepository.findRandomAgeTagInPlayInfo();
         List<PlayInfoListDto> playInfoList = playInfoRepository.findTop4ByAgeTagOrderByUpdatedAtDesc(randomAgeTagInPlayInfo.getAgeTagId());
-        PlayInfoMainListDto playInfoMainList = new PlayInfoMainListDto(playInfoList, null);
+        PlayInfoMainListDto playInfoMainList = new PlayInfoMainListDto(playInfoList, randomAgeTagInPlayInfo);
 
         // 서울 전체 육아 정보 4개 추출
         List<KidsPolicyListDto> kidsPolicyList = kidsPolicyRepository.findTop4ByRegionOrderByUpdatedAtDesc(null);
