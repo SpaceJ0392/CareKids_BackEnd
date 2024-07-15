@@ -1,6 +1,5 @@
 package com.aivle.carekids.domain.kindergarten.repository;
 
-import com.aivle.carekids.domain.common.dto.OperateTimeDto;
 import com.aivle.carekids.domain.common.dto.QRegionDto;
 import com.aivle.carekids.domain.common.dto.RegionDto;
 import com.aivle.carekids.domain.common.dto.SearchRegionDto;
@@ -24,7 +23,6 @@ import java.util.stream.Collectors;
 
 import static com.aivle.carekids.domain.common.models.QRegion.region;
 import static com.aivle.carekids.domain.hospital.model.QHospital.hospital;
-
 import static com.aivle.carekids.domain.kindergarten.model.QKindergarten.kindergarten;
 import static com.aivle.carekids.domain.kindergarten.model.QKindergartenOperateTime.kindergartenOperateTime;
 import static org.springframework.util.ObjectUtils.isEmpty;
@@ -70,7 +68,7 @@ public class KindergartenRepositoryImpl implements KindergartenRepositoryCustom 
     }
 
     private BooleanExpression regionEq(Long regionId) {
-        return isEmpty(regionId) || regionId == 26 ? null : hospital.region.regionId.eq(regionId);
+        return isEmpty(regionId) || regionId == 26 ? null : kindergarten.region.regionId.eq(regionId);
     }
 
 

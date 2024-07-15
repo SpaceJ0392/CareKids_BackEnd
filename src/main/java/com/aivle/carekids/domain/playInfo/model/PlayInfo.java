@@ -2,9 +2,6 @@ package com.aivle.carekids.domain.playInfo.model;
 
 import com.aivle.carekids.domain.common.models.AgeTag;
 import com.aivle.carekids.domain.common.models.BaseEntity;
-import com.aivle.carekids.domain.common.models.Region;
-import com.aivle.carekids.domain.kindergarten.dto.KindergartenDetailDto;
-import com.aivle.carekids.domain.kindergarten.model.Kindergarten;
 import com.aivle.carekids.domain.playInfo.dto.PlayInfoDetailDto;
 import com.aivle.carekids.domain.user.models.Users;
 import jakarta.persistence.*;
@@ -32,6 +29,7 @@ public class PlayInfo extends BaseEntity {
     private String playInfoTitle;
 
     @Lob
+    @Column(columnDefinition = "LONGTEXT")
     private String playInfoText;
 
     private String playInfoTools;
