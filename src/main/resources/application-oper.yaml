@@ -6,13 +6,13 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/carekids?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
-    username:
-    password:
+    username: root
+    password: aivle
 
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
 
     properties:
       hibernate:
@@ -20,3 +20,5 @@ spring:
         format_sql: true      # 쿼리 로그 포맷 (정렬)
         show_sql: true        # 쿼리 로그 출력
         default_batch_fetch_size: 100
+
+    defer-datasource-initialization: true
