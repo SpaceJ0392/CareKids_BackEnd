@@ -34,7 +34,7 @@ public class PlayInfoAdminController {
             return ResponseEntity.badRequest().body(Map.of("message", "잘못된 접근 입니다."));
         }
 
-        return ResponseEntity.ok(playInfoService.displayPlayInfoGuest(page - 1, size));
+        return ResponseEntity.ok(playInfoService.displayPlayInfoAdmin(page - 1, size));
     }
 
     @GetMapping("/playinfo/{id}")

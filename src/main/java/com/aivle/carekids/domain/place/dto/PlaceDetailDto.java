@@ -50,10 +50,13 @@ public class PlaceDetailDto {
     @JsonProperty("subcate")
     private PlaceSubcateDto placeSubcate;
 
+    @JsonProperty("maincate")
+    private PlaceMaincateDto placeMaincate;
+
     @JsonProperty("keywords")
     private List<PlaceKeywordDto> placeKeywords;
 
-    public PlaceDetailDto(Long placeId, String placeName, String placeImgUrl, String placeAddress, String placeNewAddress, String placePhone, String placeType, String placeParking, String placeFree, String placeOperateTime, RegionDto region, PlaceSubcateDto placeSubcate) {
+    public PlaceDetailDto(Long placeId, String placeName, String placeImgUrl, String placeAddress, String placeNewAddress, String placePhone, String placeType, String placeParking, String placeFree, String placeOperateTime, RegionDto region, PlaceSubcateDto placeSubcate, PlaceMaincateDto placeMaincate) {
         this.placeId = placeId;
         this.placeName = placeName;
         this.placeImgUrl = placeImgUrl;
@@ -66,5 +69,6 @@ public class PlaceDetailDto {
         this.placeOperateTime = placeOperateTime;
         this.region = region;
         this.placeSubcate = placeSubcate;
+        this.placeMaincate = placeMaincate;
     }
 }

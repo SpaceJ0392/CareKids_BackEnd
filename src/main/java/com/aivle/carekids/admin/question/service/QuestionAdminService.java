@@ -1,9 +1,15 @@
 package com.aivle.carekids.admin.question.service;
 
 import com.aivle.carekids.admin.question.dto.QuestionAnswerDto;
+import com.aivle.carekids.domain.common.dto.PageInfoDto;
+import com.aivle.carekids.domain.question.dto.QuestionDetailDisplayDto;
 import com.aivle.carekids.domain.question.models.Question;
 import com.aivle.carekids.domain.question.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +23,7 @@ import java.util.Optional;
 public class QuestionAdminService {
 
     private final QuestionRepository questionRepository;
+    private final ModelMapper dtoModelMapper;
 
     @Transactional
     public ResponseEntity<?> editAnswerForQuestion(QuestionAnswerDto questionAnswerDto) {
@@ -28,5 +35,13 @@ public class QuestionAdminService {
 
         targetQuestion.get().setQuestionAnswerInfo(questionAnswerDto.getQuestionAnswer());
         return ResponseEntity.noContent().build();
+    }
+
+    public PageInfoDto displayQuestion(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<QuestionDetailDisplayDto> questionPage = questionRepository.findAllOrderByQuestionIdDesc(pageable);
+
+        return new PageInfoDto(new PageInfoDto.PageInfo(questionPage.getTotalPages(), page + 1, size, questionPage.getNumberOfElements()),
+                null, null, questionPage.getContent());
     }
 }

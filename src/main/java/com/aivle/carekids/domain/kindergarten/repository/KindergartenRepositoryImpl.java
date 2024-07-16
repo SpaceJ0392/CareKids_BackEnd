@@ -70,6 +70,8 @@ public class KindergartenRepositoryImpl implements KindergartenRepositoryCustom 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 
+
+
     private BooleanExpression regionEq(Long regionId) {
         return isEmpty(regionId) || regionId == 26 ? null : kindergarten.region.regionId.eq(regionId);
     }

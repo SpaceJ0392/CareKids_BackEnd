@@ -35,7 +35,7 @@ public class NoticeAdminController {
             return ResponseEntity.badRequest().body(Map.of("message", "잘못된 접근 입니다."));
         }
 
-        return ResponseEntity.ok(noticeService.listNotice(page - 1, size));
+        return ResponseEntity.ok(noticeAdminService.listNotice(page - 1, size));
     }
 
     @GetMapping("/notice/{id}")

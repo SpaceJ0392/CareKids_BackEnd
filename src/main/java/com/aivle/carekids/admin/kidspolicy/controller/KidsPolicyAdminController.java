@@ -35,7 +35,7 @@ public class KidsPolicyAdminController {
             return ResponseEntity.badRequest().body(Map.of("message", "잘못된 접근 입니다."));
         }
 
-        return ResponseEntity.ok(kidsPolicyService.displayKidsPolicyGuest(page - 1, size));
+        return ResponseEntity.ok(kidsPolicyAdminService.displayKidsPolicyPage(page - 1, size));
     }
 
     @GetMapping("/kids-policy/{id}")

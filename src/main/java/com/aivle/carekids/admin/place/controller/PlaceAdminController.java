@@ -36,7 +36,7 @@ public class PlaceAdminController {
             return ResponseEntity.badRequest().body(Map.of("message", "잘못된 접근 입니다."));
         }
 
-        return ResponseEntity.ok(placeService.displayPlaceGuest(page - 1, size));
+        return ResponseEntity.ok(placeService.displayPlaceAdmin(page - 1, size));
     }
 
     @GetMapping("/place/{id}")

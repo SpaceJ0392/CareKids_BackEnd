@@ -48,6 +48,21 @@ public class PlayInfoService {
         ), null, ageTagDto, playInfoPage.getContent());
     }
 
+    public PageInfoDto displayPlayInfoAdmin(int page, int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        AgeTagDto ageTagDto = dtoModelMapper.map(ageTagRepository.findByAgeTagName("전체(12세 이하)"), AgeTagDto.class);
+        Page<PlayInfoDetailDto> playInfoPage = playInfoRepository.findAllByOrderByUpdatedAtDescByPageByAgeAdmin(null, pageable);
+
+        return new PageInfoDto(new PageInfoDto.PageInfo(
+                playInfoPage.getTotalPages(),
+                playInfoPage.getNumber() + 1,
+                playInfoPage.getSize(),
+                playInfoPage.getNumberOfElements()
+        ), null, ageTagDto, playInfoPage.getContent());
+    }
+
     public PageInfoDto displayPlayInfoUser(Long usersId, int page, int size) {
 
         Optional<UsersDetailDto> users = usersRepository.findUsersDetailWithRegionAndKids(usersId);

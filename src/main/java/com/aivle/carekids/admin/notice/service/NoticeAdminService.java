@@ -1,5 +1,6 @@
 package com.aivle.carekids.admin.notice.service;
 
+import com.aivle.carekids.domain.common.dto.PageInfoDto;
 import com.aivle.carekids.domain.notice.dto.NoticeDto;
 import com.aivle.carekids.domain.notice.models.Notice;
 import com.aivle.carekids.domain.notice.repository.NoticeRepository;
@@ -9,6 +10,10 @@ import com.aivle.carekids.domain.user.models.Users;
 import com.aivle.carekids.domain.user.repository.UsersRepository;
 import com.aivle.carekids.global.Variable.GlobelVar;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -27,6 +33,8 @@ public class NoticeAdminService {
     private final NoticeRepository noticeRepository;
     private final UsersRepository usersRepository;
     private final FileService fileService;
+
+    private final ModelMapper dtoModelMapper;
 
     @Transactional
     public ResponseEntity<?> editNotice(Long usersId, NoticeDto noticeDto, MultipartFile imgFile) throws IOException {
@@ -72,5 +80,19 @@ public class NoticeAdminService {
 
         return Map.of("message", "해당 게시글이 삭제되었습니다.");
 
+    }
+
+    public Object listNotice(int page, int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Notice> noticePage = noticeRepository.findAllByOrderByNoticeIdDesc(pageable);
+        List<NoticeDto> noticeListDtoList = noticePage.map(elements ->
+                new NoticeDto(elements.getNoticeId(), elements.getNoticeTitle(), elements.getNoticeText(),
+                        elements.getNoticeImgUrl(), elements.getCreatedAt(), elements.getUpdatedAt()))
+        .toList();
+
+        return new PageInfoDto(new PageInfoDto.PageInfo(noticePage.getTotalPages(), page + 1, size, noticePage.getNumberOfElements()),
+                null, null, noticeListDtoList);
     }
 }

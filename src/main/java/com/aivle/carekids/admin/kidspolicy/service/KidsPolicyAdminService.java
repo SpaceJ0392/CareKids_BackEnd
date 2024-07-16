@@ -1,5 +1,6 @@
 package com.aivle.carekids.admin.kidspolicy.service;
 
+import com.aivle.carekids.domain.common.dto.PageInfoDto;
 import com.aivle.carekids.domain.common.models.AgeTag;
 import com.aivle.carekids.domain.common.models.Region;
 import com.aivle.carekids.domain.kidspolicy.dto.KidsPolicyDetailDto;
@@ -13,6 +14,9 @@ import com.aivle.carekids.domain.user.models.Users;
 import com.aivle.carekids.domain.user.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +37,7 @@ public class KidsPolicyAdminService {
     private final UsersRepository usersRepository;
 
     private final ModelMapper entityModelMapper;
+    private final ModelMapper dtoModelMapper;
 
     @Transactional
     public ResponseEntity<?> editKidsPolicy(KidsPolicyDetailDto kidsPolicyDetailDto, Long usersId) {
@@ -114,5 +119,17 @@ public class KidsPolicyAdminService {
 
         targetKidsPolicy.get().deletedKidsPolicy(true);
         return ResponseEntity.ok(Map.of("message", "육아 정책 정보가 삭제되었습니다."));
+    }
+
+    public PageInfoDto displayKidsPolicyPage(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<KidsPolicyDetailDto> kidsPolicyList = kidsPolicyRepository.findAllOrderByUpdatedAtDescPage(pageable);
+
+        return new PageInfoDto(new PageInfoDto.PageInfo(
+                kidsPolicyList.getTotalPages(),
+                kidsPolicyList.getNumber() + 1,
+                kidsPolicyList.getSize(),
+                kidsPolicyList.getNumberOfElements()
+        ), null, null, kidsPolicyList.getContent());
     }
 }

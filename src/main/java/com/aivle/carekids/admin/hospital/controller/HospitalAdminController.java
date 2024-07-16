@@ -34,7 +34,7 @@ public class HospitalAdminController {
             return ResponseEntity.badRequest().body(Map.of("message", "잘못된 접근 입니다."));
         }
 
-        return ResponseEntity.ok(hospitalService.displayHospitalGuest(page - 1, size));
+        return ResponseEntity.ok(hospitalAdminService.displayHospitalPage(page - 1, size));
     }
 
     @GetMapping("/hospital/{id}")

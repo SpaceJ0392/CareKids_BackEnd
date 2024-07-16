@@ -59,6 +59,8 @@ public class PlayInfoRepositoryImpl implements PlayInfoRepositoryCustom{
 
 
 
+
+
     @Override
     public Page<PlayInfoListDto> findAllByOrderByUpdatedAtDescByPageByAge(Long ageTagId, Pageable pageable) {
 
@@ -70,6 +72,33 @@ public class PlayInfoRepositoryImpl implements PlayInfoRepositoryCustom{
                                 playInfo.playInfoId,
                                 playInfo.playInfoTitle,
                                 playInfo.playInfoText
+                        )).from(playInfo)
+                .join(playInfo.ageTag, ageTag)
+                .where(ageEq(ageTagId))
+                .orderBy(playInfo.updatedAt.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<Long> countQuery = jpaQueryFactory.select(playInfo.count()).from(playInfo)
+                .join(playInfo.ageTag, ageTag)
+                .where(ageEq(ageTagId));
+
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
+    }
+
+    @Override
+    public Page<PlayInfoDetailDto> findAllByOrderByUpdatedAtDescByPageByAgeAdmin(Long ageTagId, Pageable pageable) {
+
+        List<PlayInfoDetailDto> content = jpaQueryFactory.select(
+                        Projections.constructor(
+                                PlayInfoDetailDto.class,
+                                playInfo.playInfoId,
+                                playInfo.playInfoTitle,
+                                playInfo.playInfoText,
+                                playInfo.playInfoTools,
+                                playInfo.playInfoRecommendAge,
+                                Projections.constructor(AgeTagDto.class, ageTag.ageTagId, ageTag.ageTagName)
                         )).from(playInfo)
                 .join(playInfo.ageTag, ageTag)
                 .where(ageEq(ageTagId))
