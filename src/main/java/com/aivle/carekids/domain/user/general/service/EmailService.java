@@ -69,7 +69,7 @@ public class EmailService {
     @Transactional
     public ResponseEntity<Map<String, String>> sendEmail(String requestEmail) throws MessagingException, NoSuchAlgorithmException {
 
-        Map<String, String> message = signUpValid.emailValidation(requestEmail);
+        Map<String, String> message = signUpValid.emailValidationEmail(requestEmail);
         if (!message.isEmpty()){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(message);
         }
