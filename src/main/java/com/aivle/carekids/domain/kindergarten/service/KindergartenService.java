@@ -46,6 +46,7 @@ public class KindergartenService {
         ), regionDto, null, kindergartenPage.getContent());
     }
 
+
     public PageInfoDto displayKindergartenUser(Long usersId, int page, int size) {
 
         Optional<UsersDetailDto> users = usersRepository.findUsersDetailWithRegionAndKids(usersId);

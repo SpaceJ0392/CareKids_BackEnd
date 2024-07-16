@@ -26,9 +26,11 @@ public class PlaceListDto {
 
     private PlaceSubcateDto placeSubcate;
 
+    private PlaceMaincateDto placeMaincate;
+
     private List<PlaceKeywordDto> placeKeywords;
 
-    public PlaceListDto(Long placeId, String placeName, String placeImgUrl, String placeAddress, String placeNewAddress, String placeOperateTime, PlaceSubcateDto placeSubcate) {
+    public PlaceListDto(Long placeId, String placeName, String placeImgUrl, String placeAddress, String placeNewAddress, String placeOperateTime, PlaceSubcateDto placeSubcate, PlaceMaincateDto placeMaincate) {
         this.placeId = placeId;
         this.placeName = placeName;
         this.placeImgUrl = placeImgUrl;
@@ -36,5 +38,6 @@ public class PlaceListDto {
         this.placeNewAddress = placeNewAddress;
         this.placeOperateTime = placeOperateTime;
         this.placeSubcate = placeSubcate;
+        this.placeMaincate = placeMaincate;
     }
 }

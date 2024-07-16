@@ -17,6 +17,8 @@ public interface PlayInfoRepositoryCustom {
 
     Page<PlayInfoListDto> findAllByOrderByUpdatedAtDescByPageByAge(Long ageTagId, Pageable pageable);
 
+    Page<PlayInfoDetailDto> findAllByOrderByUpdatedAtDescByPageByAgeAdmin(Long ageTagId, Pageable pageable);
+
     PlayInfoDetailDto findPlayInfoDetail(Long playInfoId);
 
     Page<PlayInfoListDto> searchPlayInfoByFilter(SearchAgeTagDto searchAgeTagDto, Pageable pageable);

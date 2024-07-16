@@ -1,6 +1,6 @@
 package com.aivle.carekids.domain.common.dto;
 
-import com.aivle.carekids.domain.place.dto.PlaceSubcateDto;
+import com.aivle.carekids.domain.place.dto.PlaceMaincateDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +16,6 @@ public class SearchRegionCateDto {
     @JsonProperty("region")
     private RegionDto regionDto;
 
-    @JsonProperty("subcate")
-    private PlaceSubcateDto subcateDto;
+    @JsonProperty("maincate")
+    private PlaceMaincateDto maincateDto;
 }
