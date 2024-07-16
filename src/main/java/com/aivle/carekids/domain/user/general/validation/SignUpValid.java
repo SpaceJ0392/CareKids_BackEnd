@@ -80,4 +80,18 @@ public class SignUpValid {
         message.put("social-type-error", "존재하지 않는 소셜 로그인 타입입니다");
         return message;
     }
+
+    public Map<String, String> emailValidationEmail(String usersEmail) {
+        message.clear();
+
+        if (usersEmail.isBlank()){
+            message.put("empty-email", "이메일이 존재하지 않습니다.");
+        }
+
+        if (!usersEmail.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
+            message.put("error-email-pattern", "이메일의 형식이 유효하지 않습니다.");
+        }
+
+        return message;
+    }
 }
