@@ -9,8 +9,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PasswordDto {
 
-    @JsonProperty("user-id")
-    private Long usersId;
+    @JsonProperty("user-email")
+    private String usersEmail;
 
     @JsonProperty("new-password")
     private String newUsersPassword;
