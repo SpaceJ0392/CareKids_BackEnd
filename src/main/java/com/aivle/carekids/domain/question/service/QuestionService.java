@@ -21,10 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -96,10 +93,11 @@ public class QuestionService {
 
         // 비밀 글이라면, 작성자하고, 관리자만 접근 가능.
         if (targetQuestion.get().getSecret()){
-            if (targetQuestion.get().getUsers() != users.get() || users.get().getUsersRole() != Role.ROLE_ADMIN) {
+            if (!Objects.equals(targetQuestion.get().getUsers(), users.get()) && users.get().getUsersRole() != Role.ROLE_ADMIN) {
                 return null;
             }
         }
+
 
         QuestionDetailDto questionDetail = dtoModelMapper.map(targetQuestion.get(), QuestionDetailDto.class);
         List<QuestionFileDto> fileOfQuestion = questionFileRepository.findByQuestion(targetQuestion.get())
