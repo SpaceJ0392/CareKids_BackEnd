@@ -191,7 +191,7 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
                 .join(place.placeCates, placeCate)
                 .where(
                         regionEq(searchRegionCateDto.getRegionDto().getRegionId()),
-                        subcateEq(searchRegionCateDto.getSubcateDto().getPlaceSubcateName()),
+                        maincateEq(searchRegionCateDto.getMaincateDto().getPlaceMaincateName()),
                         queryContains(searchRegionCateDto.getQuery())
                 )
                 .orderBy(place.updatedAt.desc())
@@ -206,7 +206,7 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
                 .join(place.placeCates, placeCate)
                 .where(
                         regionEq(searchRegionCateDto.getRegionDto().getRegionId()),
-                        subcateEq(searchRegionCateDto.getSubcateDto().getPlaceSubcateName()),
+                        maincateEq(searchRegionCateDto.getMaincateDto().getPlaceMaincateName()),
                         queryContains(searchRegionCateDto.getQuery())
                 );
 
@@ -215,6 +215,10 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
 
     private BooleanExpression subcateEq(String subcateName) {
         return isEmpty(subcateName) ? null : placeCate.placeSubcate.placeSubcateName.eq(subcateName);
+    }
+
+    private BooleanExpression maincateEq(String maincateName) {
+        return isEmpty(maincateName) ? null : placeCate.placeSubcate.placeMaincate.placeMaincateName.eq(maincateName);
     }
 
     private BooleanExpression queryContains(String query) {

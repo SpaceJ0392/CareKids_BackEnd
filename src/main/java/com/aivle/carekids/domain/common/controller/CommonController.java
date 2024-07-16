@@ -24,6 +24,11 @@ public class CommonController {
         return ResponseEntity.ok(commonService.regionSubcateAll());
     }
 
+    @GetMapping("/region-maincate")
+    public ResponseEntity<Object> regionMaincate(){
+        return ResponseEntity.ok(commonService.regionMaincateAll());
+    }
+
     @GetMapping("/region")
     public ResponseEntity<Object> regionAll(){
         return ResponseEntity.ok(commonService.regionAll());
