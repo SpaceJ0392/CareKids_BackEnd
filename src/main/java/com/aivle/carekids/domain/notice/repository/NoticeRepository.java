@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
     List<Notice> findTop5ByOrderByUpdatedAtDesc();
-    Page<Notice> findAllByOrderByUpdatedAtDesc(Pageable pageable);
+    Page<Notice> findAllByOrderByNoticeIdDesc(Pageable pageable);
 }

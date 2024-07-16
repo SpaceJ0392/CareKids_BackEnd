@@ -40,7 +40,7 @@ public class QuestionService {
 
     public PageInfoDto displayQuestion(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Question> questionPage = questionRepository.findAllByOrderByUpdatedAtDesc(pageable);
+        Page<Question> questionPage = questionRepository.findAllByOrderByQuestionIdDesc(pageable);
         List<QuestionListDto> questionListDtoList = questionPage.map(q ->
              new QuestionListDto(q.getCreatedAt(), q.getUpdatedAt(), q.getQuestionId(), q.getQuestionTitle(), q.getSecret(), q.getQuestionCheck(),
              dtoModelMapper.map(q.getUsers(), UsersLightDto.class)
