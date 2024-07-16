@@ -19,4 +19,8 @@ public class QuestionDetailDisplayDto {
 
     @JsonProperty("files")
     private List<QuestionFileDto> questionFileDtos;
+
+    public QuestionDetailDisplayDto(QuestionDetailDto questionDetailDto) {
+        this.questionDetailDto = questionDetailDto;
+    }
 }

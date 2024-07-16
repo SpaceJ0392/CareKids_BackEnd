@@ -17,7 +17,11 @@ public interface KidsPolicyRepositoryCustom {
 
     Page<KidsPolicyListDto> findByRegionAndAgeTagOrderByUpdatedAtDescPage(Long regionId, Pageable pageable);
 
+    Page<KidsPolicyDetailDto> findAllOrderByUpdatedAtDescPage(Pageable pageable);
+
     KidsPolicyDetailDto findKidsPolicyDetail(Long kidsPolicyId);
+
+
 
     Page<KidsPolicyListDto> searchKidsPolicyByFilter(SearchRegionAgeTagDto searchRegionAgeTagDto, Pageable pageable);
 }

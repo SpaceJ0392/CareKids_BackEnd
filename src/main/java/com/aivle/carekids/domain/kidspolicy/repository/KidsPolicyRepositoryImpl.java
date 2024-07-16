@@ -100,15 +100,55 @@ public class KidsPolicyRepositoryImpl implements KidsPolicyRepositoryCustom {
     }
 
     @Override
-    public KidsPolicyDetailDto findKidsPolicyDetail(Long kidsPolicyId) {
+    public Page<KidsPolicyDetailDto> findAllOrderByUpdatedAtDescPage(Pageable pageable) {
 
-        KidsPolicyDetailDto content = jpaQueryFactory.select(Projections.constructor(
+        List<KidsPolicyDetailDto> content = jpaQueryFactory.select(Projections.constructor(
                         KidsPolicyDetailDto.class,
+                        kidsPolicy.createdAt,
+                        kidsPolicy.updatedAt,
                         kidsPolicy.kidsPolicyId,
                         kidsPolicy.kidsPolicyTitle,
                         kidsPolicy.kidsPolicyText,
                         kidsPolicy.kidsPolicyTarget,
                         kidsPolicy.kidsPolicyProcess,
+                        kidsPolicy.kidsPolicyType,
+                        kidsPolicy.kidsPolicyUrl
+                )).from(kidsPolicy)
+                .join(kidsPolicy.kidsPolicyRegions, kidsPolicyRegion)
+                .orderBy(
+                        kidsPolicy.updatedAt.desc()
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .distinct()
+                .fetch();
+
+        Map<Long, List<RegionDto>> regionsByKidsPolicyList = findRegionsByKidsPolicyDetail(content);
+        content.forEach(c -> c.setRegionDtos(regionsByKidsPolicyList.get(c.getKidsPolicyId())));
+
+        Map<Long, List<AgeTagDto>> ageTagByKidsPolicyList = findAgeTagByKidsPolicyDetail(content);
+        content.forEach(c -> c.setAgeTagDtos(ageTagByKidsPolicyList.get(c.getKidsPolicyId())));
+
+        JPAQuery<Long> countQuery = jpaQueryFactory.select(kidsPolicy.count()).from(kidsPolicy)
+                .join(kidsPolicy.kidsPolicyRegions, kidsPolicyRegion)
+                .distinct();
+
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
+    }
+
+    @Override
+    public KidsPolicyDetailDto findKidsPolicyDetail(Long kidsPolicyId) {
+
+        KidsPolicyDetailDto content = jpaQueryFactory.select(Projections.constructor(
+                        KidsPolicyDetailDto.class,
+                        kidsPolicy.createdAt,
+                        kidsPolicy.updatedAt,
+                        kidsPolicy.kidsPolicyId,
+                        kidsPolicy.kidsPolicyTitle,
+                        kidsPolicy.kidsPolicyText,
+                        kidsPolicy.kidsPolicyTarget,
+                        kidsPolicy.kidsPolicyProcess,
+                        kidsPolicy.kidsPolicyType,
                         kidsPolicy.kidsPolicyUrl
                 ))
                 .from(kidsPolicy)
@@ -231,6 +271,44 @@ public class KidsPolicyRepositoryImpl implements KidsPolicyRepositoryCustom {
     private Map<Long, List<AgeTagDto>> findAgeTagByKidsPolicyList(List<KidsPolicyListDto> content) {
 
         List<Long> kidsPolicyIdList = content.stream().map(KidsPolicyListDto::getKidsPolicyId).toList();
+
+        return jpaQueryFactory.select(
+                        Projections.constructor(
+                                AgeTagDto.class,
+                                ageTag.ageTagId,
+                                ageTag.ageTagName,
+                                kidsPolicyAgeTag.kidsPolicy.kidsPolicyId
+                        ))
+                .from(kidsPolicyAgeTag)
+                .join(kidsPolicyAgeTag.ageTag, ageTag)
+                .where(
+                        kidsPolicyAgeTag.kidsPolicy.kidsPolicyId.in(kidsPolicyIdList)
+                )
+                .fetch().stream().collect(Collectors.groupingBy(AgeTagDto::getKidsPolicyId));
+    }
+
+    private Map<Long, List<RegionDto>> findRegionsByKidsPolicyDetail(List<KidsPolicyDetailDto> content) {
+
+        List<Long> kidsPolicyIdList = content.stream().map(KidsPolicyDetailDto::getKidsPolicyId).toList();
+
+        return jpaQueryFactory.select(
+                        Projections.constructor(
+                                RegionDto.class,
+                                region.regionId,
+                                region.regionName,
+                                kidsPolicyRegion.kidsPolicy.kidsPolicyId
+                        ))
+                .from(kidsPolicyRegion)
+                .join(kidsPolicyRegion.region, region)
+                .where(
+                        kidsPolicyRegion.kidsPolicy.kidsPolicyId.in(kidsPolicyIdList)
+                )
+                .fetch().stream().collect(Collectors.groupingBy(RegionDto::getKidsPolicyId));
+    }
+
+    private Map<Long, List<AgeTagDto>> findAgeTagByKidsPolicyDetail(List<KidsPolicyDetailDto> content) {
+
+        List<Long> kidsPolicyIdList = content.stream().map(KidsPolicyDetailDto::getKidsPolicyId).toList();
 
         return jpaQueryFactory.select(
                         Projections.constructor(

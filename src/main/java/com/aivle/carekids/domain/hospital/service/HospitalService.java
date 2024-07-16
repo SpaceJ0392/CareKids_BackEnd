@@ -31,7 +31,7 @@ public class HospitalService {
 
     private final ModelMapper dtoModelMapper;
 
-    public com.aivle.carekids.domain.common.dto.PageInfoDto displayHospitalGuest(int page, int size) {
+    public PageInfoDto displayHospitalGuest(int page, int size) {
 
         Pageable pageable = PageRequest.of(page, size);
 
