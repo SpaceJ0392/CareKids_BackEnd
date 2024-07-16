@@ -6,7 +6,6 @@ import com.aivle.carekids.domain.notice.dto.NoticeListDto;
 import com.aivle.carekids.domain.notice.models.Notice;
 import com.aivle.carekids.domain.notice.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,12 +22,11 @@ import java.util.Map;
 public class NoticeService {
 
     private final NoticeRepository noticeRepository;
-    private final ModelMapper dtoModelMapper;
 
     public PageInfoDto listNotice(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<Notice> noticePage = noticeRepository.findAllByOrderByUpdatedAtDesc(pageable);
+        Page<Notice> noticePage = noticeRepository.findAllByOrderByNoticeIdDesc(pageable);
         List<NoticeListDto> noticeListDtoList = noticePage.map(elements ->
                 new NoticeListDto(elements.getNoticeId(), elements.getNoticeTitle(),
                         elements.getCreatedAt(), elements.getUpdatedAt())).toList();
