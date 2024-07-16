@@ -5,6 +5,7 @@ import com.aivle.carekids.domain.common.repository.AgeTagRepository;
 import com.aivle.carekids.domain.common.repository.RegionRepository;
 import com.aivle.carekids.domain.place.dto.PlaceMaincateDto;
 import com.aivle.carekids.domain.place.dto.PlaceSubcateDto;
+import com.aivle.carekids.domain.place.repository.PlaceMaincateRepository;
 import com.aivle.carekids.domain.place.repository.PlaceSubcateRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -20,7 +21,7 @@ public class CommonService {
 
     private final RegionRepository regionRepository;
     private final AgeTagRepository ageTagRepository;
-    private final PlaceSubcateRepository placeMaincateRepository;
+    private final PlaceMaincateRepository placeMaincateRepository;
     private final PlaceSubcateRepository placeSubcateRepository;
 
     private final ModelMapper dtoModelMapper;

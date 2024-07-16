@@ -3,10 +3,7 @@ package com.aivle.carekids.domain.place.repository;
 
 import com.aivle.carekids.domain.common.dto.RegionDto;
 import com.aivle.carekids.domain.common.dto.SearchRegionCateDto;
-import com.aivle.carekids.domain.place.dto.PlaceDetailDto;
-import com.aivle.carekids.domain.place.dto.PlaceKeywordDto;
-import com.aivle.carekids.domain.place.dto.PlaceListDto;
-import com.aivle.carekids.domain.place.dto.PlaceSubcateDto;
+import com.aivle.carekids.domain.place.dto.*;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -44,7 +41,8 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
                                 place.placeAddress,
                                 place.placeNewAddress,
                                 place.placeOperateTime,
-                                Projections.constructor(PlaceSubcateDto.class, placeCate.placeSubcate.placeSubcateId, placeCate.placeSubcate.placeSubcateName)
+                                Projections.constructor(PlaceSubcateDto.class, placeCate.placeSubcate.placeSubcateId, placeCate.placeSubcate.placeSubcateName),
+                                Projections.constructor(PlaceMaincateDto.class, placeCate.placeSubcate.placeMaincate.placeMaincateId, placeCate.placeSubcate.placeMaincate.placeMaincateName)
                         )).from(place)
                 .join(place.placeCates, placeCate)
                 .where(regionEq(regionId))
@@ -79,7 +77,8 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
                                 place.placeFree.stringValue(),
                                 place.placeOperateTime,
                                 Projections.constructor(RegionDto.class, region.regionId, region.regionName),
-                                Projections.constructor(PlaceSubcateDto.class, placeCate.placeSubcate.placeSubcateId, placeCate.placeSubcate.placeSubcateName)
+                                Projections.constructor(PlaceSubcateDto.class, placeCate.placeSubcate.placeSubcateId, placeCate.placeSubcate.placeSubcateName),
+                                Projections.constructor(PlaceMaincateDto.class, placeCate.placeSubcate.placeMaincate.placeMaincateId, placeCate.placeSubcate.placeMaincate.placeMaincateName)
                         )).from(place)
                 .join(place.region, region)
                 .join(place.placeCates, placeCate)
@@ -148,7 +147,8 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
                         place.placeFree.stringValue(),
                         place.placeOperateTime,
                         Projections.constructor(RegionDto.class, region.regionId, region.regionName),
-                        Projections.constructor(PlaceSubcateDto.class, placeCate.placeSubcate.placeSubcateId, placeCate.placeSubcate.placeSubcateName)
+                        Projections.constructor(PlaceSubcateDto.class, placeCate.placeSubcate.placeSubcateId, placeCate.placeSubcate.placeSubcateName),
+                        Projections.constructor(PlaceMaincateDto.class, placeCate.placeSubcate.placeMaincate.placeMaincateId, placeCate.placeSubcate.placeMaincate.placeMaincateName)
                 )).from(place)
                 .join(place.region, region)
                 .join(place.placeCates, placeCate)
@@ -186,7 +186,8 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
                                 place.placeAddress,
                                 place.placeNewAddress,
                                 place.placeOperateTime,
-                                Projections.constructor(PlaceSubcateDto.class, placeCate.placeSubcate.placeSubcateId, placeCate.placeSubcate.placeSubcateName)
+                                Projections.constructor(PlaceSubcateDto.class, placeCate.placeSubcate.placeSubcateId, placeCate.placeSubcate.placeSubcateName),
+                                Projections.constructor(PlaceMaincateDto.class, placeCate.placeSubcate.placeMaincate.placeMaincateId, placeCate.placeSubcate.placeMaincate.placeMaincateName)
                         )).from(place)
                 .join(place.placeCates, placeCate)
                 .where(
