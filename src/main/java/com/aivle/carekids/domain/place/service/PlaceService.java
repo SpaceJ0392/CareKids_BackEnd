@@ -48,6 +48,21 @@ public class PlaceService {
         ), regionDto, null, placePage.getContent());
     }
 
+    public PageInfoDto displayPlaceAdmin(int page, int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        RegionDto regionDto = dtoModelMapper.map(regionRepository.findByRegionName("전체"), RegionDto.class);
+        Page<PlaceDetailDto> placePage = placeRepository.findAllByOrderByUpdatedAtDescByPageByRegionAdmin(null, pageable);
+
+        return new PageInfoDto(new PageInfoDto.PageInfo(
+                placePage.getTotalPages(),
+                placePage.getNumber() + 1,
+                placePage.getSize(),
+                placePage.getNumberOfElements()
+        ), regionDto, null, placePage.getContent());
+    }
+
     public PageInfoDto displayPlaceUser(Long usersId, int page, int size) {
 
         Optional<UsersDetailDto> users = usersRepository.findUsersDetailWithRegionAndKids(usersId);

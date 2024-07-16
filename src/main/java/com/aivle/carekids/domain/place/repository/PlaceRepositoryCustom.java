@@ -13,6 +13,8 @@ public interface PlaceRepositoryCustom {
 
     Page<PlaceListDto> findAllByOrderByUpdatedAtDescByPageByRegion(Long regionId, Pageable pageable);
 
+    Page<PlaceDetailDto> findAllByOrderByUpdatedAtDescByPageByRegionAdmin(Long regionId, Pageable pageable);
+
     PlaceDetailDto findPlaceDetail(Long placeId);
 
     Page<PlaceListDto> searchPlaceByFilter(SearchRegionCateDto searchRegionCateDto, Pageable pageable);
