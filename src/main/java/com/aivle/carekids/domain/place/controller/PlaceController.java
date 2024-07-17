@@ -1,6 +1,7 @@
 package com.aivle.carekids.domain.place.controller;
 
 import com.aivle.carekids.domain.common.dto.PageInfoDto;
+import com.aivle.carekids.domain.common.dto.PlacePageInfoDto;
 import com.aivle.carekids.domain.common.dto.SearchRegionCateDto;
 import com.aivle.carekids.domain.place.dto.PlaceDetailDto;
 import com.aivle.carekids.domain.place.service.PlaceService;
@@ -42,7 +43,7 @@ public class PlaceController {
 
 
         Long usersId = JwtUtils.getUsersId(JwtUtils.verifyToken(accessToken));
-        PageInfoDto pageInfoDto = placeService.displayPlaceUser(usersId, page - 1, size);
+        PlacePageInfoDto pageInfoDto = placeService.displayPlaceUser(usersId, page - 1, size);
 
         if (pageInfoDto != null){
             return ResponseEntity.status(HttpStatus.OK).headers(headers).body(pageInfoDto);
@@ -65,7 +66,7 @@ public class PlaceController {
                                                      @RequestParam(value = "page", defaultValue = "1")int page,
                                                      @RequestParam(value = "size", defaultValue = "12")int size){
 
-        PageInfoDto searchPlaceListDto = placeService.searchPlace(searchRegionCateDto, page - 1, size);
+        PlacePageInfoDto searchPlaceListDto = placeService.searchPlace(searchRegionCateDto, page - 1, size);
         if (searchPlaceListDto == null) {
             return ResponseEntity.badRequest().body(Map.of("message", "조회 대상이 존재하지 않습니다."));
         }

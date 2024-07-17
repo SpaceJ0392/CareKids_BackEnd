@@ -11,9 +11,9 @@ import org.springframework.data.domain.Pageable;
 
 public interface PlaceRepositoryCustom {
 
-    Page<PlaceListDto> findAllByOrderByUpdatedAtDescByPageByRegion(Long regionId, Pageable pageable);
+    Page<PlaceListDto> findAllByOrderByUpdatedAtDescByPageByRegionMainCate(Long regionId, String maincateName, Pageable pageable);
 
-    Page<PlaceDetailDto> findAllByOrderByUpdatedAtDescByPageByRegionAdmin(Long regionId, Pageable pageable);
+    Page<PlaceDetailDto> findAllByOrderByUpdatedAtDescByPageByRegionMainCateAdmin(Long regionId, String maincateName, Pageable pageable);
 
     PlaceDetailDto findPlaceDetail(Long placeId);
 
