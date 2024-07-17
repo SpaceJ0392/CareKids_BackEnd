@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -62,8 +63,10 @@ public class NoticeAdminService {
         }
 
         Notice targetNotice = notice.get();
-        if (imgFile != null){
+        if (!Objects.requireNonNull(imgFile.getOriginalFilename()).isBlank()){
             noticeDto.setNoticeImgUrl(fileService.uploadFileNotice(imgFile));
+        } else{
+            noticeDto.setNoticeImgUrl(targetNotice.getNoticeImgUrl());
         }
         targetNotice.updateNotice(noticeDto);
 
