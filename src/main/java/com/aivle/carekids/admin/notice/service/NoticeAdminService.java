@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -61,8 +62,12 @@ public class NoticeAdminService {
             return ResponseEntity.badRequest().body(Map.of("message", "존재하지 않는 공지사항입니다."));
         }
 
-        noticeDto.setNoticeImgUrl(fileService.uploadFileNotice(imgFile));
         Notice targetNotice = notice.get();
+        if (!Objects.requireNonNull(imgFile.getOriginalFilename()).isBlank()){
+            noticeDto.setNoticeImgUrl(fileService.uploadFileNotice(imgFile));
+        } else{
+            noticeDto.setNoticeImgUrl(targetNotice.getNoticeImgUrl());
+        }
         targetNotice.updateNotice(noticeDto);
 
         return ResponseEntity.ok(Map.of("message", "공지사항이 수정되었습니다."));
