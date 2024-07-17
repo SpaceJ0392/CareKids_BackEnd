@@ -61,8 +61,10 @@ public class NoticeAdminService {
             return ResponseEntity.badRequest().body(Map.of("message", "존재하지 않는 공지사항입니다."));
         }
 
-        noticeDto.setNoticeImgUrl(fileService.uploadFileNotice(imgFile));
         Notice targetNotice = notice.get();
+        if (imgFile != null){
+            noticeDto.setNoticeImgUrl(fileService.uploadFileNotice(imgFile));
+        }
         targetNotice.updateNotice(noticeDto);
 
         return ResponseEntity.ok(Map.of("message", "공지사항이 수정되었습니다."));
