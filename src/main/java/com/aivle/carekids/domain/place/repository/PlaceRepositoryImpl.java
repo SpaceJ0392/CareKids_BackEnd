@@ -31,7 +31,7 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Page<PlaceListDto> findAllByOrderByUpdatedAtDescByPageByRegion(Long regionId, Pageable pageable) {
+    public Page<PlaceListDto> findAllByOrderByUpdatedAtDescByPageByRegionMainCate(Long regionId, String maincateName, Pageable pageable) {
         List<PlaceListDto> content = jpaQueryFactory.select(
                         Projections.constructor(
                                 PlaceListDto.class,
@@ -45,7 +45,7 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
                                 Projections.constructor(PlaceMaincateDto.class, placeCate.placeSubcate.placeMaincate.placeMaincateId, placeCate.placeSubcate.placeMaincate.placeMaincateName)
                         )).from(place)
                 .join(place.placeCates, placeCate)
-                .where(regionEq(regionId))
+                .where(regionEq(regionId), maincateEq(maincateName))
                 .orderBy(place.updatedAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -62,7 +62,7 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
     }
 
     @Override
-    public Page<PlaceDetailDto> findAllByOrderByUpdatedAtDescByPageByRegionAdmin(Long regionId, Pageable pageable) {
+    public Page<PlaceDetailDto> findAllByOrderByUpdatedAtDescByPageByRegionMainCateAdmin(Long regionId, String maincateName, Pageable pageable) {
         List<PlaceDetailDto> content = jpaQueryFactory.select(
                         Projections.constructor(
                                 PlaceDetailDto.class,
@@ -93,7 +93,7 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
 
         JPAQuery<Long> countQuery = jpaQueryFactory.select(place.countDistinct()).from(place)
                 .join(place.placeCates, placeCate)
-                .where(regionEq(regionId));
+                .where(regionEq(regionId), maincateEq(maincateName));
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
@@ -219,7 +219,7 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
     }
 
     private BooleanExpression maincateEq(String maincateName) {
-        return isEmpty(maincateName) ? null : placeCate.placeSubcate.placeMaincate.placeMaincateName.eq(maincateName);
+        return isEmpty(maincateName) || maincateName.equals("전체") ? null : placeCate.placeSubcate.placeMaincate.placeMaincateName.eq(maincateName);
     }
 
     private BooleanExpression queryContains(String query) {
