@@ -89,21 +89,8 @@ public class UserController {
 
 
     @PostMapping("/password-change")
-    public ResponseEntity<?> changePassword(@CookieValue(name = "AccessToken") String accessToken,
-                                            @CookieValue(name = "RefreshToken") String refreshToken,
-                                            @RequestBody PasswordDto passwordDto) {
-
-        Map<String, String> tokenMaps = jwtUtils.verifyJWTs(accessToken, refreshToken);
-        if (tokenMaps.get("state") != null) {
-            return ResponseEntity.badRequest().body(Map.of("message", "잘못된 접근 입니다."));
-        }
-
-        HttpHeaders headers = new HttpHeaders();
-        if (tokenMaps.get("access_token") != null) {
-            headers.add(HttpHeaders.SET_COOKIE, tokenMaps.get("access_token"));
-        }
-
-        return userService.changePassword(headers, passwordDto);
+    public ResponseEntity<?> changePassword(@RequestBody PasswordDto passwordDto) {
+        return userService.changePassword(passwordDto);
     }
 
     // jwt 검증이 제대로 되는지 controller에서 확인하기 위한 코드

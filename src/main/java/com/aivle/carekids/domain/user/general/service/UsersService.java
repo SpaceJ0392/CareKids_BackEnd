@@ -16,7 +16,6 @@ import com.aivle.carekids.global.Variable.GlobelVar;
 import com.aivle.carekids.global.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -111,17 +113,17 @@ public class UsersService {
     }
 
     @Transactional
-    public ResponseEntity<?> changePassword(HttpHeaders headers, PasswordDto passwordDto) {
+    public ResponseEntity<?> changePassword(PasswordDto passwordDto) {
 
         // 유효성 검사
         Map<String, String> message = new HashMap<>(signUpValid.passwordValidation(passwordDto.getNewUsersPassword(), ""));
         if (!message.isEmpty()) {
-            return ResponseEntity.badRequest().headers(headers).body(message);
+            return ResponseEntity.badRequest().body(message);
         }
 
         Users users = usersRepository.findByUsersEmail(passwordDto.getUsersEmail());
         if (users == null) {
-            return ResponseEntity.badRequest().headers(headers).body(Map.of("users-not-found", "해당 사용자를 찾을 수 없습니다."));
+            return ResponseEntity.badRequest().body(Map.of("users-not-found", "해당 사용자를 찾을 수 없습니다."));
         }
 
         users.changeUsersPassword(passwordDto.getNewUsersPassword());
