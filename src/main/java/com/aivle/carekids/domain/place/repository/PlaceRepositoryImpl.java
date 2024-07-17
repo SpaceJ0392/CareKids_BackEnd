@@ -100,7 +100,7 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
 
 
     private BooleanExpression regionEq(Long regionId) {
-        return isEmpty(regionId) ? null : place.region.regionId.eq(regionId);
+        return isEmpty(regionId) || regionId == 26 ? null : place.region.regionId.eq(regionId);
     }
 
     private Map<Long, List<PlaceKeywordDto>> findKeywordsByPlaceList(List<?> content) {
