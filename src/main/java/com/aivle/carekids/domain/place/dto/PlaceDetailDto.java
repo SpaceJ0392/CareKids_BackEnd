@@ -1,13 +1,14 @@
 package com.aivle.carekids.domain.place.dto;
 
 import com.aivle.carekids.domain.common.dto.RegionDto;
-import com.aivle.carekids.domain.place.model.*;
+import com.aivle.carekids.domain.place.model.FreeType;
+import com.aivle.carekids.domain.place.model.ParkingType;
+import com.aivle.carekids.domain.place.model.PlaceType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Getter @Setter
@@ -56,16 +57,16 @@ public class PlaceDetailDto {
     @JsonProperty("keywords")
     private List<PlaceKeywordDto> placeKeywords;
 
-    public PlaceDetailDto(Long placeId, String placeName, String placeImgUrl, String placeAddress, String placeNewAddress, String placePhone, String placeType, String placeParking, String placeFree, String placeOperateTime, RegionDto region, PlaceSubcateDto placeSubcate, PlaceMaincateDto placeMaincate) {
+    public PlaceDetailDto(Long placeId, String placeName, String placeImgUrl, String placeAddress, String placeNewAddress, String placePhone, PlaceType placeType, ParkingType placeParking, FreeType placeFree, String placeOperateTime, RegionDto region, PlaceSubcateDto placeSubcate, PlaceMaincateDto placeMaincate) {
         this.placeId = placeId;
         this.placeName = placeName;
         this.placeImgUrl = placeImgUrl;
         this.placeAddress = placeAddress;
         this.placeNewAddress = placeNewAddress;
         this.placePhone = placePhone;
-        this.placeType = placeType;
-        this.placeParking = placeParking;
-        this.placeFree = placeFree;
+        this.placeType = placeType.getPlaceType();
+        this.placeParking = placeParking.getParkingType();
+        this.placeFree = placeFree.getFreeType();
         this.placeOperateTime = placeOperateTime;
         this.region = region;
         this.placeSubcate = placeSubcate;
