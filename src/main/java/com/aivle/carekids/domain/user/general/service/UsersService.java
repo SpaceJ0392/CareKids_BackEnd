@@ -126,7 +126,7 @@ public class UsersService {
             return ResponseEntity.badRequest().body(Map.of("users-not-found", "해당 사용자를 찾을 수 없습니다."));
         }
 
-        users.changeUsersPassword(passwordDto.getNewUsersPassword());
+        users.changeUsersPassword(passwordEncoder.encode(passwordDto.getNewUsersPassword()));
         return ResponseEntity.created(URI.create(GlobelVar.CLIENT_BASE_URL)).body(Map.of("message", "비밀번호가 변경되었습니다."));
     }
 }

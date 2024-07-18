@@ -14,6 +14,6 @@ public enum KidsPolicyType {
         for (KidsPolicyType type : KidsPolicyType.values()) {
             if (type.getKidsPolicyType().equals(kidsPolicyType)) { return type; }
         }
-        throw new IllegalArgumentException("No matching HospitalType for description: " + kidsPolicyType);
+        throw new IllegalArgumentException("No matching KidsPolicyType for description: " + kidsPolicyType);
     }
 }
