@@ -63,7 +63,7 @@ public class NoticeAdminService {
         }
 
         Notice targetNotice = notice.get();
-        if (!Objects.requireNonNull(imgFile.getOriginalFilename()).isBlank()){
+        if (imgFile != null && !Objects.requireNonNull(imgFile.getOriginalFilename()).isBlank()){
             noticeDto.setNoticeImgUrl(fileService.uploadFileNotice(imgFile));
         } else{
             noticeDto.setNoticeImgUrl(targetNotice.getNoticeImgUrl());
