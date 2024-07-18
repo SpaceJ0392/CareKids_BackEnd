@@ -68,6 +68,8 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 )).from(question)
                 .join(question.users, users)
                 .orderBy(question.questionId.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         List<Long> questionIdList = content.stream().map(q -> q.getQuestionDetailDto().getQuestionId()).toList();
