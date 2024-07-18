@@ -55,6 +55,8 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                         QuestionDetailDisplayDto.class,
                         Projections.constructor(
                                 QuestionDetailDto.class,
+                                question.createdAt,
+                                question.updatedAt,
                                 question.questionId,
                                 question.questionTitle,
                                 question.questionText,
