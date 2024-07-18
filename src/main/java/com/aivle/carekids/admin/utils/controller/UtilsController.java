@@ -6,7 +6,11 @@ import com.aivle.carekids.admin.utils.dto.OperateDateTypeDto;
 import com.aivle.carekids.domain.common.models.DayType;
 import com.aivle.carekids.domain.hospital.model.HospitalType;
 import com.aivle.carekids.domain.kidspolicy.models.KidsPolicyType;
+import com.aivle.carekids.domain.playInfo.dto.DevDomainDto;
+import com.aivle.carekids.domain.playInfo.model.DevDomain;
+import com.aivle.carekids.domain.playInfo.repository.DevDomainRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +23,9 @@ import java.util.List;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class UtilsController {
+
+    private final DevDomainRepository devDomainRepository;
+    private final ModelMapper dtoModelMapper;
 
     @GetMapping("/hospital-type")
     public ResponseEntity<?> displayHospitalType(){
@@ -45,6 +52,16 @@ public class UtilsController {
                 .map(kidsPolicyType -> new KidsPolicyTypeDto(kidsPolicyType, kidsPolicyType.getKidsPolicyType())).toList();
 
         return ResponseEntity.ok(kidsPolicyTypeDtos);
+    }
+
+    @GetMapping("/dev-domain")
+    public ResponseEntity<?> displayDevDomain(){
+
+        List<DevDomain> content = devDomainRepository.findAll();
+        List<DevDomainDto> devDomainList = content.stream()
+                .map(devDomain -> dtoModelMapper.map(devDomain, DevDomainDto.class)).toList();
+
+        return ResponseEntity.ok(devDomainList);
     }
 
 }
