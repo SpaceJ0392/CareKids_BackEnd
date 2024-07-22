@@ -18,7 +18,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.aivle.carekids.domain.common.models.QAgeTag.ageTag;
 import static com.aivle.carekids.domain.playInfo.model.QDevDomain.devDomain;
@@ -27,7 +29,7 @@ import static com.aivle.carekids.domain.playInfo.model.QPlayInfoDomain.playInfoD
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 @RequiredArgsConstructor
-public class PlayInfoRepositoryImpl implements PlayInfoRepositoryCustom{
+public class PlayInfoRepositoryImpl implements PlayInfoRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 
@@ -56,9 +58,6 @@ public class PlayInfoRepositoryImpl implements PlayInfoRepositoryCustom{
                 .limit(4)
                 .fetch();
     }
-
-
-
 
 
     @Override
@@ -106,6 +105,13 @@ public class PlayInfoRepositoryImpl implements PlayInfoRepositoryCustom{
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
+
+        List<Long> playInfoId = content.stream().map(PlayInfoDetailDto::getPlayInfoId).toList();
+        Map<Long, List<DevDomainDto>> contentDevDomainById = findContentDevDomainById(playInfoId);
+
+        content.forEach(playInfo -> {
+            playInfo.setDevDomains(contentDevDomainById.get(playInfo.getPlayInfoId()));
+        });
 
         JPAQuery<Long> countQuery = jpaQueryFactory.select(playInfo.count()).from(playInfo)
                 .join(playInfo.ageTag, ageTag)
@@ -164,7 +170,7 @@ public class PlayInfoRepositoryImpl implements PlayInfoRepositoryCustom{
                                 playInfo.playInfoId,
                                 playInfo.playInfoTitle,
                                 playInfo.playInfoText
-                            )).from(playInfo)
+                        )).from(playInfo)
                 .join(playInfo.ageTag, ageTag)
                 .where(
                         ageEq(searchAgeTagDto.getAgeTagDto().getAgeTagId()),
@@ -188,5 +194,20 @@ public class PlayInfoRepositoryImpl implements PlayInfoRepositoryCustom{
 
     private BooleanExpression queryContains(String query) {
         return isEmpty(query) ? null : playInfo.playInfoTitle.containsIgnoreCase(query);
+    }
+
+    private Map<Long, List<DevDomainDto>> findContentDevDomainById(List<Long> playInfoId) {
+
+        return jpaQueryFactory.select(
+                        Projections.constructor(
+                                DevDomainDto.class,
+                                devDomain.devDomainId,
+                                devDomain.devDomainType,
+                                playInfoDomain.playInfo.playInfoId
+                        ))
+                .from(playInfoDomain)
+                .join(playInfoDomain.devDomain, devDomain)
+                .where(playInfoDomain.playInfo.playInfoId.in(playInfoId))
+                .fetch().stream().collect(Collectors.groupingBy(DevDomainDto::getPlayInfoId));
     }
 }
