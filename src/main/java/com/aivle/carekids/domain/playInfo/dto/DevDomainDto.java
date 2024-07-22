@@ -1,6 +1,6 @@
 package com.aivle.carekids.domain.playInfo.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,5 +15,8 @@ public class DevDomainDto {
     private Long devDomainId;
 
     private String devDomainType;
+
+    @JsonIgnore
+    private Long playInfoId;
 
 }

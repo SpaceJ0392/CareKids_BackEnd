@@ -89,7 +89,7 @@ public class UserController {
 
 
     @PostMapping("/password-change")
-    public ResponseEntity<?> changePassword(@RequestBody PasswordDto passwordDto) {
+    public ResponseEntity<?> changePassword(@RequestBody PasswordDto passwordDto) throws URISyntaxException {
         return userService.changePassword(passwordDto);
     }
 

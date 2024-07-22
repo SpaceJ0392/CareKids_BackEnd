@@ -13,6 +13,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.DefaultRedirectStrategy;
+import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -23,9 +25,12 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+
     private final UsersRepository usersRepository;
     private final SignUpValid signUpValid;
     private final JwtService jwtService;
+
+    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -46,14 +51,15 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                     .queryParam("refreshToken", refreshToken)
                     .build().toUriString();
 
-            response.sendRedirect(redirectUrl);
+            redirectStrategy.sendRedirect(request, response, redirectUrl);
 
         } else { // 없으면 get redirect email 및 socialtype 넣어서. (회원가입 페이지로)
             redirectUrl = UriComponentsBuilder.fromHttpUrl(GlobelVar.CLIENT_BASE_URL).path("/signin/info")
                     .queryParam("email", userDetails.getUsername())
                     .queryParam("social-type", userDetails.getSocialType().toString())
                     .build().toUriString();
-            response.sendRedirect(redirectUrl);
+
+            redirectStrategy.sendRedirect(request, response, redirectUrl);
         }
 
 
