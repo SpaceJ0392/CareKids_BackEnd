@@ -89,7 +89,8 @@ public class UsersService {
         kidsRepository.saveAll(newKids);
 
         message.put("message", "회원 가입이 완료되었습니다.");
-        return ResponseEntity.created(new URI( GlobelVar.CLIENT_BASE_URL + "/login")).body(message); // GlobelVar.CLIENT_BASE_URL
+        URI location = new URI(GlobelVar.CLIENT_BASE_URL);
+        return ResponseEntity.created(location).body(message); // GlobelVar.CLIENT_BASE_URL
     }
 
     public Users findByUsersId(Long usersId){
@@ -113,7 +114,7 @@ public class UsersService {
     }
 
     @Transactional
-    public ResponseEntity<?> changePassword(PasswordDto passwordDto) {
+    public ResponseEntity<?> changePassword(PasswordDto passwordDto) throws URISyntaxException {
 
         // 유효성 검사
         Map<String, String> message = new HashMap<>(signUpValid.passwordValidation(passwordDto.getNewUsersPassword(), ""));
@@ -127,6 +128,7 @@ public class UsersService {
         }
 
         users.changeUsersPassword(passwordEncoder.encode(passwordDto.getNewUsersPassword()));
-        return ResponseEntity.created(URI.create(GlobelVar.CLIENT_BASE_URL)).body(Map.of("message", "비밀번호가 변경되었습니다."));
+        URI location = new URI(GlobelVar.CLIENT_BASE_URL + "/login");
+        return ResponseEntity.created(location).body(Map.of("message", "비밀번호가 변경되었습니다."));
     }
 }
