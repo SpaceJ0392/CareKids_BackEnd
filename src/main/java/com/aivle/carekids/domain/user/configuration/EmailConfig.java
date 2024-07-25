@@ -12,6 +12,7 @@ import java.util.Properties;
 @Configuration
 @Getter
 public class EmailConfig {
+
     @Value("${spring.mail.host}")
     private String host;
 
@@ -44,6 +45,7 @@ public class EmailConfig {
 
     @Bean
     public JavaMailSender javaMailSender() {
+
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost(host);
         mailSender.setPort(port);

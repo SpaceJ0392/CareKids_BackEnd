@@ -12,6 +12,7 @@ import java.util.Map;
 public class OAuth2UserInfo {
 
     private String email;
+
     private SocialType socialType;
 
     public static OAuth2UserInfo of(String registrationId, Map<String, Object> attributes) throws AuthException {

@@ -28,12 +28,11 @@ import java.util.Random;
 public class HomeService {
 
     private final UsersRepository usersRepository;
-
     private final RegionRepository regionRepository;
     private final PlayInfoRepository playInfoRepository;
     private final KidsPolicyRepository kidsPolicyRepository;
-
     private final ModelMapper dtoModelMapper;
+
 
     public HomeDto displayHomeGuest() {
 
@@ -52,12 +51,13 @@ public class HomeService {
                 regionList, kidsPolicyList
         );
 
-
         return new HomeDto(kidsPolicyMainListDto, playInfoMainList);
 
     }
 
+
     public HomeDto displayHomeUser(Long usersId) {
+
         Optional<UsersDetailDto> users = usersRepository.findUsersDetailWithRegionAndKids(usersId);
 
         if (users.isEmpty()){ return null; }

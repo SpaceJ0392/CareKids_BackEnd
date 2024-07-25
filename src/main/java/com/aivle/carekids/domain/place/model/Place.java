@@ -2,11 +2,7 @@ package com.aivle.carekids.domain.place.model;
 
 import com.aivle.carekids.domain.common.models.BaseEntity;
 import com.aivle.carekids.domain.common.models.Region;
-import com.aivle.carekids.domain.hospital.dto.HospitalDetailDto;
-import com.aivle.carekids.domain.hospital.model.HospitalType;
-import com.aivle.carekids.domain.kidspolicy.models.KidsPolicyType;
 import com.aivle.carekids.domain.place.dto.PlaceDetailDto;
-import com.aivle.carekids.domain.playInfo.model.PlayInfo;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -87,6 +83,7 @@ public class Place extends BaseEntity {
         this.placeOperateTime = placeOperateTime;
     }
 
+    //* 사용자 정의 메소드*//
     public static Place createNewPlace(PlaceDetailDto placeDetailDto) {
         PlaceType placeType = PlaceType.fromPlaceTypeString(placeDetailDto.getPlaceType());
         ParkingType parkingType = ParkingType.fromParkingTypeString(placeDetailDto.getPlaceParking());

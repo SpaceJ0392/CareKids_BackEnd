@@ -1,8 +1,6 @@
 package com.aivle.carekids.admin.kindergarten.service;
 
 import com.aivle.carekids.domain.common.models.Region;
-import com.aivle.carekids.domain.hospital.model.Hospital;
-import com.aivle.carekids.domain.hospital.model.HospitalOperateTime;
 import com.aivle.carekids.domain.kindergarten.dto.KindergartenDetailDto;
 import com.aivle.carekids.domain.kindergarten.model.Kindergarten;
 import com.aivle.carekids.domain.kindergarten.model.KindergartenOperateTime;
@@ -14,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,9 +21,11 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class KindergartenAdminService {
+
     private final KindergartenRepository kindergartenRepository;
     private final KindergartenOperateTimeRepository kindergartenOperateTimeRepository;
     private final ModelMapper entityModelMapper;
+
 
     @Transactional
     public ResponseEntity<?> editKindergarten(KindergartenDetailDto kindergartenDetailDto) {
@@ -35,7 +34,7 @@ public class KindergartenAdminService {
         List<KindergartenOperateTime> kindergartenOperateTimeList = new ArrayList<>();
 
 
-        if (kindergartenDetailDto.getKindergartenId() == null) { // -> 생성
+        if (kindergartenDetailDto.getKindergartenId() == null) {
 
             Kindergarten newKindergarten = Kindergarten.createNewKindergarten(kindergartenDetailDto);
             newKindergarten.setRegionInfo(targetRegion);
@@ -70,6 +69,7 @@ public class KindergartenAdminService {
         kindergartenOperateTimeRepository.saveAll(kindergartenOperateTimeList);
         return ResponseEntity.ok(Map.of("message", "어린이집 정보가 수정되었습니다."));
     }
+
 
     @Transactional
     public ResponseEntity<?> deleteKindergarten(Long kindergartenId) {

@@ -8,7 +8,6 @@ import com.aivle.carekids.domain.user.general.handler.CustomAccessDeniedHandler;
 import com.aivle.carekids.domain.user.general.jwt.JwtAuthenticationFilter;
 import com.aivle.carekids.domain.user.general.jwt.JwtRepository;
 import com.aivle.carekids.domain.user.general.jwt.JwtService;
-import com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils;
 import com.aivle.carekids.domain.user.general.service.LogoutService;
 import com.aivle.carekids.domain.user.oauth2.handler.OAuth2SuccessHandler;
 import com.aivle.carekids.domain.user.oauth2.service.CustomOAuth2UserService;
@@ -51,13 +50,11 @@ public class SecurityConfig {
     private final LogoutService logoutService;
     private final ObjectMapper objectMapper;
     private final CustomAuthenticationManager customAuthenticationManager;
-
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomOAuth2UserService oAuth2UserService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
-    private final JwtUtils jwtUtils;
-
     private final AuthenticationConfiguration authenticationConfiguration;
+
     @Value("${spring.jwt.secret}")
     private String secret;
 
@@ -66,7 +63,7 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
-    /* H2 console 무시 */
+    /* 무시 */
     @Bean
     @ConditionalOnProperty(name = "spring.h2.console.enabled", havingValue = "true") //false면 접근 불가...
     public WebSecurityCustomizer configure() {
@@ -102,7 +99,7 @@ public class SecurityConfig {
                         requests -> requests.requestMatchers(antMatcher("/api/admin/**")).hasRole("ADMIN")
                                 .anyRequest().permitAll()
                 )
-                .addFilterBefore(new JwtAuthenticationFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterAt(new JsonToHttpRequestFilter(objectMapper, usersRepository), lf.getClass())
                 .addFilterAt(lf, UsernamePasswordAuthenticationFilter.class)
                 //oauth2 설정
@@ -118,7 +115,8 @@ public class SecurityConfig {
                             response.setContentType("application/json");
                             response.setCharacterEncoding("UTF-8");
                             response.getWriter().write("{\"message\": \"로그아웃 되었습니다.\"}");
-                        })))
+                        }))
+                )
                 // CORS 설정 추가
                 .cors(cors -> cors.configurationSource(source))
                 //Access Denied 문제 해결

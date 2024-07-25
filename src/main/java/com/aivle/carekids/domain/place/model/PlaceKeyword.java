@@ -29,7 +29,9 @@ public class PlaceKeyword {
         this.keyword = keyword;
     }
 
+    //* 사용자 정의 메소드 *//
     public static PlaceKeyword createNewPlaceKeyword(Place place, Keyword keyword) {
+
         return PlaceKeyword.builder()
                 .place(place)
                 .keyword(keyword)

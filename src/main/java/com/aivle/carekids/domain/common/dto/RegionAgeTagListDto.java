@@ -10,10 +10,10 @@ import java.util.List;
 @Setter @Getter
 @AllArgsConstructor
 public class RegionAgeTagListDto {
+
     @JsonProperty("age-tag")
     private List<AgeTagDto> ageTag;
 
     private List<RegionDto> region;
 
-    //TODO - private SocialType socialType;
 }

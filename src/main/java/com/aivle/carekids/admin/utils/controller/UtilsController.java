@@ -36,6 +36,7 @@ public class UtilsController {
         return ResponseEntity.ok(hospitalTypeDtos);
     }
 
+
     @GetMapping("/operate-day")
     public ResponseEntity<?> displayOperateDay(){
 
@@ -45,6 +46,7 @@ public class UtilsController {
         return ResponseEntity.ok(operateDateTypeDtos);
     }
 
+
     @GetMapping("/kidsPolicy-type")
     public ResponseEntity<?> displayKidsPolicyType(){
 
@@ -53,6 +55,7 @@ public class UtilsController {
 
         return ResponseEntity.ok(kidsPolicyTypeDtos);
     }
+
 
     @GetMapping("/dev-domain")
     public ResponseEntity<?> displayDevDomain(){

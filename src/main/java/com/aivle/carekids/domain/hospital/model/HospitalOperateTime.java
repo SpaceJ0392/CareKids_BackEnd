@@ -27,10 +27,9 @@ public class HospitalOperateTime extends OperateDate {
     @Builder
     private HospitalOperateTime(DayType dayType, LocalTime startTime, LocalTime endTime) {
         super(dayType, startTime, endTime);
-
     }
 
-
+    /* 사용자 정의 함수 */
     public static HospitalOperateTime createNewHospitalOperateTime(HospitalOperateTimeDto hospitalOperateTimeDto){
 
         DayType targetDayType = DayType.fromDayTypeString(hospitalOperateTimeDto.getDayType());
@@ -41,6 +40,7 @@ public class HospitalOperateTime extends OperateDate {
                 .endTime(hospitalOperateTimeDto.getEndTime())
                 .build();
     }
+
 
     public void setHospitalInfo(Hospital hospital){
 

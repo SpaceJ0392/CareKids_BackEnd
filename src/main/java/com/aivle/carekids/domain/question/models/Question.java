@@ -20,6 +20,7 @@ import java.util.List;
 @SQLDelete(sql = "UPDATE question SET deleted = true WHERE id=?")
 @SQLRestriction("deleted=false")
 public class Question extends BaseEntity {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long questionId;
 
@@ -28,7 +29,6 @@ public class Question extends BaseEntity {
 
     @Lob
     private String questionText;
-
 
     private boolean questionCheck = false;
 
@@ -54,10 +54,12 @@ public class Question extends BaseEntity {
 
     }
 
+
+    //* 사용자 정의 메소드 *//
     public boolean getSecret(){ return secret; }
+
     public boolean getQuestionCheck(){ return questionCheck; }
 
-    //입력에 대한 생성 메소드
     public void setUsersInfo(Users users){
         this.users = users;
         users.getQuestionUsers().add(this);

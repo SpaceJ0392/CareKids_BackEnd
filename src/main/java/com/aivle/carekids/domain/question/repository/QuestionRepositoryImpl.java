@@ -10,7 +10,6 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
@@ -28,7 +27,6 @@ import static com.aivle.carekids.domain.user.models.QUsers.users;
 public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
-    private final ModelMapper dtoModelMapper;
 
     @Override
     public Optional<Question> existsByQuestionTitleAndUserId(String questionTitle, Long usersId) {
@@ -40,6 +38,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
         return Optional.ofNullable(existsQuestion);
     }
 
+
     @Override
     public List<QuestionFile> findFilesByQuestionId(Long questionId) {
 
@@ -47,6 +46,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 .where(questionFile.question.questionId.eq(questionId))
                 .fetch();
     }
+
 
     @Override
     public Page<QuestionDetailDisplayDto> findAllOrderByQuestionIdDesc(Pageable pageable) {
@@ -80,12 +80,12 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                     .setQuestionFileDtos(filesByQuestionIdList.get(questionDetailDisplayDto.getQuestionDetailDto().getQuestionId()));
         });
 
-
         JPAQuery<Long> countQuery = jpaQueryFactory.select(question.countDistinct()).from(question)
                 .join(question.users, users);
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
+
 
     public Map<Long, List<QuestionFileDto>> findFilesByQuestionIdList(List<Long> questionIdList) {
 

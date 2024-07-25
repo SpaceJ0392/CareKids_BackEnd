@@ -10,7 +10,6 @@ import com.aivle.carekids.domain.user.models.Users;
 import com.aivle.carekids.domain.user.repository.UsersRepository;
 import com.aivle.carekids.global.Variable.GlobelVar;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -35,7 +34,6 @@ public class NoticeAdminService {
     private final UsersRepository usersRepository;
     private final FileService fileService;
 
-    private final ModelMapper dtoModelMapper;
 
     @Transactional
     public ResponseEntity<?> editNotice(Long usersId, NoticeDto noticeDto, MultipartFile imgFile) throws IOException {
@@ -73,6 +71,7 @@ public class NoticeAdminService {
         return ResponseEntity.ok(Map.of("message", "공지사항이 수정되었습니다."));
     }
 
+
     @Transactional
     public Map<String, ?> deleteNotice(Long usersId, Long noticeId) {
         Optional<Notice> targetNotice = noticeRepository.findById(noticeId);
@@ -86,6 +85,7 @@ public class NoticeAdminService {
         return Map.of("message", "해당 게시글이 삭제되었습니다.");
 
     }
+
 
     public Object listNotice(int page, int size) {
 

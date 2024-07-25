@@ -18,5 +18,4 @@ public class DevDomainDto {
 
     @JsonIgnore
     private Long playInfoId;
-
 }

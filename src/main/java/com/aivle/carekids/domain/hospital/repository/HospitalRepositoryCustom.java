@@ -21,6 +21,4 @@ public interface HospitalRepositoryCustom {
     HospitalDetailDto findHospialDetail(Long hospitalId);
 
     Page<HospitalListDto> searchHospitalByFilter(SearchRegionDto searchRegionDto, Pageable pageable);
-
-    //List<OperateTimeDto> findHospitalOperationTime(Long hospitalId);
 }

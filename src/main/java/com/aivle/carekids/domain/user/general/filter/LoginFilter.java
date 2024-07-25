@@ -53,13 +53,13 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         }
 
         return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-
     }
+
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
 
-        Users users = ((CustomUserDetail) authResult.getPrincipal()).getUsers();
+        Users users = ((CustomUserDetail) authResult.getPrincipal()).users();
 
         // 인증이 성공한 경우 토큰을 생성하여, 응답 헤더에 담아 클라이언트에게 전달
         System.out.println(JwtConstants.SECRET_KEY);
@@ -70,8 +70,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         jwtService.save(new RefreshToken(users.getUsersId(), refreshToken));
 
         // 헤더로 accessToken 전달
-        response.addHeader(JwtConstants.ACCESS, JwtConstants.JWT_TYPE + accessToken);
-
         Cookie access_cookie = new Cookie(JwtConstants.ACCESS, accessToken);
         access_cookie.setMaxAge((int) (JwtConstants.ACCESS_EXP_TIME / 1000));     // 5분 설정
         access_cookie.setHttpOnly(true);

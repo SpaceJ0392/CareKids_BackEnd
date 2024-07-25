@@ -52,7 +52,7 @@ public class UserController {
 
     // 회원 가입 시 API (회원가입 complete or denied)
     @PostMapping("/signup")
-    public ResponseEntity<Map<String, String>> signUpRequest(@RequestBody @Valid SignUpRequestDto signUpData) throws URISyntaxException {
+    public ResponseEntity<Map<String, String>> signUpRequest(@RequestBody @Valid SignUpRequestDto signUpData, HttpServletResponse response) throws URISyntaxException {
         return userService.signUpRequest(signUpData);
     }
 
@@ -86,7 +86,6 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(usersDetailDto);
     }
-
 
     @PostMapping("/password-change")
     public ResponseEntity<?> changePassword(@RequestBody PasswordDto passwordDto) throws URISyntaxException {
@@ -129,6 +128,5 @@ public class UserController {
         login_info.put("is_login", "true");
         login_info.put("user_role", usersRole);
         return ResponseEntity.ok().body(login_info);
-
     }
 }

@@ -26,6 +26,7 @@ public class CommonService {
 
     private final ModelMapper dtoModelMapper;
 
+
     public RegionAgeTagListDto regionAgeTagAll() {
 
         List<RegionDto> regions = regionRepository.findAll().stream()
@@ -38,6 +39,7 @@ public class CommonService {
         return new RegionAgeTagListDto(ageTags,regions);
     }
 
+
     public RegionSubcateListDto regionSubcateAll() {
 
         List<RegionDto> regions = regionRepository.findAll().stream()
@@ -48,6 +50,7 @@ public class CommonService {
 
         return new RegionSubcateListDto(regions, categories);
     }
+
 
     public RegionMaincateListDto regionMaincateAll() {
 
@@ -65,6 +68,7 @@ public class CommonService {
         return regionRepository.findAll().stream()
                 .map(r -> dtoModelMapper.map(r, RegionDto.class)).toList();
     }
+
 
     public List<AgeTagDto> ageTagAll(){
         return ageTagRepository.findAll().stream()

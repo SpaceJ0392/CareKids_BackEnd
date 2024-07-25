@@ -32,8 +32,8 @@ public class QuestionService {
     private final QuestionRepository questionRepository;
     private final QuestionFileRepository questionFileRepository;
     private final ModelMapper dtoModelMapper;
-
     private final FileService fileService;
+
 
     public PageInfoDto displayQuestion(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -43,10 +43,10 @@ public class QuestionService {
              dtoModelMapper.map(q.getUsers(), UsersLightDto.class)
         )).toList();
 
-
         return new PageInfoDto(new PageInfoDto.PageInfo(questionPage.getTotalPages(), page + 1, size, questionPage.getNumberOfElements()),
                 null, null, questionListDtoList);
     }
+
 
     @Transactional
     public Map<String, String> editQuestion(QuestionDetailDto questionDetailDto, List<MultipartFile> multipartFiles, Long usersId) {
@@ -83,6 +83,7 @@ public class QuestionService {
         return Map.of("message", "게시글이 생성되었습니다.");
     }
 
+
     public QuestionDetailDisplayDto displayQuestionDetail(Long questionId, Long usersId) {
 
         Optional<Question> targetQuestion = questionRepository.findById(questionId);
@@ -98,13 +99,13 @@ public class QuestionService {
             }
         }
 
-
         QuestionDetailDto questionDetail = dtoModelMapper.map(targetQuestion.get(), QuestionDetailDto.class);
         List<QuestionFileDto> fileOfQuestion = questionFileRepository.findByQuestion(targetQuestion.get())
                 .stream().map((element) -> dtoModelMapper.map(element, QuestionFileDto.class)).toList();
 
         return new QuestionDetailDisplayDto(questionDetail, fileOfQuestion);
     }
+
 
     @Transactional
     public Map<String, String> deleteQuestion(Long questionId, Long usersId) {

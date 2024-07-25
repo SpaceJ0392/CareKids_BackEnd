@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailService implements UserDetailsService {
+
     private final UsersRepository userRepository;
 
     @Override
@@ -23,7 +24,6 @@ public class CustomUserDetailService implements UserDetailsService {
         if (username != null){
             return new CustomUserDetail(userData);
         }
-
 
         return null;
     }

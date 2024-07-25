@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Getter @Setter
 @NoArgsConstructor
 public class BaseDto {
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

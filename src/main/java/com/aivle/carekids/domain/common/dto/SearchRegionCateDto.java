@@ -10,6 +10,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 public class SearchRegionCateDto {
+
     @JsonProperty("query")
     private String query;
 

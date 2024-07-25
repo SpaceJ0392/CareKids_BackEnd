@@ -13,8 +13,8 @@ import java.time.LocalTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class OperateDate extends OperateTime{
-    @Enumerated(EnumType.STRING)
 
+    @Enumerated(EnumType.STRING)
     protected DayType dayType;
 
     public OperateDate(DayType dayType, LocalTime startTime, LocalTime endTime) {

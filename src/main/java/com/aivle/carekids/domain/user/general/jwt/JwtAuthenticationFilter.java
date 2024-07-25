@@ -24,8 +24,6 @@ import static com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils.veri
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtUtils jwtUtils;
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 
@@ -34,7 +32,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String refreshToken = JwtUtils.getRefreshTokenFromCookies(cookies);
 
         String url = request.getRequestURI();
-        if ((accessToken != null && refreshToken != null) && url.startsWith("/api/admin/")){
+        if ((accessToken != null && refreshToken != null) && url.startsWith("/api")){
 
             DecodedJWT decodedToken = verifyToken(accessToken);
             String usersRole = JwtUtils.getUsersRole(decodedToken);

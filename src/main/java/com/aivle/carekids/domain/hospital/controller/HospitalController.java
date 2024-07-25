@@ -50,6 +50,7 @@ public class HospitalController {
         return ResponseEntity.badRequest().headers(headers).body(Map.of("message", "잘못된 접근입니다."));
     }
 
+
     @GetMapping("/hospital/{id}")
     public ResponseEntity<?> hospitalDetail(@PathVariable Long id){
 
@@ -58,6 +59,7 @@ public class HospitalController {
         if (hospitalDetailDto != null){ return ResponseEntity.ok(hospitalDetailDto); }
         return ResponseEntity.badRequest().body(Map.of("message", "잘못된 접근입니다."));
     }
+
 
     @PostMapping("/hospital/search")
     public ResponseEntity<Object> searchHospital(@RequestBody SearchRegionDto searchRegionDto,

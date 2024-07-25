@@ -36,6 +36,7 @@ public class NoticeService {
                 null, null, noticeListDtoList);
     }
 
+
     public ResponseEntity<?> noticeDetail(Long id) {
 
         NoticeDto noticeDto = noticeRepository.findById(id)

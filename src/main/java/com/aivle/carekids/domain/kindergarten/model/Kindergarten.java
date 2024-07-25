@@ -58,6 +58,8 @@ public class Kindergarten extends BaseEntity {
         this.kindergartenPhone = kindergartenPhone;
     }
 
+
+    //* 사용자 정의 메소드 *//
     public static Kindergarten createNewKindergarten(KindergartenDetailDto kindergartenDetailDto){
         return Kindergarten.builder()
                 .kindergartenName(kindergartenDetailDto.getKindergartenName())

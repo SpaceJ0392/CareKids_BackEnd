@@ -22,6 +22,7 @@ public class NoticeController {
         return ResponseEntity.ok(noticeService.listNotice(page - 1, size));
     }
 
+
     @GetMapping("/notice/{id}")
     public ResponseEntity<?> noticeDetail(@PathVariable Long id){
         return noticeService.noticeDetail(id);

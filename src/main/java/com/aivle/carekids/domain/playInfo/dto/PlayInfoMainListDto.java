@@ -17,5 +17,4 @@ public class PlayInfoMainListDto {
 
     @JsonProperty("age-tag")
     private AgeTagDto ageTagDto;
-
 }

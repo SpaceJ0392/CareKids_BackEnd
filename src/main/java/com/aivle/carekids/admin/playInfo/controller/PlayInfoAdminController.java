@@ -23,6 +23,7 @@ public class PlayInfoAdminController {
     private final PlayInfoAdminService playInfoAdminService;
     private final JwtUtils jwtUtils;
 
+
     @GetMapping("/playinfo")
     public ResponseEntity<?> displayPlayInfoPage(@CookieValue(name = "AccessToken") String accessToken,
                                                      @CookieValue(name = "RefreshToken") String refreshToken,
@@ -37,6 +38,7 @@ public class PlayInfoAdminController {
         return ResponseEntity.ok(playInfoService.displayPlayInfoAdmin(page - 1, size));
     }
 
+
     @GetMapping("/playinfo/{id}")
     public ResponseEntity<?> displayPlayInfoDetail(@CookieValue(name = "AccessToken") String accessToken,
                                                        @CookieValue(name = "RefreshToken") String refreshToken,
@@ -49,6 +51,7 @@ public class PlayInfoAdminController {
 
         return ResponseEntity.ok(playInfoService.playInfoDetail(playInfoId));
     }
+
 
     @PostMapping("/playinfo/edit")
     public ResponseEntity<?> createPlayInfo(@CookieValue(name = "AccessToken") String accessToken,
@@ -64,6 +67,7 @@ public class PlayInfoAdminController {
         Long usersId = JwtUtils.getUsersId(JwtUtils.verifyToken(accessToken));
         return playInfoAdminService.editPlayInfo(playInfoDetailDto, usersId);
     }
+
 
     @DeleteMapping("/playinfo/delete/{id}")
     public ResponseEntity<?> deletePlayInfo(@CookieValue(name = "AccessToken") String accessToken,

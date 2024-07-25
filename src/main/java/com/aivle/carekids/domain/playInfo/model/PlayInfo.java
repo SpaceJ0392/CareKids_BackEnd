@@ -21,6 +21,7 @@ import java.util.List;
 @SQLDelete(sql = "UPDATE play_info SET deleted = true WHERE id=?")
 @SQLRestriction("deleted=false")
 public class PlayInfo extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long playInfoId;
@@ -58,6 +59,7 @@ public class PlayInfo extends BaseEntity {
         this.playInfoRecommendAge = playInfoRecommendAge;
     }
 
+    //* 사용자 정의 메소드 *//
     public void setUserInfo(Users targetUsers) {
         this.users = targetUsers;
         targetUsers.getPlayInfoUsers().add(this);
@@ -77,7 +79,6 @@ public class PlayInfo extends BaseEntity {
                 .build();
     }
 
-
     public void updatePlayInfo(PlayInfoDetailDto playInfoDetailDto) {
 
         this.playInfoTitle = playInfoDetailDto.getPlayInfoTitle();
@@ -92,7 +93,6 @@ public class PlayInfo extends BaseEntity {
 
         this.playInfoDomains.clear();
     }
-
 
     public void deletedPlayInfo(boolean deleted){
         this.deleted = deleted;

@@ -12,7 +12,6 @@ import lombok.Setter;
 
 @Setter @Getter
 @NoArgsConstructor
-
 public class RegionDto {
 
     @JsonProperty("id")

@@ -2,9 +2,6 @@ package com.aivle.carekids.domain.kindergarten.model;
 
 import com.aivle.carekids.domain.common.models.DayType;
 import com.aivle.carekids.domain.common.models.OperateDate;
-import com.aivle.carekids.domain.hospital.dto.HospitalOperateTimeDto;
-import com.aivle.carekids.domain.hospital.model.Hospital;
-import com.aivle.carekids.domain.hospital.model.HospitalOperateTime;
 import com.aivle.carekids.domain.kindergarten.dto.KindergartenOperateTimeDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -33,6 +30,7 @@ public class KindergartenOperateTime extends OperateDate {
 
     }
 
+    //* 사용자 정의 메소드*//
     public static KindergartenOperateTime createNewKindergartenOperateTime(KindergartenOperateTimeDto kindergartenOperateTimeDto){
 
         DayType targetDayType = DayType.fromDayTypeString(kindergartenOperateTimeDto.getDayType());

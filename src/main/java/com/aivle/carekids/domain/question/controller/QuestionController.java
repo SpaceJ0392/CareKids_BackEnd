@@ -29,6 +29,7 @@ public class QuestionController {
         return ResponseEntity.ok(questionService.displayQuestion(page - 1, size));
     }
 
+
     @GetMapping("/question/{id}")
     public ResponseEntity<?> questionDetail(@PathVariable(name = "id") Long questionId,
                                             @CookieValue(name ="AccessToken", required = false) String accessToken,
@@ -46,9 +47,9 @@ public class QuestionController {
             return ResponseEntity.badRequest().body(Map.of("message", " 잠겨 있는 글입니다."));
         }
 
-
         return ResponseEntity.ok(questionDetailDisplayDto);
     }
+
 
     @PostMapping("/question/edit")
     public ResponseEntity<?> createQuestion(@CookieValue(name ="AccessToken", required = false) String accessToken,
@@ -74,6 +75,7 @@ public class QuestionController {
 
         return ResponseEntity.status(HttpStatus.CREATED).headers(headers).body(result);
     }
+
 
     @DeleteMapping("/question/delete/{id}")
     public ResponseEntity<?> deleteQuestion(@PathVariable(name = "id") Long questionId,

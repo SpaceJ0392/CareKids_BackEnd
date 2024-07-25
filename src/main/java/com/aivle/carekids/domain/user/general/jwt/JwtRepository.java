@@ -17,7 +17,6 @@ public class JwtRepository {
 
     private final RedisTemplate redisTemplate;
 
-
     public RefreshToken save(RefreshToken refreshToken) {
         ValueOperations valueOperations = redisTemplate.opsForValue();
         valueOperations.set(refreshToken.getUsersId(), refreshToken.getToken());
@@ -25,15 +24,19 @@ public class JwtRepository {
         return refreshToken;
     }
 
+
     public Optional<RefreshToken> findRefreshTokenByUsersId(Long usersId) {
+
         ValueOperations<Long, String> valueOperations = redisTemplate.opsForValue();
         String refreshToken = valueOperations.get(usersId);
 
         if (Objects.isNull(usersId)) {
             return Optional.empty();
         }
+
         return Optional.of(new RefreshToken(usersId, refreshToken));
     }
+
 
     public void DeleteRefreshToken(Long usersId) {
         redisTemplate.delete(usersId);
@@ -44,12 +47,10 @@ public class JwtRepository {
         redisTemplate.opsForValue().set(at, -1);
     }
 
+
     public Integer getValues(String at){
         Integer val = (Integer) redisTemplate.opsForValue().get(at);
-        if (val == null){
-            return 1;
-        }
+        if (val == null){ return 1; }
         return val;
     }
-
 }

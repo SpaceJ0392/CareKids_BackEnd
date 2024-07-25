@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class PlaceOperateTime extends OperateDate {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long placeOperateTimeId;

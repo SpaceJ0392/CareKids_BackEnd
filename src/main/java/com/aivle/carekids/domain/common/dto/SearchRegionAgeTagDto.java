@@ -9,6 +9,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 public class SearchRegionAgeTagDto {
+
     @JsonProperty("query")
     private String query;
 

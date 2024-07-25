@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class KidsPolicyRegion {
-    // 육아 정보 및 지역 중계 엔티티
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long kidsPolicyRegionId;
@@ -30,12 +29,14 @@ public class KidsPolicyRegion {
         this.region = region;// 여기서 초기화
     }
 
+    //* 사용자 정의 메소드 *//
     public static KidsPolicyRegion createNewKidsPolicyRegion(KidsPolicy newKidsPolicy, Region region) {
         return KidsPolicyRegion.builder()
                 .kidsPolicy(newKidsPolicy)
                 .region(region)
                 .build();
     }
+
 
     public void setKidsPolicyRegionInfo(KidsPolicy kidsPolicy, Region region){
 

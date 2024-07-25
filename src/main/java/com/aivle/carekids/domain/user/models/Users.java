@@ -25,7 +25,7 @@ import java.util.Optional;
 @SQLRestriction("deleted=false")
 @Table(name = "users", indexes = {@Index(name = "idx_email", columnList = "users_email")})
 public class Users extends BaseCreatedAt {
-    // 사용자 정보 엔티티
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long usersId;
@@ -98,6 +98,4 @@ public class Users extends BaseCreatedAt {
                 .usersSocialType(socialType)
                 .build();
     }
-    // TODO - 중계 테이블 관련 데이터 추가 메소드
-
 }

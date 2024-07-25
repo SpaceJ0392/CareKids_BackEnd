@@ -9,7 +9,6 @@ import com.aivle.carekids.domain.place.model.Place;
 import com.aivle.carekids.domain.user.models.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,6 +19,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Region {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long regionId;
 

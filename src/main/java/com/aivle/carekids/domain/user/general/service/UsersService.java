@@ -36,7 +36,6 @@ public class UsersService {
     private final UsersRepository usersRepository;
     private final KidsRepository kidsRepository;
     private final SignUpValid signUpValid;
-
     private final ModelMapper entityModelMapper;
     private final PasswordEncoder passwordEncoder;
     private final CommonService commonService;
@@ -89,19 +88,23 @@ public class UsersService {
         kidsRepository.saveAll(newKids);
 
         message.put("message", "회원 가입이 완료되었습니다.");
-        URI location = new URI(GlobelVar.CLIENT_BASE_URL);
+
+        URI location = new URI(GlobelVar.CLIENT_BASE_URL + "/login");
         return ResponseEntity.created(location).body(message); // GlobelVar.CLIENT_BASE_URL
     }
+
 
     public Users findByUsersId(Long usersId){
         return usersRepository.findByUsersId(usersId)
                 .orElseThrow(() -> new UserNotFoundException("미 등록 유저입니다."));
     }
 
+
     public UsersDetailDto displayUsersDetail(Long usersId){
         return  usersRepository.findUsersDetailWithRegionAndKids(usersId)
                 .orElse(null);
     }
+
 
     public ResponseEntity<?> checkNickName(NickNameValidDto nickNameValidDto) {
 
@@ -112,6 +115,7 @@ public class UsersService {
 
         return ResponseEntity.badRequest().body(message);
     }
+
 
     @Transactional
     public ResponseEntity<?> changePassword(PasswordDto passwordDto) throws URISyntaxException {

@@ -12,6 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class KidsPolicyTypeDto {
+
     @JsonProperty("id")
     public KidsPolicyType kidsPolicyType;
 

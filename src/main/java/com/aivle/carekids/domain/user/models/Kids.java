@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Kids {
-    // 아이 관련 엔티티
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long kidsId;
 

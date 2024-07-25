@@ -5,7 +5,6 @@ import com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils;
 import com.aivle.carekids.domain.user.models.Users;
 import com.aivle.carekids.domain.user.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +21,8 @@ public class FileController {
 
     private final FileService fileService;
     private final UsersRepository usersRepository;
-
-    private final ModelMapper dtoModelMapper;
     private final JwtUtils jwtUtils;
+
 
     @PostMapping("/file")
     public ResponseEntity<?> uploadFiles(@CookieValue(name = "AccessToken") String accessToken,

@@ -22,6 +22,4 @@ public interface PlayInfoRepositoryCustom {
     PlayInfoDetailDto findPlayInfoDetail(Long playInfoId);
 
     Page<PlayInfoListDto> searchPlayInfoByFilter(SearchAgeTagDto searchAgeTagDto, Pageable pageable);
-
-
 }

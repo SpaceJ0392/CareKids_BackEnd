@@ -13,6 +13,7 @@ import java.time.LocalTime;
 public abstract class OperateTime {
 
     private LocalTime startTime;
+
     private LocalTime endTime;
 
     public OperateTime(LocalTime startTime, LocalTime endTime) {

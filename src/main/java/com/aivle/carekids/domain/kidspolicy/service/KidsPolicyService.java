@@ -27,8 +27,8 @@ public class KidsPolicyService {
     private final KidsPolicyRepository kidsPolicyRepository;
     private final UsersRepository usersRepository;
     private final RegionRepository regionRepository;
-
     private final ModelMapper dtoModelMapper;
+
 
     public PageInfoDto displayKidsPolicyGuest(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -45,6 +45,7 @@ public class KidsPolicyService {
                 kidsPolicyList.getNumberOfElements()
         ), regionDto, null, kidsPolicyList.getContent());
     }
+
 
     public PageInfoDto displayKidsPolicyUser(Long usersId, int page, int size) {
 
@@ -65,10 +66,12 @@ public class KidsPolicyService {
         ), users.get().getUsersRegion(), users.get().getUsersAgeTagDtos().get(0), kidsPolicyList.getContent());
     }
 
+
     public KidsPolicyDetailDto kidsPolicyDetail(Long kidsPolicyId) {
         if (!kidsPolicyRepository.existsById(kidsPolicyId)) { return null; }
         return kidsPolicyRepository.findKidsPolicyDetail(kidsPolicyId);
     }
+
 
     public PageInfoDto searchKidsPolicy(SearchRegionAgeTagDto searchRegionAgeTagDto, int page, int size) {
 
@@ -82,5 +85,4 @@ public class KidsPolicyService {
                 searchHospitalListDtos.getNumberOfElements()
         ), searchRegionAgeTagDto.getRegionDto(), searchRegionAgeTagDto.getAgeTagDto(), searchHospitalListDtos.getContent());
     }
-
 }

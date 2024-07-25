@@ -42,8 +42,7 @@ public class Notice extends BaseEntity {
         this.noticeImgUrl = noticeImgUrl;
     }
 
-    // TODO - 입력에 대한 생성 메소드 필요
-
+    //* 사용자 정의 메소드*//
     public void setUsersInfo(Users users){
         this.users = users;
         users.getNotices().add(this);

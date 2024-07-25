@@ -20,15 +20,22 @@ public class JwtController {
 
     @GetMapping("/renew")
     public ResponseEntity<?> renewToken(HttpServletRequest request, HttpServletResponse response) {
+
         try {
+
             String refreshToken = JwtUtils.getTokenFromHeader(request.getHeader(JwtConstants.JWT_HEADER));
             String accessToken = jwtService.renewToken(refreshToken);
             response.addHeader(JwtConstants.ACCESS, JwtConstants.JWT_TYPE + accessToken);
             return ResponseEntity.ok(JwtConstants.JWT_TYPE + accessToken);
+
         } catch (NoSuchElementException e) {
+
             return ResponseEntity.badRequest().body("Refresh Token 이 만료되었습니다");
+
         } catch (UsernameNotFoundException e) {
+
             return ResponseEntity.badRequest().body(e.getMessage());
+
         }
     }
 }

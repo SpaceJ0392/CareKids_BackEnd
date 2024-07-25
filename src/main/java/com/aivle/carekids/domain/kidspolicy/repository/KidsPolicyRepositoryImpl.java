@@ -46,6 +46,7 @@ public class KidsPolicyRepositoryImpl implements KidsPolicyRepositoryCustom {
                 .fetchOne();
     }
 
+
     @Override
     public List<KidsPolicyListDto> findTop4ByRegionOrderByUpdatedAtDesc(Long regionId) {
 
@@ -67,6 +68,7 @@ public class KidsPolicyRepositoryImpl implements KidsPolicyRepositoryCustom {
 
         return content;
     }
+
 
     @Override
     public Page<KidsPolicyListDto> findByRegionAndAgeTagOrderByUpdatedAtDescPage(Long regionId, Pageable pageable) {
@@ -98,6 +100,7 @@ public class KidsPolicyRepositoryImpl implements KidsPolicyRepositoryCustom {
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
+
 
     @Override
     public Page<KidsPolicyDetailDto> findAllOrderByUpdatedAtDescPage(Pageable pageable) {
@@ -135,6 +138,7 @@ public class KidsPolicyRepositoryImpl implements KidsPolicyRepositoryCustom {
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
+
 
     @Override
     public KidsPolicyDetailDto findKidsPolicyDetail(Long kidsPolicyId) {
@@ -183,6 +187,7 @@ public class KidsPolicyRepositoryImpl implements KidsPolicyRepositoryCustom {
         return content;
     }
 
+
     @Override
     public Page<KidsPolicyListDto> searchKidsPolicyByFilter(SearchRegionAgeTagDto searchRegionAgeTagDto, Pageable pageable) {
 
@@ -224,6 +229,7 @@ public class KidsPolicyRepositoryImpl implements KidsPolicyRepositoryCustom {
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
+
 
     private BooleanExpression regionSearchEq(Long regionId) {
         return isEmpty(regionId) ? null : kidsPolicyRegion.region.regionId.eq(regionId);

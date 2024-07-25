@@ -17,7 +17,6 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
-//@PreAuthorize("hasRole('ADMIN')")
 public class NoticeAdminController {
 
     private final NoticeService noticeService;
@@ -38,6 +37,7 @@ public class NoticeAdminController {
         return ResponseEntity.ok(noticeAdminService.listNotice(page - 1, size));
     }
 
+
     @GetMapping("/notice/{id}")
     public ResponseEntity<?> displayQuestionDetail(@CookieValue(name = "AccessToken") String accessToken,
                                                    @CookieValue(name = "RefreshToken") String refreshToken,
@@ -50,6 +50,7 @@ public class NoticeAdminController {
 
         return noticeService.noticeDetail(noticeId);
     }
+
 
     @PostMapping("/notice/edit")
     public ResponseEntity<?> editNotice(@CookieValue(name = "AccessToken") String accessToken,
@@ -66,6 +67,7 @@ public class NoticeAdminController {
         return noticeAdminService.editNotice(usersId, noticeDto, imgFile);
     }
 
+    
     @DeleteMapping("notice/delete/{id}")
     public ResponseEntity<?> deleteNotice(@CookieValue(name = "AccessToken") String accessToken,
                                           @CookieValue(name = "RefreshToken") String refreshToken,

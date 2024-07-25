@@ -1,7 +1,6 @@
 package com.aivle.carekids.domain.user.general.service;
 
 import com.aivle.carekids.domain.user.general.jwt.JwtRepository;
-import com.aivle.carekids.domain.user.general.jwt.constants.JwtConstants;
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,10 +17,8 @@ public class LogoutService implements LogoutHandler {
 
     private final JwtRepository jwtRepository;
 
-    private String secretKey = JwtConstants.SECRET_KEY;
-
-    @Transactional
     @Override
+    @Transactional
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
 
         Cookie[] cookies = request.getCookies();
@@ -36,6 +33,5 @@ public class LogoutService implements LogoutHandler {
 
         jwtRepository.DeleteRefreshToken(usersId);
         jwtRepository.addBlackList(accessToken); // accesstoken을 블랙리스트로 추가
-
     }
 }

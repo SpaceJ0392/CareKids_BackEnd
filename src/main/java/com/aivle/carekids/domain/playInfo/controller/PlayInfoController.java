@@ -40,7 +40,6 @@ public class PlayInfoController {
             headers.add(HttpHeaders.SET_COOKIE, verifyMap.get("access_token"));
         }
 
-
         Long usersId = JwtUtils.getUsersId(JwtUtils.verifyToken(accessToken));
         PageInfoDto pageInfoDto = playInfoService.displayPlayInfoUser(usersId, page - 1, size);
 
@@ -51,6 +50,7 @@ public class PlayInfoController {
         return ResponseEntity.badRequest().headers(headers).body(Map.of("message", "잘못된 접근입니다."));
     }
 
+
     @GetMapping("/playinfo/{id}")
     public ResponseEntity<?> playinfoDetail(@PathVariable Long id){
 
@@ -59,6 +59,7 @@ public class PlayInfoController {
         if (playInfoDetailDto != null){ return ResponseEntity.ok(playInfoDetailDto); }
         return ResponseEntity.badRequest().body(Map.of("message", "잘못된 접근입니다."));
     }
+
 
     @PostMapping("/playinfo/search")
     public ResponseEntity<Object> searchKindergarten(@RequestBody SearchAgeTagDto searchAgeTagDto,

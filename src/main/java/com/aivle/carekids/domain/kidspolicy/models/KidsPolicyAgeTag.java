@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class KidsPolicyAgeTag {
-    // 육아 정보 및 지역 중계 엔티티
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long kidsPolicyAgeTagId;
@@ -30,6 +29,7 @@ public class KidsPolicyAgeTag {
         this.ageTag = ageTag;
     }
 
+    //* 사용자 정의 메소드 *//
     public static KidsPolicyAgeTag createNewKidsPolicyAgeTag(KidsPolicy kidsPolicy, AgeTag ageTag) {
 
         return KidsPolicyAgeTag.builder()
@@ -37,6 +37,7 @@ public class KidsPolicyAgeTag {
                 .kidsPolicy(kidsPolicy)
                 .build();
     }
+
 
     public void setKidsPolicyAgeTagInfo(KidsPolicy kidsPolicy, AgeTag ageTag) {
 

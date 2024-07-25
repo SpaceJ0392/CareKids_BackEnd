@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public class NoticeListDto extends BaseDto {
+
     @NotEmpty
     @JsonProperty("id")
     private Long noticeId;

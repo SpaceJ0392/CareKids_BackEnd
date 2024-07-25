@@ -1,9 +1,9 @@
 package com.aivle.carekids.domain.place.service;
 
-import com.aivle.carekids.domain.common.dto.*;
+import com.aivle.carekids.domain.common.dto.PlacePageInfoDto;
+import com.aivle.carekids.domain.common.dto.RegionDto;
+import com.aivle.carekids.domain.common.dto.SearchRegionCateDto;
 import com.aivle.carekids.domain.common.repository.RegionRepository;
-import com.aivle.carekids.domain.kindergarten.dto.KindergartenDetailDto;
-import com.aivle.carekids.domain.kindergarten.dto.KindergartenListDto;
 import com.aivle.carekids.domain.place.dto.PlaceDetailDto;
 import com.aivle.carekids.domain.place.dto.PlaceListDto;
 import com.aivle.carekids.domain.place.dto.PlaceMaincateDto;
@@ -30,7 +30,6 @@ public class PlaceService {
     private final PlaceMaincateRepository placeMaincateRepository;
     private final UsersRepository usersRepository;
     private final RegionRepository regionRepository;
-
     private final ModelMapper dtoModelMapper;
 
     public PlacePageInfoDto displayPlaceGuest(int page, int size) {
@@ -49,6 +48,7 @@ public class PlaceService {
         ), regionDto, placeMaincateDto, placePage.getContent());
     }
 
+
     public PlacePageInfoDto displayPlaceAdmin(int page, int size) {
 
         Pageable pageable = PageRequest.of(page, size);
@@ -65,6 +65,7 @@ public class PlaceService {
                 placePage.getNumberOfElements()
         ), regionDto, placeMaincateDto, placePage.getContent());
     }
+
 
     public PlacePageInfoDto displayPlaceUser(Long usersId, int page, int size) {
 
@@ -85,11 +86,13 @@ public class PlaceService {
         ), users.get().getUsersRegion(), placeMaincateDto, placePage.getContent());
     }
 
+
     public PlaceDetailDto placeDetail(Long placeId) {
 
         if (!placeRepository.existsById(placeId)) { return null; }
         return placeRepository.findPlaceDetail(placeId);
     }
+
 
     public PlacePageInfoDto searchPlace(SearchRegionCateDto searchRegionCateDto, int page, int size) {
 

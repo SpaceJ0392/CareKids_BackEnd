@@ -1,11 +1,9 @@
 package com.aivle.carekids.domain.playInfo.service;
 
-import com.aivle.carekids.domain.common.dto.*;
-import com.aivle.carekids.domain.common.models.AgeTag;
+import com.aivle.carekids.domain.common.dto.AgeTagDto;
+import com.aivle.carekids.domain.common.dto.PageInfoDto;
+import com.aivle.carekids.domain.common.dto.SearchAgeTagDto;
 import com.aivle.carekids.domain.common.repository.AgeTagRepository;
-import com.aivle.carekids.domain.kindergarten.dto.KindergartenDetailDto;
-import com.aivle.carekids.domain.kindergarten.dto.KindergartenListDto;
-import com.aivle.carekids.domain.kindergarten.repository.KindergartenRepository;
 import com.aivle.carekids.domain.playInfo.dto.PlayInfoDetailDto;
 import com.aivle.carekids.domain.playInfo.dto.PlayInfoListDto;
 import com.aivle.carekids.domain.playInfo.repository.PlayInfoRepository;
@@ -29,8 +27,6 @@ public class PlayInfoService {
     private final PlayInfoRepository playInfoRepository;
     private final UsersRepository usersRepository;
     private final AgeTagRepository ageTagRepository;
-    private final Random random = new Random();
-
     private final ModelMapper dtoModelMapper;
 
     public PageInfoDto displayPlayInfoGuest(int page, int size) {
@@ -48,6 +44,7 @@ public class PlayInfoService {
         ), null, ageTagDto, playInfoPage.getContent());
     }
 
+
     public PageInfoDto displayPlayInfoAdmin(int page, int size) {
 
         Pageable pageable = PageRequest.of(page, size);
@@ -63,12 +60,14 @@ public class PlayInfoService {
         ), null, ageTagDto, playInfoPage.getContent());
     }
 
+
     public PageInfoDto displayPlayInfoUser(Long usersId, int page, int size) {
 
         Optional<UsersDetailDto> users = usersRepository.findUsersDetailWithRegionAndKids(usersId);
         if (users.isEmpty()){ return null; }
 
         Pageable pageable = PageRequest.of(page, size);
+        Random random = new Random();
         List<AgeTagDto> usersKidsAges = users.get().getUsersAgeTagDtos();
         int index = random.nextInt(usersKidsAges.size());
         AgeTagDto randAgeTag = usersKidsAges.get(index);
@@ -83,11 +82,13 @@ public class PlayInfoService {
         ), null, randAgeTag, playInfoPage.getContent());
     }
 
+
     public PlayInfoDetailDto playInfoDetail(Long playInfoId) {
 
         if (!playInfoRepository.existsById(playInfoId)) { return null; }
         return playInfoRepository.findPlayInfoDetail(playInfoId);
     }
+
 
     public PageInfoDto searchPlayInfo(SearchAgeTagDto searchAgeTagDto, int page, int size) {
 

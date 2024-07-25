@@ -51,6 +51,7 @@ public class EmailService {
     //이메일 폼 생성
     @Transactional
     private MimeMessage createEmailForm(String email) throws MessagingException, NoSuchAlgorithmException {
+
         String authCode = createCode();
 
         MimeMessage message = emailConfig.javaMailSender().createMimeMessage();
@@ -84,6 +85,7 @@ public class EmailService {
 
     // 이메일 검증
     public ResponseEntity<Map<String, String>> verifyEmailCode(String email, String code) {
+
         Map<String, String> message = new HashMap<>();
         String codeFoundByEmail = redisUtils.getData(email);
         String dataExpire = redisUtils.getDataExpire(email);

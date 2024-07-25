@@ -8,6 +8,8 @@ import java.io.Serializable;
 public class KidsPolicyRegionAgeTagId implements Serializable {
 
     private Long kidsPolicyId;
+
     private Long regionId;
+
     private Long ageTagId;
 }

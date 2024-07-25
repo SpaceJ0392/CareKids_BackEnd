@@ -61,6 +61,7 @@ public class Hospital extends BaseEntity {
         this.hospitalType = hospitalType;
     }
 
+    /* 사용자 정의 메소드 */
     public static Hospital createNewHospital(HospitalDetailDto hospitalDetailDto) {
 
         HospitalType hospitalType = HospitalType.fromHospitalTypeString(hospitalDetailDto.getHospitalType());
@@ -74,10 +75,12 @@ public class Hospital extends BaseEntity {
                 .build();
     }
 
+
     public void setRegionInfo(Region targetRegion) {
         this.region = targetRegion;
         targetRegion.getHospitals().add(this);
     }
+
 
     public void updateHospitalInfo(HospitalDetailDto hospitalDetailDto) {
 
@@ -91,12 +94,14 @@ public class Hospital extends BaseEntity {
 
     }
 
+
     public void clearOperateTime() {
         hospitalOperateTimes.forEach(operateTime -> {
             operateTime.setHospitalInfo(null);
         });
         this.hospitalOperateTimes.clear();
     }
+
 
     public void deletedHospital(boolean deleted){
         this.deleted = deleted;

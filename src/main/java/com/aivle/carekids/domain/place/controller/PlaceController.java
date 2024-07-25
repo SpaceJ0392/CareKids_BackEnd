@@ -1,6 +1,5 @@
 package com.aivle.carekids.domain.place.controller;
 
-import com.aivle.carekids.domain.common.dto.PageInfoDto;
 import com.aivle.carekids.domain.common.dto.PlacePageInfoDto;
 import com.aivle.carekids.domain.common.dto.SearchRegionCateDto;
 import com.aivle.carekids.domain.place.dto.PlaceDetailDto;
@@ -41,7 +40,6 @@ public class PlaceController {
             headers.add(HttpHeaders.SET_COOKIE, verifyMap.get("access_token"));
         }
 
-
         Long usersId = JwtUtils.getUsersId(JwtUtils.verifyToken(accessToken));
         PlacePageInfoDto pageInfoDto = placeService.displayPlaceUser(usersId, page - 1, size);
 
@@ -52,6 +50,7 @@ public class PlaceController {
         return ResponseEntity.badRequest().headers(headers).body(Map.of("message", "잘못된 접근입니다."));
     }
 
+
     @GetMapping("/place/{id}")
     public ResponseEntity<?> placeDetail(@PathVariable Long id){
 
@@ -60,6 +59,7 @@ public class PlaceController {
         if (placeDetailDto != null){ return ResponseEntity.ok(placeDetailDto); }
         return ResponseEntity.badRequest().body(Map.of("message", "잘못된 접근입니다."));
     }
+
 
     @PostMapping("/place/search")
     public ResponseEntity<Object> searchKindergarten(@RequestBody SearchRegionCateDto searchRegionCateDto,

@@ -1,7 +1,6 @@
 package com.aivle.carekids.domain.common.dto;
 
 import com.aivle.carekids.domain.place.dto.PlaceSubcateDto;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +13,7 @@ import java.util.List;
 public class RegionSubcateListDto {
 
     private List<RegionDto> region;
+
     private List<PlaceSubcateDto> categories;
 
     public RegionSubcateListDto(List<RegionDto> region, List<PlaceSubcateDto> categories) {

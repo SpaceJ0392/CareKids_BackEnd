@@ -13,6 +13,7 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLDelete(sql = "UPDATE question_file SET deleted = true WHERE id=?")
 @SQLRestriction("deleted=false")
 public class QuestionFile {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long questionFIleId;
 
@@ -28,6 +29,7 @@ public class QuestionFile {
     @JoinColumn(name = "question_id")
     private Question question;
 
+    //* 사용자 정의 메소드 *//
     public void setQuestionInfo(Question question)
     {
         this.question = question;

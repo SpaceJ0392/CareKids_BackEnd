@@ -28,8 +28,8 @@ public class HospitalService {
     private final RegionRepository regionRepository;
     private final HospitalRepository hospitalRepository;
     private final UsersRepository usersRepository;
-
     private final ModelMapper dtoModelMapper;
+
 
     public PageInfoDto displayHospitalGuest(int page, int size) {
 
@@ -46,6 +46,7 @@ public class HospitalService {
         ), regionDto, null, hospitalPage.getContent());
 
     }
+
 
     public PageInfoDto displayHospitalUser(Long usersId, int page, int size) {
 
@@ -65,11 +66,13 @@ public class HospitalService {
         ), users.get().getUsersRegion(),users.get().getUsersAgeTagDtos().get(0), hospitalPage.getContent());
     }
 
+
     public HospitalDetailDto hospitalDetail(Long hospitalId) {
 
         if (!hospitalRepository.existsById(hospitalId)) { return null; }
         return hospitalRepository.findHospialDetail(hospitalId);
     }
+
 
     public PageInfoDto searchHospital(SearchRegionDto searchRegionDto, int page, int size) {
 

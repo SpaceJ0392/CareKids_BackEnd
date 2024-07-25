@@ -42,6 +42,7 @@ public class PlayInfoRepositoryImpl implements PlayInfoRepositoryCustom {
                 .fetchOne();
     }
 
+
     @Override
     public List<PlayInfoListDto> findTop4ByAgeTagOrderByUpdatedAtDesc(Long ageTagId) {
 
@@ -86,6 +87,7 @@ public class PlayInfoRepositoryImpl implements PlayInfoRepositoryCustom {
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 
+
     @Override
     public Page<PlayInfoDetailDto> findAllByOrderByUpdatedAtDescByPageByAgeAdmin(Long ageTagId, Pageable pageable) {
 
@@ -118,10 +120,6 @@ public class PlayInfoRepositoryImpl implements PlayInfoRepositoryCustom {
                 .where(ageEq(ageTagId));
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
-    }
-
-    private BooleanExpression ageEq(Long ageTagId) {
-        return isEmpty(ageTagId) || ageTagId == 5 ? null : playInfo.ageTag.ageTagId.eq(ageTagId);
     }
 
 
@@ -160,6 +158,7 @@ public class PlayInfoRepositoryImpl implements PlayInfoRepositoryCustom {
         return content;
     }
 
+
     @Override
     public Page<PlayInfoListDto> searchPlayInfoByFilter(SearchAgeTagDto searchAgeTagDto, Pageable pageable) {
         List<PlayInfoListDto> content = jpaQueryFactory.select(
@@ -190,6 +189,11 @@ public class PlayInfoRepositoryImpl implements PlayInfoRepositoryCustom {
                 );
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
+    }
+
+
+    private BooleanExpression ageEq(Long ageTagId) {
+        return isEmpty(ageTagId) || ageTagId == 5 ? null : playInfo.ageTag.ageTagId.eq(ageTagId);
     }
 
     private BooleanExpression queryContains(String query) {

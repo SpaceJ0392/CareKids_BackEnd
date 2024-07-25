@@ -33,12 +33,6 @@ public class JwtUtils {
     // Access Token 에는 id 와 role 을 담는다
     public static String generateAccessToken(Users users) {
 
-        // 권한들 가져오기
-//        String kidsAge = users.getKids().stream()
-//                .map(Kids::getAgeTag)
-//                .map(AgeTag::getAgeTagName).collect(
-//                        Collectors.joining(", "));
-
         return JWT.create()
                 .withSubject(JwtConstants.ACCESS)
                 .withHeader(createHeader())
@@ -48,7 +42,9 @@ public class JwtUtils {
                 .sign(Algorithm.HMAC512(JwtConstants.SECRET_KEY));
     }
 
+
     public static boolean isTokenExpired(String token) {
+
         try {
             DecodedJWT jwt = verifyToken(token);
             Date expiration = jwt.getExpiresAt();
@@ -70,6 +66,7 @@ public class JwtUtils {
                 .sign(Algorithm.HMAC512(JwtConstants.SECRET_KEY));
     }
 
+
     // 헤더 정보 생성
     private static Map<String, Object> createHeader() {
         Map<String, Object> header = new HashMap<>();
@@ -77,6 +74,7 @@ public class JwtUtils {
         header.put("alg", "HS512");
         return header;
     }
+
 
     // 만료 시간 생성
     private static Date createExpireDate(long expireTime) {
@@ -89,6 +87,7 @@ public class JwtUtils {
         return header.split(" ")[1];
     }
 
+
     // request.getCookies() 형식으로 전달 된 cookies
     public static String getAccessTokenFromCookies(Cookie[] cookies) {
         if (cookies != null) {
@@ -98,9 +97,9 @@ public class JwtUtils {
                 }
             }
         }
-
         return null;
     }
+
 
     // request.getCookies() 형식으로 전달 된 cookies
     public static String getRefreshTokenFromCookies(Cookie[] cookies) {
@@ -111,7 +110,6 @@ public class JwtUtils {
                 }
             }
         }
-
         return null;
     }
 
@@ -121,6 +119,7 @@ public class JwtUtils {
         return JWT.require(Algorithm.HMAC512(JwtConstants.SECRET_KEY)).build().verify(token);
     }
 
+
     public static UsernamePasswordAuthenticationToken getAuthenticationToken(DecodedJWT decodedJWT) {
         Long id = decodedJWT.getClaim("id").asLong();
         String role = decodedJWT.getClaim("role").asString();
@@ -129,13 +128,16 @@ public class JwtUtils {
                 Collections.singleton(new SimpleGrantedAuthority(role)));
     }
 
+
     public static Long getUsersId(DecodedJWT decodedJWT){
         return decodedJWT.getClaim("id").asLong();
     }
 
+
     public static String getUsersRole(DecodedJWT decodedJWT){
         return decodedJWT.getClaim("role").asString();
     }
+
 
     private boolean isLogout(String accessToken) {
         Integer isLogout = jwtRepository.getValues(accessToken);
@@ -143,9 +145,9 @@ public class JwtUtils {
         return isLogout == -1;
     }
 
+
     public Map<String, String> verifyJWTs(String accessToken, String refreshToken){
         Map<String, String> verify_infos = new HashMap<>();
-
 
         // token이 null이거나, 로그아웃된 사용자인 경우
         if (accessToken == null || isLogout(accessToken)){
@@ -162,12 +164,11 @@ public class JwtUtils {
             Cookie access_cookie = renewToken(refreshToken);
             verify_infos.put("message", "액세스 토큰이 만료되어, 재발급된 사용자입니다.");
             verify_infos.put("access_token", String.valueOf(access_cookie));
-
-            // Controller에서 response.addCookie(access_cookie); 필요
         }
 
         return verify_infos;
     }
+
 
     public Cookie renewToken(String refreshToken) {
         String accessToken = renew(refreshToken);
@@ -179,10 +180,12 @@ public class JwtUtils {
         return access_cookie;
     }
 
+
     public String renew(String refreshToken) {
         // RefreshToken 안의 usersId 를 가져와서 user 를 찾은 후 AccessToken 생성
         Long usersId = JwtUtils.getUsersId(JwtUtils.verifyToken(refreshToken));
         RefreshToken redisRefreshToken = jwtRepository.findRefreshTokenByUsersId(usersId).orElseThrow(() -> new NullPointerException("Refresh Token이 없습니다. 재로그인해주세요."));
+
         if (Objects.equals(redisRefreshToken.getToken(), refreshToken)){
             Users users = usersRepository.findByUsersId(usersId).orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다"));
             return JwtUtils.generateAccessToken(users);

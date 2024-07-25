@@ -1,9 +1,5 @@
 package com.aivle.carekids.domain.playInfo.model;
 
-import com.aivle.carekids.domain.common.models.AgeTag;
-import com.aivle.carekids.domain.common.models.Region;
-import com.aivle.carekids.domain.kidspolicy.models.KidsPolicy;
-import com.aivle.carekids.domain.kidspolicy.models.KidsPolicyAgeTag;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -32,6 +28,7 @@ public class PlayInfoDomain {
         this.devDomain = devDomain;
     }
 
+    //* 사용자 정의 메소드 *//
     public static PlayInfoDomain createNewPlayInfoDomain(PlayInfo playInfo, DevDomain devDomain) {
 
         return PlayInfoDomain.builder()

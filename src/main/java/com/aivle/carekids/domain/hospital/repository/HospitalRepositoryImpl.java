@@ -38,6 +38,7 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 
+
     @Override
     public RegionDto findRandomRegion() {
         return jpaQueryFactory.select(new QRegionDto(region.regionId, region.regionName)).from(hospital)
@@ -46,6 +47,7 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
                 .limit(1)
                 .fetchOne();
     }
+
 
     @Override
     public Page<HospitalListDto> findAllByOrderByUpdatedAtDescByPageByRegion(Long regionId, Pageable pageable) {
@@ -80,6 +82,7 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 
+
     @Override
     public Page<HospitalListDto> findHospitalByFilter(Long regionId, LocalTime now, DayOfWeek today, Pageable pageable) {
 
@@ -113,6 +116,7 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
+
 
     @Override
     public HospitalDetailDto findHospialDetail(Long hospitalId) {
@@ -150,6 +154,7 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
 
         return content;
     }
+
 
     @Override
     public Page<HospitalListDto> searchHospitalByFilter(SearchRegionDto searchRegionDto, Pageable pageable) {
@@ -190,9 +195,11 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 
+
     private BooleanExpression regionEq(Long regionId) {
         return isEmpty(regionId) || regionId == 26 ? null : hospital.region.regionId.eq(regionId);
     }
+
 
     private BooleanExpression queryContains(String query) {
         return isEmpty(query) ? null : hospital.hospitalName.containsIgnoreCase(query);
@@ -206,7 +213,6 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
         return jpaQueryFactory.select(
                         Projections.constructor(
                                 HospitalOperateTimeDto.class,
-
                                 hospitalOperateTime.dayType,
                                 hospitalOperateTime.startTime,
                                 hospitalOperateTime.endTime,
@@ -215,7 +221,6 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
                 .from(hospitalOperateTime)
                 .where(hospitalOperateTime.hospital.hospitalId.in(hospitalIdList))
                 .fetch().stream().collect(Collectors.groupingBy(HospitalOperateTimeDto::getHospitalId));
-
     }
 
 }

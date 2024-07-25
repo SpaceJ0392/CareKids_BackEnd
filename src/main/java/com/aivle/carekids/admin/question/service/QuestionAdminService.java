@@ -6,7 +6,6 @@ import com.aivle.carekids.domain.question.dto.QuestionDetailDisplayDto;
 import com.aivle.carekids.domain.question.models.Question;
 import com.aivle.carekids.domain.question.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +22,6 @@ import java.util.Optional;
 public class QuestionAdminService {
 
     private final QuestionRepository questionRepository;
-    private final ModelMapper dtoModelMapper;
 
     @Transactional
     public ResponseEntity<?> editAnswerForQuestion(QuestionAnswerDto questionAnswerDto) {
@@ -36,6 +34,7 @@ public class QuestionAdminService {
         targetQuestion.get().setQuestionAnswerInfo(questionAnswerDto.getQuestionAnswer());
         return ResponseEntity.noContent().build();
     }
+
 
     public PageInfoDto displayQuestion(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);

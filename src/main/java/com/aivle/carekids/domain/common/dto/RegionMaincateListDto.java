@@ -10,7 +10,9 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class RegionMaincateListDto {
+
     private List<RegionDto> region;
+
     private List<PlaceMaincateDto> categories;
 
     public RegionMaincateListDto(List<RegionDto> region, List<PlaceMaincateDto> categories) {

@@ -30,7 +30,6 @@ public class HospitalAdminService {
     private final HospitalRepository hospitalRepository;
     private final HospitalOperateTImeRespository hospitalOperateTImeRespository;
     private final ModelMapper entityModelMapper;
-    private final ModelMapper dtoModelMapper;
 
     @Transactional
     public ResponseEntity<?> editHospital(HospitalDetailDto hospitalDetailDto) {
@@ -56,7 +55,9 @@ public class HospitalAdminService {
         }
 
         Optional<Hospital> targetHospital = hospitalRepository.findById(hospitalDetailDto.getHospitalId());
-        if (targetHospital.isEmpty()) { return ResponseEntity.badRequest().body(Map.of("not-found", "병원 정보를 찾을 수 없습니다.")); }
+        if (targetHospital.isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("not-found", "병원 정보를 찾을 수 없습니다."));
+        }
 
         targetHospital.get().updateHospitalInfo(hospitalDetailDto);
         targetHospital.get().setRegionInfo(targetRegion);
@@ -72,6 +73,7 @@ public class HospitalAdminService {
         hospitalOperateTImeRespository.saveAll(hospitalOperateTimeList);
         return ResponseEntity.ok(Map.of("message", "병원 정보가 수정되었습니다."));
     }
+
 
     @Transactional
     public ResponseEntity<?> deleteHospital(Long hospitalId) {

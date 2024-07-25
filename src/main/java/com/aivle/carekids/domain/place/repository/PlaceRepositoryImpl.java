@@ -61,6 +61,7 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 
+
     @Override
     public Page<PlaceDetailDto> findAllByOrderByUpdatedAtDescByPageByRegionMainCateAdmin(Long regionId, String maincateName, Pageable pageable) {
         List<PlaceDetailDto> content = jpaQueryFactory.select(
@@ -98,39 +99,6 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 
-
-    private BooleanExpression regionEq(Long regionId) {
-        return isEmpty(regionId) || regionId == 26 ? null : place.region.regionId.eq(regionId);
-    }
-
-    private Map<Long, List<PlaceKeywordDto>> findKeywordsByPlaceList(List<?> content) {
-        List<Long> placeIdList = List.of();
-        if (content.isEmpty()) {
-            placeIdList = Collections.emptyList(); // 예외 처리 또는 기본 값 할당
-        }
-        else if (content.get(0) instanceof PlaceListDto){
-            placeIdList = content.stream()
-                        .map(obj -> ((PlaceListDto) obj).getPlaceId())
-                        .collect(Collectors.toList());}
-        else if (content.get(0) instanceof PlaceDetailDto){
-            placeIdList = content.stream()
-                    .map(obj -> ((PlaceDetailDto) obj).getPlaceId())
-                    .collect(Collectors.toList());
-    }
-
-
-        return jpaQueryFactory.select(
-                        Projections.constructor(
-                                PlaceKeywordDto.class,
-                                place.placeId,
-                                placeKeyword.keyword.keywordId,
-                                placeKeyword.keyword.keywordName
-                        ))
-                .from(placeKeyword)
-                .where(placeKeyword.place.placeId.in(placeIdList))
-                .fetch().stream().collect(Collectors.groupingBy(PlaceKeywordDto::getPlaceId));
-
-    }
 
     @Override
     public PlaceDetailDto findPlaceDetail(Long placeId) {
@@ -212,6 +180,39 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
                 );
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
+    }
+
+
+    private Map<Long, List<PlaceKeywordDto>> findKeywordsByPlaceList(List<?> content) {
+        List<Long> placeIdList = List.of();
+        if (content.isEmpty()) {
+            placeIdList = Collections.emptyList(); // 예외 처리 또는 기본 값 할당
+        }
+        else if (content.get(0) instanceof PlaceListDto){
+            placeIdList = content.stream()
+                    .map(obj -> ((PlaceListDto) obj).getPlaceId())
+                    .collect(Collectors.toList());}
+        else if (content.get(0) instanceof PlaceDetailDto){
+            placeIdList = content.stream()
+                    .map(obj -> ((PlaceDetailDto) obj).getPlaceId())
+                    .collect(Collectors.toList());
+        }
+
+        return jpaQueryFactory.select(
+                        Projections.constructor(
+                                PlaceKeywordDto.class,
+                                place.placeId,
+                                placeKeyword.keyword.keywordId,
+                                placeKeyword.keyword.keywordName
+                        ))
+                .from(placeKeyword)
+                .where(placeKeyword.place.placeId.in(placeIdList))
+                .fetch().stream().collect(Collectors.groupingBy(PlaceKeywordDto::getPlaceId));
+
+    }
+
+    private BooleanExpression regionEq(Long regionId) {
+        return isEmpty(regionId) || regionId == 26 ? null : place.region.regionId.eq(regionId);
     }
 
     private BooleanExpression subcateEq(String subcateName) {

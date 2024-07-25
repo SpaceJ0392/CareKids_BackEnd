@@ -28,8 +28,8 @@ public class KindergartenService {
     private final KindergartenRepository kindergartenRepository;
     private final UsersRepository usersRepository;
     private final RegionRepository regionRepository;
-
     private final ModelMapper dtoModelMapper;
+
 
     public PageInfoDto displayKindergartenGuest(int page, int size) {
 
@@ -65,11 +65,13 @@ public class KindergartenService {
         ), users.get().getUsersRegion(), null, kindergartenPage.getContent());
     }
 
+
     public KindergartenDetailDto kindergartenDetail(Long kindergartenId) {
 
         if (!kindergartenRepository.existsById(kindergartenId)) { return null; }
         return kindergartenRepository.findKindergartenDetail(kindergartenId);
     }
+
 
     public PageInfoDto searchKindergarten(SearchRegionDto searchRegionDto, int page, int size) {
 

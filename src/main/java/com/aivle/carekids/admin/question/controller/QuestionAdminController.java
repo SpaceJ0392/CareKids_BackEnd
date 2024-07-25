@@ -38,6 +38,7 @@ public class QuestionAdminController {
         return ResponseEntity.ok(questionAdminService.displayQuestion(page - 1, size));
     }
 
+
     @GetMapping("/question/{id}")
     public ResponseEntity<?> displayQuestionDetail(@CookieValue(name = "AccessToken") String accessToken,
                                                    @CookieValue(name = "RefreshToken") String refreshToken,
@@ -51,6 +52,7 @@ public class QuestionAdminController {
         Long usersId = JwtUtils.getUsersId(JwtUtils.verifyToken(accessToken));
         return ResponseEntity.ok(questionService.displayQuestionDetail(questionId, usersId));
     }
+
 
     @PostMapping("/question/edit-answer")
     public ResponseEntity<?> editAnswerForQuestion(@CookieValue(name = "AccessToken") String accessToken,

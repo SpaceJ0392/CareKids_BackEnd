@@ -37,6 +37,7 @@ public class HospitalAdminController {
         return ResponseEntity.ok(hospitalAdminService.displayHospitalPage(page - 1, size));
     }
 
+
     @GetMapping("/hospital/{id}")
     public ResponseEntity<?> displayHospitalDetail(@CookieValue(name = "AccessToken") String accessToken,
                                                    @CookieValue(name = "RefreshToken") String refreshToken,
@@ -50,6 +51,7 @@ public class HospitalAdminController {
         return ResponseEntity.ok(hospitalService.hospitalDetail(hospitalId));
     }
 
+
     @PostMapping("/hospital/edit")
     public ResponseEntity<?> editHospital(@CookieValue(name = "AccessToken") String accessToken,
                                                    @CookieValue(name = "RefreshToken") String refreshToken,
@@ -62,6 +64,7 @@ public class HospitalAdminController {
 
         return hospitalAdminService.editHospital(hospitalDetailDto);
     }
+
 
     @DeleteMapping("/hospital/delete/{id}")
     public ResponseEntity<?> deleteHospital(@CookieValue(name = "AccessToken") String accessToken,

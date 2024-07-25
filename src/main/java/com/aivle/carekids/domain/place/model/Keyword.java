@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Keyword {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long keywordId;

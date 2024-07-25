@@ -38,6 +38,7 @@ public class KidsPolicyAdminController {
         return ResponseEntity.ok(kidsPolicyAdminService.displayKidsPolicyPage(page - 1, size));
     }
 
+
     @GetMapping("/kids-policy/{id}")
     public ResponseEntity<?> displayKidsPolicyDetail(@CookieValue(name = "AccessToken") String accessToken,
                                                      @CookieValue(name = "RefreshToken") String refreshToken,
@@ -50,6 +51,7 @@ public class KidsPolicyAdminController {
 
         return ResponseEntity.ok(kidsPolicyService.kidsPolicyDetail(kidsPolicyId));
     }
+
 
     @PostMapping("/kids-policy/edit")
     public ResponseEntity<?> editKidsPolicy(@CookieValue(name = "AccessToken") String accessToken,
@@ -64,6 +66,7 @@ public class KidsPolicyAdminController {
         Long usersId = JwtUtils.getUsersId(JwtUtils.verifyToken(accessToken));
         return kidsPolicyAdminService.editKidsPolicy(kidsPolicyDetailDto, usersId);
     }
+
 
     @DeleteMapping("/kids-policy/delete/{id}")
     public ResponseEntity<?> deleteKidsPolicy(@CookieValue(name = "AccessToken") String accessToken,

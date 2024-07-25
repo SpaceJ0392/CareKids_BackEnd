@@ -37,7 +37,6 @@ public class KidsPolicyAdminService {
     private final UsersRepository usersRepository;
 
     private final ModelMapper entityModelMapper;
-    private final ModelMapper dtoModelMapper;
 
     @Transactional
     public ResponseEntity<?> editKidsPolicy(KidsPolicyDetailDto kidsPolicyDetailDto, Long usersId) {
@@ -84,6 +83,7 @@ public class KidsPolicyAdminService {
         targetKidsPolicy.get().updateKidsPolicyInfo(kidsPolicyDetailDto);
         targetKidsPolicy.get().setUserInfo(users.get());
         targetKidsPolicy.get().clearRegionAgeTag();
+
         //지역 추가
         List<KidsPolicyRegion> kidsPolicyRegionList = new ArrayList<>();
         kidsPolicyDetailDto.getRegionDtos().forEach(region -> {
@@ -120,6 +120,7 @@ public class KidsPolicyAdminService {
         targetKidsPolicy.get().deletedKidsPolicy(true);
         return ResponseEntity.ok(Map.of("message", "육아 정책 정보가 삭제되었습니다."));
     }
+
 
     public PageInfoDto displayKidsPolicyPage(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);

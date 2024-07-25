@@ -1,12 +1,6 @@
 package com.aivle.carekids.admin.playInfo.service;
 
 import com.aivle.carekids.domain.common.models.AgeTag;
-import com.aivle.carekids.domain.common.models.Region;
-import com.aivle.carekids.domain.kindergarten.dto.KindergartenDetailDto;
-import com.aivle.carekids.domain.kindergarten.model.Kindergarten;
-import com.aivle.carekids.domain.kindergarten.model.KindergartenOperateTime;
-import com.aivle.carekids.domain.kindergarten.repository.KindergartenOperateTimeRepository;
-import com.aivle.carekids.domain.kindergarten.repository.KindergartenRepository;
 import com.aivle.carekids.domain.playInfo.dto.PlayInfoDetailDto;
 import com.aivle.carekids.domain.playInfo.model.DevDomain;
 import com.aivle.carekids.domain.playInfo.model.PlayInfo;
@@ -30,6 +24,7 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PlayInfoAdminService {
+
     private final PlayInfoRepository playInfoRepository;
     private final PlayInfoDomainRepository playInfoDomainRepository;
     private final UsersRepository usersRepository;
@@ -48,7 +43,7 @@ public class PlayInfoAdminService {
         List<PlayInfoDomain> playInfoDomainList = new ArrayList<>();
 
 
-        if (playInfoDetailDto.getPlayInfoId() == null) { // -> 생성
+        if (playInfoDetailDto.getPlayInfoId() == null) {
 
             PlayInfo newPlayInfo = PlayInfo.createNewPlayInfo(playInfoDetailDto);
             newPlayInfo.setAgeTagInfo(targetAgeTag);
@@ -87,6 +82,7 @@ public class PlayInfoAdminService {
         playInfoDomainRepository.saveAll(playInfoDomainList);
         return ResponseEntity.ok(Map.of("message", "놀이 정보가 수정되었습니다."));
     }
+
 
     @Transactional
     public ResponseEntity<?> deletePlayInfo(Long playInfoId) {

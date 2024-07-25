@@ -16,7 +16,6 @@ public class SignUpValid {
     private final UsersRepository usersRepository;
     private final Map<String, String> message = new HashMap<>();
 
-
     public Map<String, String> emailValidation(String usersEmail) {
         message.clear();
 
@@ -35,6 +34,7 @@ public class SignUpValid {
         return message;
     }
 
+
     public Map<String, String> nickNameValidation(String usersNickname) {
         message.clear();
 
@@ -44,6 +44,7 @@ public class SignUpValid {
 
         return message;
     }
+
 
     public Map<String, String> passwordValidation(String password, String usersSocialType){
         message.clear();
@@ -70,6 +71,7 @@ public class SignUpValid {
         return message;
     }
 
+
     public Map<String, String> socialTypeValidation(String socialType){
         message.clear();
 
@@ -80,6 +82,7 @@ public class SignUpValid {
         message.put("social-type-error", "존재하지 않는 소셜 로그인 타입입니다");
         return message;
     }
+
 
     public Map<String, String> emailValidationEmail(String usersEmail) {
         message.clear();

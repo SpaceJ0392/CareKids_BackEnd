@@ -23,6 +23,7 @@ public class KidsPolicyController {
     private final KidsPolicyService kidsPolicyService;
     private final JwtUtils jwtUtils;
 
+
     @GetMapping("/kids-policy")
     public ResponseEntity<?> displayKidsPolicy(@CookieValue(name = "AccessToken", required = false) String accessToken,
                                                @CookieValue(name = "RefreshToken", required = false) String refreshToken,
@@ -50,6 +51,7 @@ public class KidsPolicyController {
         return ResponseEntity.badRequest().headers(headers).body(Map.of("message", "잘못된 접근입니다."));
     }
 
+
     @GetMapping("/kids-policy/{id}")
     public ResponseEntity<?> kidsPolicyDetail(@PathVariable Long id){
 
@@ -58,6 +60,7 @@ public class KidsPolicyController {
         if (kidsPolicyDetailDto != null){ return ResponseEntity.ok(kidsPolicyDetailDto); }
         return ResponseEntity.badRequest().body(Map.of("message", "잘못된 접근입니다."));
     }
+
 
     @PostMapping("/kids-policy/search")
     public ResponseEntity<Object> searchKidsPolicy(@RequestBody SearchRegionAgeTagDto searchRegionAgeTagDto,

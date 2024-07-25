@@ -20,6 +20,7 @@ import java.util.List;
 @SQLDelete(sql = "UPDATE kids_policy SET deleted = true WHERE id=?")
 @SQLRestriction("deleted=false")
 public class KidsPolicy extends BaseEntity {
+
     // 육아 정책 엔티티
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long kidsPolicyId;
@@ -47,9 +48,6 @@ public class KidsPolicy extends BaseEntity {
     @JoinColumn(name = "users_id")
     private Users users;
 
-//    @OneToMany(mappedBy = "kidsPolicy", fetch = FetchType.LAZY)
-//    private List<KidsPolicyRegionAgeTag> kidsPolicyRegionAgeTags = new ArrayList<>();
-
     @OneToMany(mappedBy = "kidsPolicy", fetch = FetchType.LAZY)
     private List<KidsPolicyRegion> kidsPolicyRegions = new ArrayList<>();
 
@@ -68,8 +66,6 @@ public class KidsPolicy extends BaseEntity {
 
 
     // * 사용자 정의 메소드 * //
-    //입력에 대한 생성 메소드 필요
-
     public static KidsPolicy createNewKidsPolicy(KidsPolicyDetailDto kidsPolicyDetailDto) {
 
         KidsPolicyType kidsPolicyType = KidsPolicyType.fromKidsPolicyTypeString(kidsPolicyDetailDto.getKidsPolicyType());
@@ -90,6 +86,7 @@ public class KidsPolicy extends BaseEntity {
         users.getKidsPolicys().add(this);
     }
 
+
     public void updateKidsPolicyInfo(KidsPolicyDetailDto kidsPolicyDetailDto) {
 
         KidsPolicyType kidsPolicyType = KidsPolicyType.fromKidsPolicyTypeString(kidsPolicyDetailDto.getKidsPolicyType());
@@ -102,6 +99,7 @@ public class KidsPolicy extends BaseEntity {
         this.kidsPolicyType = kidsPolicyType;
     }
 
+
     public void clearRegionAgeTag() {
 
         this.kidsPolicyRegions.forEach(kidsPolicyRegion -> {kidsPolicyRegion.setKidsPolicyRegionInfo(null,null);});
@@ -110,6 +108,7 @@ public class KidsPolicy extends BaseEntity {
         this.kidsPolicyRegions.clear();
         this.kidsPolicyAgeTags.clear();
     }
+
 
     public void deletedKidsPolicy(boolean deleted) {
         this.deleted = deleted;

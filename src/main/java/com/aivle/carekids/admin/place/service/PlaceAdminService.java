@@ -27,6 +27,7 @@ public class PlaceAdminService {
     private final PlaceKeywordRepository placeKeywordRepository;
     private final ModelMapper entityModelMapper;
 
+
     @Transactional
     public ResponseEntity<?> editPlace(PlaceDetailDto placeDetailDto) {
 
@@ -34,14 +35,10 @@ public class PlaceAdminService {
         List<PlaceCate> placeCateList = new ArrayList<>();
         List<PlaceKeyword> placeKeywordList = new ArrayList<>();
 
-        if (placeDetailDto.getPlaceId() == null) { // -> 생성
+        if (placeDetailDto.getPlaceId() == null) {
             Place newPlace = Place.createNewPlace(placeDetailDto);
             newPlace.setRegionInfo(targetRegion);
             placeRepository.save(newPlace);
-
-
-            //장소 카테고리 추가
-//            List<KidsPolicyRegion> newKidsPolicyRegionList = new ArrayList<>();
 
             PlaceSubcate targetSubcate = entityModelMapper.map(placeDetailDto.getPlaceSubcate(), PlaceSubcate.class);
             PlaceCate newPlaceCate = PlaceCate.createNewPlaceCate(newPlace, targetSubcate);
@@ -50,17 +47,6 @@ public class PlaceAdminService {
 
             placeCateRepository.saveAll(placeCateList);
 
-
-
-//            placeDetailDto.getRegionDtos().forEach(region -> {
-//                Region targetRegion = entityModelMapper.map(region, Region.class);
-//                KidsPolicyRegion newKidsPolicyRegion = KidsPolicyRegion.createNewKidsPolicyRegion(newKidsPolicy, targetRegion);
-//                newKidsPolicyRegion.setKidsPolicyRegionInfo(newKidsPolicy, targetRegion);
-//                newKidsPolicyRegionList.add(newKidsPolicyRegion);
-//            });
-
-            //장소 키워드 추가
-//            List<KidsPolicyAgeTag> newKidsPolicyAgeTagList = new ArrayList<>();
             placeDetailDto.getPlaceKeywords().forEach(keyword -> {
                 Keyword targetKeyword = entityModelMapper.map(keyword, Keyword.class);
                 PlaceKeyword newPlaceKeyword = PlaceKeyword.createNewPlaceKeyword(newPlace, targetKeyword);

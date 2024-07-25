@@ -45,13 +45,12 @@ public class HomeController {
         response.sendRedirect(GlobelVar.CLIENT_BASE_URL);
     }
 
+
     @GetMapping("/home")
     public ResponseEntity<?> displayHome(@CookieValue(name = "AccessToken", required = false) String accessToken,
                                          @CookieValue(name = "RefreshToken", required = false) String refreshToken){
 
         Map<String, String> verifyMap = jwtUtils.verifyJWTs(accessToken, refreshToken);
-
-
 
         if (verifyMap.get("state") != null || Objects.equals(verifyMap.get("사용자 role"), Role.ROLE_ADMIN.getRole())) {
             HomeDto homeDto = homeService.displayHomeGuest();

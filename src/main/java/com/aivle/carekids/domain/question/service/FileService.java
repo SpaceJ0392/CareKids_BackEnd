@@ -33,7 +33,6 @@ public class FileService {
     private String BASE_PATH;
     private static final String NOTICE_IMG_PATH = "";
 
-
     private final QuestionFileRepository questionFileRepository;
     private final ModelMapper entityModelMapper;
     private final ResourceLoader resourceLoader;
@@ -55,6 +54,7 @@ public class FileService {
         questionFileRepository.saveAll(targetQuestionFile);
     }
 
+
     @Transactional
     public void updateFile(Question targetQuestion, Users users, List<MultipartFile> multipartFiles){
 
@@ -73,6 +73,7 @@ public class FileService {
 
         if (!newQuestionFiles.isEmpty()) { questionFileRepository.saveAll(newQuestionFiles); }
     }
+
 
     public QuestionFileDto uploadFile(String usersNickname, MultipartFile file){
 

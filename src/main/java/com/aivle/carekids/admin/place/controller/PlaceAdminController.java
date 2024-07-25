@@ -2,7 +2,6 @@ package com.aivle.carekids.admin.place.controller;
 
 
 import com.aivle.carekids.admin.place.service.PlaceAdminService;
-import com.aivle.carekids.domain.kidspolicy.dto.KidsPolicyDetailDto;
 import com.aivle.carekids.domain.place.dto.PlaceDetailDto;
 import com.aivle.carekids.domain.place.service.PlaceService;
 import com.aivle.carekids.domain.user.general.jwt.constants.JwtUtils;
@@ -39,6 +38,7 @@ public class PlaceAdminController {
         return ResponseEntity.ok(placeService.displayPlaceAdmin(page - 1, size));
     }
 
+
     @GetMapping("/place/{id}")
     public ResponseEntity<?> displayPlaceDetail(@CookieValue(name = "AccessToken") String accessToken,
                                                      @CookieValue(name = "RefreshToken") String refreshToken,
@@ -52,6 +52,7 @@ public class PlaceAdminController {
         return ResponseEntity.ok(placeService.placeDetail(kidsPolicyId));
     }
 
+
     @PostMapping("/place/edit")
     public ResponseEntity<?> editPlace(@CookieValue(name = "AccessToken") String accessToken,
                                             @CookieValue(name = "RefreshToken") String refreshToken,
@@ -64,6 +65,7 @@ public class PlaceAdminController {
 
         return placeAdminService.editPlace(placeDetailDto);
     }
+
 
     @DeleteMapping("/place/delete/{id}")
     public ResponseEntity<?> deletePlace(@CookieValue(name = "AccessToken") String accessToken,

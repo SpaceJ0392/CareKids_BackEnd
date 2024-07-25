@@ -20,7 +20,6 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class KindergartenController {
 
-
     private final KindergartenService kindergartenService;
     private final JwtUtils jwtUtils;
 
@@ -52,6 +51,7 @@ public class KindergartenController {
         return ResponseEntity.badRequest().headers(headers).body(Map.of("message", "잘못된 접근입니다."));
     }
 
+
     @GetMapping("/kindergarten/{id}")
     public ResponseEntity<?> kindergartenDetail(@PathVariable Long id){
 
@@ -60,6 +60,7 @@ public class KindergartenController {
         if (kindergartenDetailDto != null){ return ResponseEntity.ok(kindergartenDetailDto); }
         return ResponseEntity.badRequest().body(Map.of("message", "잘못된 접근입니다."));
     }
+
 
     @PostMapping("/kindergarten/search")
     public ResponseEntity<Object> searchKindergarten(@RequestBody SearchRegionDto searchRegionDto,

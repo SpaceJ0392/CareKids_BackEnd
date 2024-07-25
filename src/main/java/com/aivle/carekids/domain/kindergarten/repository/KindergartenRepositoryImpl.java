@@ -29,6 +29,7 @@ import static org.springframework.util.ObjectUtils.isEmpty;
 
 @RequiredArgsConstructor
 public class KindergartenRepositoryImpl implements KindergartenRepositoryCustom {
+
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
@@ -39,6 +40,7 @@ public class KindergartenRepositoryImpl implements KindergartenRepositoryCustom 
                 .limit(1)
                 .fetchOne();
     }
+
 
     @Override
     public Page<KindergartenListDto> findAllByOrderByUpdatedAtDescByPageByRegion(Long regionId, Pageable pageable) {
@@ -70,30 +72,6 @@ public class KindergartenRepositoryImpl implements KindergartenRepositoryCustom 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 
-
-
-    private BooleanExpression regionEq(Long regionId) {
-        return isEmpty(regionId) || regionId == 26 ? null : kindergarten.region.regionId.eq(regionId);
-    }
-
-
-    private Map<Long, List<KindergartenOperateTimeDto>> findOperateTimeByKindergartenList(List<KindergartenListDto> content) {
-        List<Long> kindergartenIdList = content.stream().map(KindergartenListDto::getKindergartenId).toList();
-
-
-        return jpaQueryFactory.select(
-                        Projections.constructor(
-                                KindergartenOperateTimeDto.class,
-                                kindergartenOperateTime.dayType,
-                                kindergartenOperateTime.startTime,
-                                kindergartenOperateTime.endTime,
-                                kindergarten.kindergartenId
-                        ))
-                .from(kindergartenOperateTime)
-                .where(kindergartenOperateTime.kindergarten.kindergartenId.in(kindergartenIdList))
-                .fetch().stream().collect(Collectors.groupingBy(KindergartenOperateTimeDto::getKindergartenId));
-
-    }
 
     @Override
     public KindergartenDetailDto findKindergartenDetail(Long kindergartenId) {
@@ -131,6 +109,7 @@ public class KindergartenRepositoryImpl implements KindergartenRepositoryCustom 
         return content;
     }
 
+
     @Override
     public Page<KindergartenListDto> searchKindergartenByFilter(SearchRegionDto searchRegionDto, Pageable pageable) {
         List<KindergartenListDto> content = jpaQueryFactory.select(
@@ -166,8 +145,32 @@ public class KindergartenRepositoryImpl implements KindergartenRepositoryCustom 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 
+
+    private BooleanExpression regionEq(Long regionId) {
+        return isEmpty(regionId) || regionId == 26 ? null : kindergarten.region.regionId.eq(regionId);
+    }
+
+
+    private Map<Long, List<KindergartenOperateTimeDto>> findOperateTimeByKindergartenList(List<KindergartenListDto> content) {
+        List<Long> kindergartenIdList = content.stream().map(KindergartenListDto::getKindergartenId).toList();
+
+
+        return jpaQueryFactory.select(
+                        Projections.constructor(
+                                KindergartenOperateTimeDto.class,
+                                kindergartenOperateTime.dayType,
+                                kindergartenOperateTime.startTime,
+                                kindergartenOperateTime.endTime,
+                                kindergarten.kindergartenId
+                        ))
+                .from(kindergartenOperateTime)
+                .where(kindergartenOperateTime.kindergarten.kindergartenId.in(kindergartenIdList))
+                .fetch().stream().collect(Collectors.groupingBy(KindergartenOperateTimeDto::getKindergartenId));
+
+    }
+
+
     private BooleanExpression queryContains(String query) {
         return isEmpty(query) ? null : kindergarten.kindergartenName.containsIgnoreCase(query);
     }
-
 }

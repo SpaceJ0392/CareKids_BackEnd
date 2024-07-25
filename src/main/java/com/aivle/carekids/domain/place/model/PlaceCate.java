@@ -1,8 +1,5 @@
 package com.aivle.carekids.domain.place.model;
 
-import com.aivle.carekids.domain.common.models.Region;
-import com.aivle.carekids.domain.kidspolicy.models.KidsPolicy;
-import com.aivle.carekids.domain.kidspolicy.models.KidsPolicyRegion;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -16,7 +13,6 @@ public class PlaceCate {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long placeCateId;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id")
@@ -32,7 +28,9 @@ public class PlaceCate {
         this.placeSubcate = placeSubcate;
     }
 
+    //* 사용자 정의 메소드 *//
     public static PlaceCate createNewPlaceCate(Place place, PlaceSubcate placeSubcate) {
+
         return PlaceCate.builder()
                 .place(place)
                 .placeSubcate(placeSubcate)

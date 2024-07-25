@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class KidsPolicyRegionAgeTag {
-    // 육아 정보 및 지역 중계 엔티티
 
     @EmbeddedId
     private KidsPolicyRegionAgeTagId kidsPolicyRegionAgeTagId;
